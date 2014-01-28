@@ -2,8 +2,8 @@
 <BorlandProject>
   <Transactions>
     <Transaction>2014.01.28 10:25:31.109,=C:\Users\Nikolay\Documents\RAD Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>2014.01.28 10:29:10.824,C:\Users\Nikolay\Documents\GitHub\samodelkin\MainUnit.dfm=C:\Users\Nikolay\Documents\RAD Studio\Projects\Unit1.dfm</Transaction>
     <Transaction>2014.01.28 10:29:10.824,C:\Users\Nikolay\Documents\GitHub\samodelkin\MainUnit.pas=C:\Users\Nikolay\Documents\RAD Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2014.01.28 10:29:10.824,C:\Users\Nikolay\Documents\GitHub\samodelkin\MainUnit.dfm=C:\Users\Nikolay\Documents\RAD Studio\Projects\Unit1.dfm</Transaction>
     <Transaction>2014.01.28 10:29:17.652,C:\Users\Nikolay\Documents\GitHub\samodelkin\Samodelkin.dproj=C:\Users\Nikolay\Documents\RAD Studio\Projects\Project1.dproj</Transaction>
     <Transaction>2014.01.28 10:52:22.248,=C:\Users\Nikolay\Documents\GitHub\samodelkin\DataModuleSQLite.pas</Transaction>
     <Transaction>2014.01.28 10:52:25.652,=C:\Users\Nikolay\Documents\GitHub\samodelkin\SettingFormUnit.pas</Transaction>
@@ -11,10 +11,13 @@
     <Transaction>2014.01.28 11:40:57.102,C:\Users\Nikolay\Documents\GitHub\samodelkin\ClientsFormUnit.pas=C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.pas</Transaction>
     <Transaction>2014.01.28 11:40:57.102,C:\Users\Nikolay\Documents\GitHub\samodelkin\ClientsFormUnit.dfm=C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.dfm</Transaction>
     <Transaction>2014.01.28 11:41:33.726,=C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.pas</Transaction>
-    <Transaction>2014.01.28 11:42:10.516,C:\Users\Nikolay\Documents\GitHub\samodelkin\FreelanceFormUnit.dfm=C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.dfm</Transaction>
     <Transaction>2014.01.28 11:42:10.516,C:\Users\Nikolay\Documents\GitHub\samodelkin\FreelanceFormUnit.pas=C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.pas</Transaction>
+    <Transaction>2014.01.28 11:42:10.516,C:\Users\Nikolay\Documents\GitHub\samodelkin\FreelanceFormUnit.dfm=C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.dfm</Transaction>
     <Transaction>2014.01.28 11:45:58.940,=C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.pas</Transaction>
     <Transaction>2014.01.28 11:49:12.315,C:\Users\Nikolay\Documents\GitHub\samodelkin\DataModuleMySQLUnit.dfm=C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.dfm</Transaction>
     <Transaction>2014.01.28 11:49:12.315,C:\Users\Nikolay\Documents\GitHub\samodelkin\DataModuleMySQLUnit.pas=C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.pas</Transaction>
+    <Transaction>2014.01.28 17:08:12.716,=C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.pas</Transaction>
+    <Transaction>2014.01.28 17:09:02.038,C:\Users\Nikolay\Documents\GitHub\samodelkin\EditProjectFormUnit.pas=C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.pas</Transaction>
+    <Transaction>2014.01.28 17:09:02.038,C:\Users\Nikolay\Documents\GitHub\samodelkin\EditProjectFormUnit.dfm=C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.dfm</Transaction>
   </Transactions>
 </BorlandProject>

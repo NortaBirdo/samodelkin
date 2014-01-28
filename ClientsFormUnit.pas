@@ -14,16 +14,18 @@ type
     DBMemo1: TDBMemo;
     ControlBar1: TControlBar;
     ToolBar1: TToolBar;
-    ToolButton1: TToolButton;
-    ToolButton2: TToolButton;
+    ToolBtnAdd: TToolButton;
+    ToolBtnSave: TToolButton;
     ToolBtnArch: TToolButton;
     ToolButton4: TToolButton;
     ToolBtnBlackList: TToolButton;
     ComboBox1: TComboBox;
     Label2: TLabel;
     procedure ComboBox1Change(Sender: TObject);
-    procedure ToolButton1Click(Sender: TObject);
-    procedure ToolButton2Click(Sender: TObject);
+    procedure ToolBtnAddClick(Sender: TObject);
+    procedure ToolBtnSaveClick(Sender: TObject);
+    procedure ToolBtnArchClick(Sender: TObject);
+    procedure ToolBtnBlackListClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -45,29 +47,56 @@ case ComboBox1.ItemIndex of
 0: begin
    ToolBtnArch.Caption := 'Архивировать';
    ToolBtnBlackList.Caption := 'В черный список';
+   DataModuleMySQL.ShowActiveClient;
    end;
 1: begin
    ToolBtnArch.Caption := 'Активировать';
    ToolBtnBlackList.Caption := 'В черный список';
+   DataModuleMySQL.ShowArchiveClient;
    end;
 2: begin
    ToolBtnArch.Caption := 'Архивировать';
    ToolBtnBlackList.Caption := 'Удалить из черного списка';
+   DataModuleMySQL.ShowBlackListClient;
    end;
 end;
 end;
 
-procedure TClientsForm.ToolButton1Click(Sender: TObject);
+//управление архивом
+procedure TClientsForm.ToolBtnArchClick(Sender: TObject);
 begin
- DataModuleMySQL.ADQueryClients.Insert;
+if ToolBtnArch.Caption = 'Архивировать' then
+  DataModuleMySQL.SetClientFlag(1)
+  else
+  DataModuleMySQL.SetClientFlag(0);
+
+DataModuleMySQL.ADQueryClients.Post;
+DataModuleMySQL.RefreshClient;
 end;
 
-procedure TClientsForm.ToolButton2Click(Sender: TObject);
+//управление черным списком
+procedure TClientsForm.ToolBtnBlackListClick(Sender: TObject);
+begin
+if ToolBtnBlackList.Caption = 'В черный список' then
+  DataModuleMySQL.SetClientFlag(2)
+  else
+  DataModuleMySQL.SetClientFlag(0);
+
+DataModuleMySQL.ADQueryClients.Post;
+DataModuleMySQL.RefreshClient;
+end;
+
+//добалвение нового клиента
+procedure TClientsForm.ToolBtnAddClick(Sender: TObject);
+begin
+ DataModuleMySQL.ADQueryClients.Insert;
+ DataModuleMySQL.SetClientFlag(0);
+end;
+
+//сохранение клиента
+procedure TClientsForm.ToolBtnSaveClick(Sender: TObject);
 begin
   if DataModuleMySQL.ADQueryClients.Modified then
-    begin
-      DataModuleMySQL.ADQueryClients.FieldByName('flag').Value := 0;
-      DataModuleMySQL.ADQueryClients.Post;
-    end;
+    DataModuleMySQL.ADQueryClients.Post;
 end;
 end.

@@ -129,21 +129,21 @@ object ClientsForm: TClientsForm
       Caption = 'ToolBar1'
       ShowCaptions = True
       TabOrder = 0
-      object ToolButton1: TToolButton
+      object ToolBtnAdd: TToolButton
         Left = 0
         Top = 0
         AutoSize = True
         Caption = #1044#1086#1073#1072#1074#1080#1090#1100
         ImageIndex = 0
-        OnClick = ToolButton1Click
+        OnClick = ToolBtnAddClick
       end
-      object ToolButton2: TToolButton
+      object ToolBtnSave: TToolButton
         Left = 61
         Top = 0
         AutoSize = True
         Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100
         ImageIndex = 1
-        OnClick = ToolButton2Click
+        OnClick = ToolBtnSaveClick
       end
       object ToolButton4: TToolButton
         Left = 127
@@ -159,6 +159,7 @@ object ClientsForm: TClientsForm
         AutoSize = True
         Caption = #1040#1088#1093#1080#1074#1080#1088#1086#1074#1072#1090#1100
         ImageIndex = 2
+        OnClick = ToolBtnArchClick
       end
       object ToolBtnBlackList: TToolButton
         Left = 219
@@ -166,6 +167,7 @@ object ClientsForm: TClientsForm
         AutoSize = True
         Caption = #1042' '#1095#1077#1088#1085#1099#1081' '#1089#1087#1080#1089#1086#1082
         ImageIndex = 3
+        OnClick = ToolBtnBlackListClick
       end
     end
   end

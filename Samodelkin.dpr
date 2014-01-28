@@ -7,7 +7,8 @@ uses
   SettingFormUnit in 'SettingFormUnit.pas' {SettingForm},
   ClientsFormUnit in 'ClientsFormUnit.pas' {ClientsForm},
   FreelanceFormUnit in 'FreelanceFormUnit.pas' {FreelanceForm},
-  DataModuleMySQLUnit in 'DataModuleMySQLUnit.pas' {DataModuleMySQL: TDataModule};
+  DataModuleMySQLUnit in 'DataModuleMySQLUnit.pas' {DataModuleMySQL: TDataModule},
+  EditProjectFormUnit in 'EditProjectFormUnit.pas' {EditProjectForm};
 
 {$R *.res}
 
@@ -20,5 +21,6 @@ begin
   Application.CreateForm(TSettingForm, SettingForm);
   Application.CreateForm(TClientsForm, ClientsForm);
   Application.CreateForm(TFreelanceForm, FreelanceForm);
+  Application.CreateForm(TEditProjectForm, EditProjectForm);
   Application.Run;
 end.
