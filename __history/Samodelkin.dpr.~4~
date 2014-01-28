@@ -1,0 +1,18 @@
+program Samodelkin;
+
+uses
+  Vcl.Forms,
+  MainUnit in 'MainUnit.pas' {MainForm},
+  DataModuleSQLite in 'DataModuleSQLite.pas' {SQLiteDataModule: TDataModule},
+  SettingFormUnit in 'SettingFormUnit.pas' {SettingForm};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TSQLiteDataModule, SQLiteDataModule);
+  Application.CreateForm(TMainForm, MainForm);
+  Application.CreateForm(TSettingForm, SettingForm);
+  Application.Run;
+end.

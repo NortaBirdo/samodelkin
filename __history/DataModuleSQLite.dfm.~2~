@@ -1,0 +1,70 @@
+object SQLiteDataModule: TSQLiteDataModule
+  OldCreateOrder = False
+  OnCreate = DataModuleCreate
+  Height = 363
+  Width = 536
+  object ADConnectionSQLite: TADConnection
+    Params.Strings = (
+      'Database=D:\Delphi Projects\SchoolDB\Win32\Debug\SettingDB.db'
+      'LockingMode=Normal'
+      'DriverID=SQLite')
+    LoginPrompt = False
+    Left = 48
+    Top = 56
+  end
+  object ADTransaction1: TADTransaction
+    Connection = ADConnectionSQLite
+    Left = 160
+    Top = 56
+  end
+  object ADTable1: TADTable
+    IndexFieldNames = 'ID'
+    Connection = ADConnectionSQLite
+    Transaction = ADTransaction1
+    UpdateOptions.UpdateTableName = 'Setting'
+    TableName = 'Setting'
+    Left = 256
+    Top = 56
+    object ADTable1ID: TADAutoIncField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
+      Visible = False
+    end
+    object ADTable1ip: TStringField
+      FieldName = 'ip'
+      Origin = 'ip'
+      Size = 50
+    end
+    object ADTable1db_name: TStringField
+      FieldName = 'db_name'
+      Origin = 'db_name'
+      Size = 100
+    end
+    object ADTable1login: TStringField
+      FieldName = 'login'
+      Origin = 'login'
+      Size = 100
+    end
+    object ADTable1pass: TStringField
+      FieldName = 'pass'
+      Origin = 'pass'
+      Size = 100
+    end
+  end
+  object ADGUIxWaitCursor1: TADGUIxWaitCursor
+    Left = 48
+    Top = 128
+  end
+  object DataSource1: TDataSource
+    DataSet = ADTable1
+    Left = 336
+    Top = 56
+  end
+  object ADPhysSQLiteDriverLink1: TADPhysSQLiteDriverLink
+    VendorLib = 'D:\Delphi Projects\SchoolDB\Win32\Debug\sqlite3.dll'
+    Left = 192
+    Top = 136
+  end
+end

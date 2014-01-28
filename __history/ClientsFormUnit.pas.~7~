@@ -1,0 +1,39 @@
+unit ClientsFormUnit;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Grids, Vcl.DBGrids, Vcl.StdCtrls,
+  Vcl.DBCtrls, Vcl.ToolWin, Vcl.ComCtrls, Vcl.ExtCtrls;
+
+type
+  TClientsForm = class(TForm)
+    DBGrid1: TDBGrid;
+    Label1: TLabel;
+    DBMemo1: TDBMemo;
+    ControlBar1: TControlBar;
+    ToolBar1: TToolBar;
+    ToolButton1: TToolButton;
+    ToolButton2: TToolButton;
+    ToolButton3: TToolButton;
+    ToolButton4: TToolButton;
+    ToolButton5: TToolButton;
+    ComboBox1: TComboBox;
+    Label2: TLabel;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  ClientsForm: TClientsForm;
+
+implementation
+
+{$R *.dfm}
+
+uses DataModuleMySQLUnit;
+
+end.
