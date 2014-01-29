@@ -4,8 +4,8 @@ object ClientsForm: TClientsForm
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = #1050#1083#1080#1077#1085#1090#1099
-  ClientHeight = 405
-  ClientWidth = 969
+  ClientHeight = 492
+  ClientWidth = 1058
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -30,11 +30,18 @@ object ClientsForm: TClientsForm
     Height = 13
     Caption = #1054#1090#1086#1073#1088#1072#1078#1072#1090#1100
   end
+  object Label4: TLabel
+    Left = 743
+    Top = 309
+    Width = 99
+    Height = 13
+    Caption = #1044#1074#1080#1078#1077#1085#1080#1077' '#1087#1086' '#1089#1095#1077#1090#1091
+  end
   object DBGrid1: TDBGrid
     Left = 8
     Top = 67
     Width = 729
-    Height = 326
+    Height = 422
     DataSource = DataModuleMySQL.DataSource1
     TabOrder = 0
     TitleFont.Charset = DEFAULT_CHARSET
@@ -105,8 +112,8 @@ object ClientsForm: TClientsForm
   object DBMemo1: TDBMemo
     Left = 743
     Top = 67
-    Width = 218
-    Height = 326
+    Width = 306
+    Height = 230
     DataField = 'note'
     DataSource = DataModuleMySQL.DataSource1
     ScrollBars = ssVertical
@@ -115,10 +122,11 @@ object ClientsForm: TClientsForm
   object ControlBar1: TControlBar
     Left = 0
     Top = 0
-    Width = 969
+    Width = 1058
     Height = 33
     Align = alTop
     TabOrder = 2
+    ExplicitWidth = 969
     object ToolBar1: TToolBar
       Left = 11
       Top = 2
@@ -184,5 +192,58 @@ object ClientsForm: TClientsForm
       #1040#1082#1090#1080#1074#1085#1099#1077
       #1042' '#1072#1088#1093#1080#1074#1077
       #1063#1077#1088#1085#1099#1081' '#1089#1087#1080#1089#1086#1082)
+  end
+  object DBGrid2: TDBGrid
+    Left = 743
+    Top = 328
+    Width = 306
+    Height = 161
+    DataSource = DataModuleMySQL.DataSourceClientAccount
+    TabOrder = 4
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'id'
+        Visible = False
+      end
+      item
+        Expanded = False
+        FieldName = 'date_operation'
+        Title.Caption = #1044#1072#1090#1072
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'operation'
+        Title.Caption = #1057#1091#1084#1084#1072
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'note'
+        Title.Caption = #1055#1088#1080#1084#1077#1095#1072#1085#1080#1077
+        Width = 140
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'link'
+        Visible = False
+      end
+      item
+        Expanded = False
+        FieldName = 'account_type'
+        Visible = False
+      end
+      item
+        Expanded = False
+        FieldName = 'id_1'
+        Visible = False
+      end>
   end
 end

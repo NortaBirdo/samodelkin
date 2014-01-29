@@ -28,14 +28,17 @@ type
     Label4: TLabel;
     Label5: TLabel;
     ComboBox1: TComboBox;
-    Label6: TLabel;
     N13: TMenuItem;
     N14: TMenuItem;
     DBText1: TDBText;
-    DBText2: TDBText;
     DBMemo1: TDBMemo;
     MainMenu1: TMainMenu;
     N12: TMenuItem;
+    DBMemo2: TDBMemo;
+    Label6: TLabel;
+    N15: TMenuItem;
+    N17: TMenuItem;
+    N16: TMenuItem;
     procedure N5Click(Sender: TObject);
     procedure N7Click(Sender: TObject);
     procedure N8Click(Sender: TObject);
@@ -44,6 +47,10 @@ type
     procedure N10Click(Sender: TObject);
     procedure N12Click(Sender: TObject);
     procedure ComboBox1Change(Sender: TObject);
+    procedure N11Click(Sender: TObject);
+    procedure N14Click(Sender: TObject);
+    procedure N16Click(Sender: TObject);
+    procedure N17Click(Sender: TObject);
 
   private
     { Private declarations }
@@ -59,7 +66,7 @@ implementation
 {$R *.dfm}
 
 uses SettingFormUnit, ClientsFormUnit, FreelanceFormUnit, DataModuleMySQLUnit,
-  EditProjectFormUnit;
+  EditProjectFormUnit, EditTaskFormUnit, OperationFormUnit;
 
 procedure TMainForm.N2Click(Sender: TObject);
 begin
@@ -96,10 +103,22 @@ begin
   EditProjectForm.ShowModal;
 end;
 
+procedure TMainForm.N11Click(Sender: TObject);
+begin
+  DataModuleMySQL.ADQueryTask.Insert;
+  DataModuleMySQL.SetProjectLink(DataModuleMySQL.GetIDProject);
+  EditTaskForm.ShowModal;
+end;
+
 //переходы
 procedure TMainForm.N12Click(Sender: TObject);
 begin
   EditProjectForm.ShowModal;
+end;
+
+procedure TMainForm.N14Click(Sender: TObject);
+begin
+  EditTaskForm.ShowModal;
 end;
 
 //фильтрация проектов
@@ -114,6 +133,23 @@ case ComboBox1.ItemIndex of
 4: DataModuleMySQL.ShowCloseProject;
 5: DataModuleMySQL.ShowCancelProject;
 end;
+end;
+
+//оплата проекта
+procedure TMainForm.N16Click(Sender: TObject);
+begin
+  OperationForm.LabelType.caption := 'клиент';
+  OperationForm.SetDataSet(DataModuleMySQL.DataSourceClientAccount);
+  OperationForm.ShowModal;
+end;
+
+//выплата по задаче
+procedure TMainForm.N17Click(Sender: TObject);
+begin
+  OperationForm.LabelType.caption := 'фрилансер';
+  OperationForm.SetDataSet(DataModuleMySQL.DataSourceFreelancerAccount);
+  OperationForm.ShowModal;
+  DataModuleMySQL.ADQueryTask.Refresh;
 end;
 
 end.

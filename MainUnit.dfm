@@ -32,15 +32,15 @@ object MainForm: TMainForm
     Caption = #1047#1072#1076#1072#1095#1080' '#1087#1086' '#1087#1088#1086#1077#1082#1090#1091
   end
   object Label3: TLabel
-    Left = 607
-    Top = 96
+    Left = 655
+    Top = 62
     Width = 69
     Height = 13
     Caption = #1057#1089#1099#1083#1082#1072' '#1085#1072' Git'
   end
   object Label4: TLabel
-    Left = 607
-    Top = 122
+    Left = 655
+    Top = 88
     Width = 61
     Height = 13
     Caption = #1055#1088#1080#1084#1077#1095#1072#1085#1080#1077
@@ -52,33 +52,25 @@ object MainForm: TMainForm
     Height = 13
     Caption = #1054#1090#1086#1073#1088#1072#1078#1072#1090#1100
   end
-  object Label6: TLabel
-    Left = 607
-    Top = 69
-    Width = 36
-    Height = 13
-    Caption = #1057#1090#1072#1090#1091#1089
-  end
   object DBText1: TDBText
-    Left = 682
-    Top = 96
-    Width = 223
+    Left = 730
+    Top = 62
+    Width = 175
     Height = 17
     DataField = 'git'
     DataSource = DataModuleMySQL.DataSource3
   end
-  object DBText2: TDBText
-    Left = 682
-    Top = 69
-    Width = 223
-    Height = 17
-    DataField = 'status'
-    DataSource = DataModuleMySQL.DataSource3
+  object Label6: TLabel
+    Left = 655
+    Top = 330
+    Width = 61
+    Height = 13
+    Caption = #1055#1088#1080#1084#1077#1095#1072#1085#1080#1077
   end
   object DBGrid1: TDBGrid
     Left = 8
     Top = 62
-    Width = 593
+    Width = 641
     Height = 241
     DataSource = DataModuleMySQL.DataSource3
     ReadOnly = True
@@ -93,7 +85,7 @@ object MainForm: TMainForm
         Expanded = False
         FieldName = 'id'
         Title.Caption = '#'
-        Width = 50
+        Width = 40
         Visible = True
       end
       item
@@ -119,8 +111,8 @@ object MainForm: TMainForm
         Expanded = False
         FieldName = 'status'
         Title.Caption = #1057#1090#1072#1090#1091#1089
-        Width = -1
-        Visible = False
+        Width = 70
+        Visible = True
       end
       item
         Expanded = False
@@ -160,14 +152,89 @@ object MainForm: TMainForm
   object DBGrid2: TDBGrid
     Left = 8
     Top = 328
-    Width = 585
+    Width = 641
     Height = 217
+    DataSource = DataModuleMySQL.DataSourceTask
+    ReadOnly = True
     TabOrder = 1
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
     TitleFont.Height = -11
     TitleFont.Name = 'Tahoma'
     TitleFont.Style = []
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'id'
+        Title.Caption = '#'
+        Width = 30
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'caption'
+        Title.Caption = #1047#1072#1076#1072#1095#1072
+        Width = 100
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'note'
+        Visible = False
+      end
+      item
+        Expanded = False
+        FieldName = 'status'
+        Title.Caption = #1057#1090#1072#1090#1091#1089
+        Width = 100
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'fio'
+        Title.Caption = #1048#1089#1087#1086#1083#1085#1080#1090#1077#1083#1100
+        Width = 100
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'deadline'
+        Title.Caption = 'Deadline'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'project_link'
+        Visible = False
+      end
+      item
+        Expanded = False
+        FieldName = 'budget'
+        Title.Caption = #1041#1102#1076#1078#1077#1090
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'salary'
+        Title.Caption = #1042#1099#1087#1083#1072#1090#1072
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'balance'
+        Title.Caption = #1041#1072#1083#1072#1085#1089
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'freelancer_link'
+        Visible = False
+      end
+      item
+        Expanded = False
+        FieldName = 'Id_1'
+        Visible = False
+      end>
   end
   object ComboBox1: TComboBox
     Left = 78
@@ -186,15 +253,26 @@ object MainForm: TMainForm
       #1086#1090#1084#1077#1085#1077#1085)
   end
   object DBMemo1: TDBMemo
-    Left = 607
-    Top = 141
-    Width = 298
-    Height = 162
+    Left = 655
+    Top = 107
+    Width = 250
+    Height = 196
     DataField = 'note'
     DataSource = DataModuleMySQL.DataSource3
     ReadOnly = True
     ScrollBars = ssVertical
     TabOrder = 3
+  end
+  object DBMemo2: TDBMemo
+    Left = 655
+    Top = 349
+    Width = 250
+    Height = 196
+    DataField = 'note'
+    DataSource = DataModuleMySQL.DataSourceTask
+    ReadOnly = True
+    ScrollBars = ssVertical
+    TabOrder = 4
   end
   object MainMenu1: TMainMenu
     Left = 400
@@ -232,9 +310,22 @@ object MainForm: TMainForm
       end
       object N11: TMenuItem
         Caption = #1053#1086#1074#1072#1103' '#1079#1072#1076#1072#1095#1072
+        OnClick = N11Click
       end
       object N14: TMenuItem
-        Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100' '#1079#1072#1076#1072#1095#1091
+        Caption = #1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1090#1100' '#1079#1072#1076#1072#1095#1091
+        OnClick = N14Click
+      end
+    end
+    object N15: TMenuItem
+      Caption = #1041#1091#1093#1075#1072#1083#1090#1077#1088#1080#1103
+      object N17: TMenuItem
+        Caption = #1042#1099#1087#1083#1072#1090#1072' '#1087#1086' '#1079#1072#1076#1072#1095#1077
+        OnClick = N17Click
+      end
+      object N16: TMenuItem
+        Caption = #1054#1087#1077#1088#1072#1094#1080#1103' '#1089#1086' '#1089#1095#1077#1090#1086#1084' '#1079#1072#1082#1072#1079#1095#1080#1082#1072
+        OnClick = N16Click
       end
     end
     object N5: TMenuItem

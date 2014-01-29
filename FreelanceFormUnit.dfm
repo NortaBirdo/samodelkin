@@ -4,8 +4,8 @@ object FreelanceForm: TFreelanceForm
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = #1060#1088#1080#1083#1072#1085#1089#1077#1088#1099
-  ClientHeight = 412
-  ClientWidth = 1012
+  ClientHeight = 567
+  ClientWidth = 1058
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -37,16 +37,21 @@ object FreelanceForm: TFreelanceForm
     Height = 13
     Caption = #1055#1088#1080#1084#1077#1095#1072#1085#1080#1103
   end
+  object Label4: TLabel
+    Left = 743
+    Top = 399
+    Width = 99
+    Height = 13
+    Caption = #1044#1074#1080#1078#1077#1085#1080#1077' '#1087#1086' '#1089#1095#1077#1090#1091
+  end
   object ControlBar1: TControlBar
     Left = 0
     Top = 0
-    Width = 1012
+    Width = 1058
     Height = 33
     Align = alTop
     TabOrder = 0
-    ExplicitLeft = 8
-    ExplicitTop = 8
-    ExplicitWidth = 969
+    ExplicitWidth = 1012
     object ToolBar1: TToolBar
       Left = 11
       Top = 2
@@ -103,7 +108,7 @@ object FreelanceForm: TFreelanceForm
     Left = 8
     Top = 67
     Width = 729
-    Height = 326
+    Height = 486
     DataSource = DataModuleMySQL.DataSource2
     TabOrder = 1
     TitleFont.Charset = DEFAULT_CHARSET
@@ -174,7 +179,7 @@ object FreelanceForm: TFreelanceForm
   object DBMemo1: TDBMemo
     Left = 743
     Top = 67
-    Width = 258
+    Width = 306
     Height = 150
     DataField = 'condition'
     DataSource = DataModuleMySQL.DataSource2
@@ -198,11 +203,64 @@ object FreelanceForm: TFreelanceForm
   object DBMemo2: TDBMemo
     Left = 743
     Top = 243
-    Width = 258
+    Width = 306
     Height = 150
     DataField = 'note'
     DataSource = DataModuleMySQL.DataSource2
     ScrollBars = ssVertical
     TabOrder = 4
+  end
+  object DBGrid2: TDBGrid
+    Left = 743
+    Top = 418
+    Width = 306
+    Height = 135
+    DataSource = DataModuleMySQL.DataSourceFreelancerAccount
+    TabOrder = 5
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'id'
+        Visible = False
+      end
+      item
+        Expanded = False
+        FieldName = 'date_operation'
+        Title.Caption = #1044#1072#1090#1072
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'operation'
+        Title.Caption = #1057#1091#1084#1084#1072
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'note'
+        Title.Caption = #1055#1088#1080#1084#1077#1095#1072#1085#1080#1077
+        Width = 140
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'link'
+        Visible = False
+      end
+      item
+        Expanded = False
+        FieldName = 'account_type'
+        Visible = False
+      end
+      item
+        Expanded = False
+        FieldName = 'id_1'
+        Visible = False
+      end>
   end
 end

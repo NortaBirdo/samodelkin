@@ -1,8 +1,8 @@
 object DataModuleMySQL: TDataModuleMySQL
   OldCreateOrder = False
   OnCreate = DataModuleCreate
-  Height = 267
-  Width = 585
+  Height = 428
+  Width = 661
   object ADConnection1: TADConnection
     Params.Strings = (
       'Server=bora.beget.ru'
@@ -25,7 +25,7 @@ object DataModuleMySQL: TDataModuleMySQL
     Top = 56
   end
   object ADQueryClients: TADQuery
-    Active = True
+    AfterScroll = ADQueryClientsAfterScroll
     Connection = ADConnection1
     SQL.Strings = (
       'SELECT * FROM CLIENT'
@@ -48,7 +48,6 @@ object DataModuleMySQL: TDataModuleMySQL
     Top = 56
   end
   object ADQueryFreelancer: TADQuery
-    Active = True
     Connection = ADConnection1
     SQL.Strings = (
       'SELECT * FROM FREELANCER'
@@ -62,6 +61,9 @@ object DataModuleMySQL: TDataModuleMySQL
     Top = 120
   end
   object ADQueryProject: TADQuery
+    AfterScroll = ADQueryProjectAfterScroll
+    AfterRefresh = ADQueryProjectAfterRefresh
+    AfterGetRecord = ADQueryProjectAfterGetRecord
     Connection = ADConnection1
     SQL.Strings = (
       'SELECT P.*, '
@@ -77,5 +79,86 @@ object DataModuleMySQL: TDataModuleMySQL
     DataSet = ADQueryProject
     Left = 360
     Top = 184
+  end
+  object ADQueryClientList: TADQuery
+    Connection = ADConnection1
+    SQL.Strings = (
+      'SELECT * FROM CLIENT'
+      'WHERE flag = 0')
+    Left = 456
+    Top = 64
+  end
+  object DataSourceClientList: TDataSource
+    DataSet = ADQueryClientList
+    Left = 560
+    Top = 64
+  end
+  object ADQueryTime: TADQuery
+    Connection = ADConnection1
+    SQL.Strings = (
+      'SELECT sum(2+2)'
+      '')
+    Left = 48
+    Top = 208
+  end
+  object Timer1: TTimer
+    Interval = 10000
+    OnTimer = Timer1Timer
+    Left = 120
+    Top = 208
+  end
+  object ADQueryTask: TADQuery
+    Connection = ADConnection1
+    SQL.Strings = (
+      
+        'Select TASK.*, FREELANCER.Id, FREELANCER.fio from TASK, FREELANC' +
+        'ER'
+      'WHERE TASK.freelancer_link = FREELANCER.id')
+    Left = 256
+    Top = 256
+  end
+  object DataSourceTask: TDataSource
+    DataSet = ADQueryTask
+    Left = 360
+    Top = 256
+  end
+  object ADQuerySQL: TADQuery
+    Connection = ADConnection1
+    Left = 48
+    Top = 264
+  end
+  object ADQueryClientAccount: TADQuery
+    Active = True
+    Connection = ADConnection1
+    SQL.Strings = (
+      'SELECT PERSONAL_ACCOUNT.*,'
+      'CLIENT.id'
+      'FROM PERSONAL_ACCOUNT, CLIENT'
+      'WHERE PERSONAL_ACCOUNT.link = CLIENT.id'
+      ' AND account_type = 0')
+    Left = 256
+    Top = 312
+  end
+  object DataSourceClientAccount: TDataSource
+    DataSet = ADQueryClientAccount
+    Left = 360
+    Top = 312
+  end
+  object ADQueryFreelancerAccount: TADQuery
+    Active = True
+    Connection = ADConnection1
+    SQL.Strings = (
+      'SELECT PERSONAL_ACCOUNT.*,'
+      'FREELANCER.id'
+      'FROM PERSONAL_ACCOUNT, FREELANCER'
+      'WHERE PERSONAL_ACCOUNT.link = FREELANCER.id'
+      ' AND account_type = 1')
+    Left = 256
+    Top = 376
+  end
+  object DataSourceFreelancerAccount: TDataSource
+    DataSet = ADQueryFreelancerAccount
+    Left = 408
+    Top = 376
   end
 end

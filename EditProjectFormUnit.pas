@@ -51,7 +51,7 @@ end;
 procedure TEditProjectForm.BtnChangeClientClick(Sender: TObject);
 begin
   DataModuleMySQL.SetClient(DataModuleMySQL.GetClientID);
-  Label3.Caption := 'Выбран: ' + DataModuleMySQL.GetClientName;
+  Label3.Caption := 'Новый заказчик: ' + DataModuleMySQL.GetClientName;
 end;
 
 procedure TEditProjectForm.BtnSaveClick(Sender: TObject);

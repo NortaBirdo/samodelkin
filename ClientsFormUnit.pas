@@ -21,6 +21,8 @@ type
     ToolBtnBlackList: TToolButton;
     ComboBox1: TComboBox;
     Label2: TLabel;
+    Label4: TLabel;
+    DBGrid2: TDBGrid;
     procedure ComboBox1Change(Sender: TObject);
     procedure ToolBtnAddClick(Sender: TObject);
     procedure ToolBtnSaveClick(Sender: TObject);

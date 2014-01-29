@@ -23,6 +23,8 @@ type
     Label2: TLabel;
     Label3: TLabel;
     DBMemo2: TDBMemo;
+    Label4: TLabel;
+    DBGrid2: TDBGrid;
     procedure ToolBtnArchClick(Sender: TObject);
     procedure ComboBox1Change(Sender: TObject);
     procedure ToolBtnBlackListClick(Sender: TObject);

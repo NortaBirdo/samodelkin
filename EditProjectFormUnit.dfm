@@ -26,16 +26,17 @@ object EditProjectForm: TEditProjectForm
   object Label2: TLabel
     Left = 24
     Top = 51
-    Width = 47
+    Width = 94
     Height = 13
-    Caption = #1047#1072#1082#1072#1079#1095#1080#1082
+    Caption = #1058#1077#1082#1091#1097#1080#1081' '#1079#1072#1082#1072#1079#1095#1080#1082
   end
   object Label3: TLabel
     Left = 336
-    Top = 51
-    Width = 45
+    Top = 35
+    Width = 89
     Height = 13
-    Caption = #1042#1099#1073#1088#1072#1085': '
+    Caption = #1053#1086#1074#1099#1081' '#1079#1072#1082#1072#1079#1095#1080#1082': '
+    WordWrap = True
   end
   object Label4: TLabel
     Left = 24
@@ -89,7 +90,7 @@ object EditProjectForm: TEditProjectForm
     Top = 70
     Width = 201
     Height = 232
-    DataSource = DataModuleMySQL.DataSource1
+    DataSource = DataModuleMySQL.DataSourceClientList
     TabOrder = 2
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText

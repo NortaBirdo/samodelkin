@@ -7,7 +7,7 @@ uses
   uADGUIxIntf, uADPhysIntf, uADStanDef, uADStanPool, uADStanAsync,
   uADPhysManager, uADStanParam, uADDatSManager, uADDAptIntf, uADDAptManager,
   uADGUIxFormsWait, uADPhysMySQL, uADCompGUIx, uADCompClient, Data.DB,
-  uADCompDataSet, vcl.forms;
+  uADCompDataSet, vcl.forms, Vcl.ExtCtrls;
 
 type
   TDataModuleMySQL = class(TDataModule)
@@ -21,7 +21,23 @@ type
     DataSource2: TDataSource;
     ADQueryProject: TADQuery;
     DataSource3: TDataSource;
+    ADQueryClientList: TADQuery;
+    DataSourceClientList: TDataSource;
+    ADQueryTime: TADQuery;
+    Timer1: TTimer;
+    ADQueryTask: TADQuery;
+    DataSourceTask: TDataSource;
+    ADQuerySQL: TADQuery;
+    ADQueryClientAccount: TADQuery;
+    DataSourceClientAccount: TDataSource;
+    ADQueryFreelancerAccount: TADQuery;
+    DataSourceFreelancerAccount: TDataSource;
     procedure DataModuleCreate(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
+    procedure ADQueryProjectAfterGetRecord(DataSet: TADDataSet);
+    procedure ADQueryProjectAfterScroll(DataSet: TDataSet);
+    procedure ADQueryProjectAfterRefresh(DataSet: TDataSet);
+    procedure ADQueryClientsAfterScroll(DataSet: TDataSet);
   private
     { Private declarations }
   public
@@ -35,6 +51,8 @@ type
     procedure RefreshClient;
     //фрилансеры
     procedure SetFreelancerFlag(flag:integer);
+    function GetNameFreelancer: string;
+    function GetIdFreelancer: integer;
     procedure ShowActiveFreelancer;
     procedure ShowArchiveFreelancer;
     procedure ShowBlackListFreelancer;
@@ -48,6 +66,21 @@ type
     procedure ShowPriorProject;
     procedure ShowCloseProject;
     procedure ShowCancelProject;
+    function GetIDProject: integer;
+    //задачи
+    procedure GetTasks;
+    function GetIdTask:integer;
+    function GetSalaryTask:integer;
+    procedure SetProjectLink(id:integer);
+    procedure SetFreelancerLink(id: integer);
+    procedure SetDeadline(Dt: TDate);
+    //деньги
+    procedure CalcProjectBudget(id: integer);
+    procedure CalcProjectBalance(id: integer);
+    procedure CalcTaskBalance;
+    procedure CalcProjectSalary;
+    procedure CalcTaskSalary(sum: integer);
+    procedure GetFreelancerAccount;
 
  end;
 
@@ -94,21 +127,32 @@ end;
 
 ADConnection1.Connected := true;
 ADQueryClients.Active := true;
+ADQueryClientList.Active := true;
 ADQueryFreelancer.Active := true;
 ADQueryProject.Active := true;
+ADQueryClientAccount.Active := true;
+ADQueryFreelancerAccount.Active := true;
+end;
+
+//поддержание соединения
+procedure TDataModuleMySQL.Timer1Timer(Sender: TObject);
+begin
+  ADQueryTime.Close;
+  ADQueryTime.Open;
 end;
 
 //=========================================
 //работа с клиентами
 function TDataModuleMySQL.GetClientID: integer;
 begin
-  result := ADQueryClients.FieldByName('id').AsInteger;
+  result := ADQueryClientList.FieldByName('id').AsInteger;
 end;
 
 function TDataModuleMySQL.GetClientName: string;
 begin
-  result := ADQueryClients.FieldByName('fio').AsString;
+  result := ADQueryClientList.FieldByName('fio').AsString;
 end;
+
 
 procedure TDataModuleMySQL.RefreshClient;
 begin
@@ -120,6 +164,7 @@ begin
   ADQueryClients.Edit;
   ADQueryClients.FieldByName('flag').Value := flag;
 end;
+
 
 procedure TDataModuleMySQL.ShowActiveClient;
 begin
@@ -201,6 +246,15 @@ begin
   end;
 end;
 
+function TDataModuleMySQL.GetIdFreelancer: integer;
+begin
+result := ADQueryFreelancer.FieldByName('id').AsInteger;
+end;
+
+function TDataModuleMySQL.GetNameFreelancer: string;
+begin
+result := ADQueryFreelancer.FieldByName('fio').AsString;
+end;
 
 //=========================================
 //проекты
@@ -287,6 +341,148 @@ begin
       'P.status = ' + QuotedStr('в работе') + ' AND CLIENT.id = P.client_link');
     open;
   end;
+end;
+
+function TDataModuleMySQL.GetIDProject: integer;
+begin
+  result := ADQueryProject.FieldByName('id').AsInteger;
+end;
+
+
+//======================================
+//работа с тасками
+
+procedure TDataModuleMySQL.GetTasks;
+begin
+  with ADQueryTask do
+  begin
+    close;
+    Sql.Clear;
+    Sql.Add('Select TASK.*, FREELANCER.Id, FREELANCER.fio from TASK, FREELANCER ' +
+      'WHERE TASK.freelancer_link = FREELANCER.id AND TASK.project_link = ' + IntToStr(GetIDProject));
+    open;
+  end;
+end;
+
+function TDataModuleMySQL.GetIdTask: integer;
+begin
+ result := DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger
+end;
+
+procedure TDataModuleMySQL.ADQueryProjectAfterGetRecord(DataSet: TADDataSet);
+begin
+  GetTasks;
+end;
+
+procedure TDataModuleMySQL.ADQueryProjectAfterRefresh(DataSet: TDataSet);
+begin
+  GetTasks;
+end;
+
+procedure TDataModuleMySQL.ADQueryProjectAfterScroll(DataSet: TDataSet);
+begin
+  GetTasks;
+end;
+
+function TDataModuleMySQL.GetSalaryTask: integer;
+begin
+  result := DataModuleMySQL.ADQueryTask.FieldByName('salary').AsInteger
+end;
+
+procedure TDataModuleMySQL.SetProjectLink(id: integer);
+begin
+  ADQueryTask.Edit;
+  ADQueryTask.FieldByName('project_link').Value := id;
+end;
+
+procedure TDataModuleMySQL.SetFreelancerLink(id: integer);
+begin
+  ADQueryTask.Edit;
+  ADQueryTask.FieldByName('freelancer_link').Value := id;
+end;
+
+procedure TDataModuleMySQL.SetDeadline(Dt: TDate);
+begin
+  ADQueryTask.Edit;
+  ADQueryTask.FieldByName('deadline').Value := Dt;
+end;
+
+//=================================
+//деньги
+
+procedure TDataModuleMySQL.CalcProjectBalance(id: integer);
+begin
+with ADQueryProject do
+  begin
+  edit;
+  FieldByName('balance').Value := FieldByName('salary').AsInteger - FieldByName('budget').AsInteger;
+  post;
+  end;
+end;
+
+procedure TDataModuleMySQL.CalcProjectBudget(id: integer);
+begin
+ADQueryProject.Edit;
+
+with ADQuerySQL do
+begin
+  close;
+  sql.Clear;
+  sql.Add('SELECT SUM(budget) AS total_budget FROM TASK WHERE project_link = ' + IntToStr(id));
+  open;
+end;
+
+ADQueryProject.FieldByName('budget').Value := ADQuerySQL.FieldByName('total_budget').AsInteger;
+ADQueryProject.Post;
+
+end;
+
+procedure TDataModuleMySQL.CalcProjectSalary;
+begin
+ADQueryProject.Edit;
+
+with ADQuerySQL do
+begin
+  close;
+  sql.Clear;
+  sql.Add('SELECT SUM(salary) AS total_salary FROM TASK WHERE project_link = ' + ADQueryProject.FieldByName('id').AsString);
+  open;
+end;
+
+ADQueryProject.FieldByName('salary').Value := ADQuerySQL.FieldByName('total_salary').AsInteger;
+ADQueryProject.Post;
+end;
+
+procedure TDataModuleMySQL.CalcTaskBalance;
+begin
+with ADQueryTask do
+  begin
+  edit;
+  FieldByName('balance').Value := FieldByName('salary').AsInteger - FieldByName('budget').AsInteger;
+  post;
+  end;
+end;
+
+procedure TDataModuleMySQL.CalcTaskSalary(sum: integer);
+begin
+
+with ADQueryTask do
+  begin
+  edit;
+  FieldByName('salary').Value := FieldByName('salary').AsInteger + sum;
+  post;
+  end;
+
+end;
+
+procedure TDataModuleMySQL.GetFreelancerAccount;
+begin
+
+end;
+
+procedure TDataModuleMySQL.ADQueryClientsAfterScroll(DataSet: TDataSet);
+begin
+  GetFreelancerAccount;
 end;
 
 end.
