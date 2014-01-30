@@ -30,6 +30,8 @@ type
     procedure BtnChangeFreelancerClick(Sender: TObject);
     procedure BtnCancelClick(Sender: TObject);
     procedure MonthCalendar1Click(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
   public
@@ -69,10 +71,22 @@ begin
     CalcProjectBudget(GetIDProject);
     CalcProjectBalance(GetIDProject);
     CalcTaskBalance;
+    RefreshTask;
+    RefreshProject;
   end;
 EditTaskForm.Close;
 end;
 
+end;
+
+procedure TEditTaskForm.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  BtnCancelClick(sender);
+end;
+
+procedure TEditTaskForm.FormShow(Sender: TObject);
+begin
+  LabelChange.Caption := 'Новый исполнитель: ';
 end;
 
 procedure TEditTaskForm.MonthCalendar1Click(Sender: TObject);

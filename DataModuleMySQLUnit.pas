@@ -74,6 +74,7 @@ type
     procedure SetProjectLink(id:integer);
     procedure SetFreelancerLink(id: integer);
     procedure SetDeadline(Dt: TDate);
+    procedure RefreshTask;
     //деньги
     procedure CalcProjectBudget(id: integer);
     procedure CalcProjectBalance(id: integer);
@@ -405,6 +406,11 @@ procedure TDataModuleMySQL.SetDeadline(Dt: TDate);
 begin
   ADQueryTask.Edit;
   ADQueryTask.FieldByName('deadline').Value := Dt;
+end;
+
+procedure TDataModuleMySQL.RefreshTask;
+begin
+  ADQueryTask.Refresh;
 end;
 
 //=================================

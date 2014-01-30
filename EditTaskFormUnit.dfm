@@ -14,6 +14,8 @@ object EditTaskForm: TEditTaskForm
   Font.Style = []
   OldCreateOrder = False
   Position = poDesktopCenter
+  OnClose = FormClose
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
@@ -62,8 +64,8 @@ object EditTaskForm: TEditTaskForm
   object LabelChange: TLabel
     Left = 408
     Top = 16
-    Width = 105
-    Height = 13
+    Width = 249
+    Height = 42
     Caption = #1053#1086#1074#1099#1081' '#1080#1089#1087#1086#1083#1085#1080#1090#1077#1083#1100':'
   end
   object Label3: TLabel
@@ -117,9 +119,9 @@ object EditTaskForm: TEditTaskForm
   end
   object DBGrid1: TDBGrid
     Left = 408
-    Top = 35
+    Top = 64
     Width = 249
-    Height = 214
+    Height = 185
     DataSource = DataModuleMySQL.DataSource2
     ReadOnly = True
     TabOrder = 4
@@ -214,7 +216,7 @@ object EditTaskForm: TEditTaskForm
     Top = 304
     Width = 191
     Height = 160
-    Date = 41668.545099085650000000
+    Date = 41668.404812210650000000
     TabOrder = 8
     OnClick = MonthCalendar1Click
   end

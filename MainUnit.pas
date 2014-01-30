@@ -39,6 +39,8 @@ type
     N15: TMenuItem;
     N17: TMenuItem;
     N16: TMenuItem;
+    PopupMenu1: TPopupMenu;
+    N18: TMenuItem;
     procedure N5Click(Sender: TObject);
     procedure N7Click(Sender: TObject);
     procedure N8Click(Sender: TObject);
@@ -51,6 +53,7 @@ type
     procedure N14Click(Sender: TObject);
     procedure N16Click(Sender: TObject);
     procedure N17Click(Sender: TObject);
+    procedure N18Click(Sender: TObject);
 
   private
     { Private declarations }
@@ -66,7 +69,7 @@ implementation
 {$R *.dfm}
 
 uses SettingFormUnit, ClientsFormUnit, FreelanceFormUnit, DataModuleMySQLUnit,
-  EditProjectFormUnit, EditTaskFormUnit, OperationFormUnit;
+  EditProjectFormUnit, EditTaskFormUnit, OperationFormUnit, Clipbrd;
 
 procedure TMainForm.N2Click(Sender: TObject);
 begin
@@ -150,6 +153,12 @@ begin
   OperationForm.SetDataSet(DataModuleMySQL.DataSourceFreelancerAccount);
   OperationForm.ShowModal;
   DataModuleMySQL.ADQueryTask.Refresh;
+end;
+
+//копирование в буфер
+procedure TMainForm.N18Click(Sender: TObject);
+begin
+   Clipboard.SetTextBuf(PChar(DBText1.DataSource.DataSet.FieldByName(DBText1.DataField).AsString));
 end;
 
 end.

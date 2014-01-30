@@ -14,6 +14,8 @@ object EditProjectForm: TEditProjectForm
   Font.Style = []
   OldCreateOrder = False
   Position = poDesktopCenter
+  OnClose = FormClose
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
@@ -25,16 +27,17 @@ object EditProjectForm: TEditProjectForm
   end
   object Label2: TLabel
     Left = 24
-    Top = 51
-    Width = 94
-    Height = 13
+    Top = 50
+    Width = 73
+    Height = 24
     Caption = #1058#1077#1082#1091#1097#1080#1081' '#1079#1072#1082#1072#1079#1095#1080#1082
+    WordWrap = True
   end
   object Label3: TLabel
     Left = 336
-    Top = 35
-    Width = 89
-    Height = 13
+    Top = 21
+    Width = 193
+    Height = 53
     Caption = #1053#1086#1074#1099#1081' '#1079#1072#1082#1072#1079#1095#1080#1082': '
     WordWrap = True
   end
@@ -87,9 +90,9 @@ object EditProjectForm: TEditProjectForm
   end
   object DBGrid1: TDBGrid
     Left = 336
-    Top = 70
+    Top = 80
     Width = 201
-    Height = 232
+    Height = 222
     DataSource = DataModuleMySQL.DataSourceClientList
     TabOrder = 2
     TitleFont.Charset = DEFAULT_CHARSET

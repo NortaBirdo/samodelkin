@@ -27,6 +27,8 @@ type
     procedure BtnCancelClick(Sender: TObject);
     procedure BtnSaveClick(Sender: TObject);
     procedure BtnChangeClientClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
   public
@@ -60,7 +62,18 @@ begin
     DataModuleMySQL.ADQueryProject.Post;
 
  DataModuleMySQL.RefreshClient;
+ DataModuleMySQL.RefreshProject;
  EditProjectForm.Close;
+end;
+
+procedure TEditProjectForm.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  BtnCancelClick(Sender);
+end;
+
+procedure TEditProjectForm.FormShow(Sender: TObject);
+begin
+  Label3.Caption := 'Новый заказчик: ';
 end;
 
 end.
