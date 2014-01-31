@@ -126,7 +126,6 @@ object ClientsForm: TClientsForm
     Height = 33
     Align = alTop
     TabOrder = 2
-    ExplicitWidth = 969
     object ToolBar1: TToolBar
       Left = 11
       Top = 2

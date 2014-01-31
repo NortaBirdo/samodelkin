@@ -37,6 +37,7 @@ type
     procedure ADQueryProjectAfterGetRecord(DataSet: TADDataSet);
     procedure ADQueryProjectAfterScroll(DataSet: TDataSet);
     procedure ADQueryProjectAfterRefresh(DataSet: TDataSet);
+    procedure ADQueryClientsAfterScroll(DataSet: TDataSet);
   private
     { Private declarations }
   public
@@ -73,12 +74,14 @@ type
     procedure SetProjectLink(id:integer);
     procedure SetFreelancerLink(id: integer);
     procedure SetDeadline(Dt: TDate);
+    procedure RefreshTask;
     //деньги
     procedure CalcProjectBudget(id: integer);
     procedure CalcProjectBalance(id: integer);
     procedure CalcTaskBalance;
- //   procedure CalcProjectSalary(id, type_account: integer);
-    procedure CalcTaskSalary(id, sum: integer);
+    procedure CalcProjectSalary;
+    procedure CalcTaskSalary(sum: integer);
+    procedure GetFreelancerAccount;
 
  end;
 
@@ -150,6 +153,7 @@ function TDataModuleMySQL.GetClientName: string;
 begin
   result := ADQueryClientList.FieldByName('fio').AsString;
 end;
+
 
 procedure TDataModuleMySQL.RefreshClient;
 begin
@@ -404,6 +408,11 @@ begin
   ADQueryTask.FieldByName('deadline').Value := Dt;
 end;
 
+procedure TDataModuleMySQL.RefreshTask;
+begin
+  ADQueryTask.Refresh;
+end;
+
 //=================================
 //деньги
 
@@ -434,6 +443,22 @@ ADQueryProject.Post;
 
 end;
 
+procedure TDataModuleMySQL.CalcProjectSalary;
+begin
+ADQueryProject.Edit;
+
+with ADQuerySQL do
+begin
+  close;
+  sql.Clear;
+  sql.Add('SELECT SUM(salary) AS total_salary FROM TASK WHERE project_link = ' + ADQueryProject.FieldByName('id').AsString);
+  open;
+end;
+
+ADQueryProject.FieldByName('salary').Value := ADQuerySQL.FieldByName('total_salary').AsInteger;
+ADQueryProject.Post;
+end;
+
 procedure TDataModuleMySQL.CalcTaskBalance;
 begin
 with ADQueryTask do
@@ -444,17 +469,26 @@ with ADQueryTask do
   end;
 end;
 
-procedure TDataModuleMySQL.CalcTaskSalary(id, sum: integer);
+procedure TDataModuleMySQL.CalcTaskSalary(sum: integer);
 begin
 
-with ADQuerySQL do
-begin
-  close;
-  sql.Clear;
-  sql.Add('UPDATE TASK SET salary = ' + IntToStr(sum) + ' WHERE id = ' + IntToStr(id));
-  ExecSQL;
+with ADQueryTask do
+  begin
+  edit;
+  FieldByName('salary').Value := FieldByName('salary').AsInteger + sum;
+  post;
+  end;
+
 end;
 
+procedure TDataModuleMySQL.GetFreelancerAccount;
+begin
+
+end;
+
+procedure TDataModuleMySQL.ADQueryClientsAfterScroll(DataSet: TDataSet);
+begin
+  GetFreelancerAccount;
 end;
 
 end.

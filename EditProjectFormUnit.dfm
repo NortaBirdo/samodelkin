@@ -28,16 +28,16 @@ object EditProjectForm: TEditProjectForm
   object Label2: TLabel
     Left = 24
     Top = 50
-    Width = 73
-    Height = 24
+    Width = 48
+    Height = 26
     Caption = #1058#1077#1082#1091#1097#1080#1081' '#1079#1072#1082#1072#1079#1095#1080#1082
     WordWrap = True
   end
   object Label3: TLabel
     Left = 336
     Top = 21
-    Width = 193
-    Height = 53
+    Width = 89
+    Height = 13
     Caption = #1053#1086#1074#1099#1081' '#1079#1072#1082#1072#1079#1095#1080#1082': '
     WordWrap = True
   end
@@ -154,7 +154,6 @@ object EditProjectForm: TEditProjectForm
     DataField = 'status'
     DataSource = DataModuleMySQL.DataSource3
     Items.Strings = (
-      #1074#1089#1077' '#1085#1077' '#1079#1072#1082#1088#1099#1090#1099#1077
       #1074' '#1088#1072#1073#1086#1090#1077
       #1079#1072#1084#1086#1088#1086#1078#1077#1085
       #1087#1088#1080#1086#1088#1080#1090#1077#1090

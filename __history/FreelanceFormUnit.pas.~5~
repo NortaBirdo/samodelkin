@@ -76,7 +76,6 @@ procedure TFreelanceForm.ToolBtnSaveClick(Sender: TObject);
 begin
   if DataModuleMySQL.ADQueryFreelancer.Modified then
     DataModuleMySQL.ADQueryFreelancer.Post;
-  DataModuleMySQL.RefreshFreelancer;
 end;
 
 procedure TFreelanceForm.ToolBtnArchClick(Sender: TObject);

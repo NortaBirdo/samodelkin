@@ -100,5 +100,6 @@ procedure TClientsForm.ToolBtnSaveClick(Sender: TObject);
 begin
   if DataModuleMySQL.ADQueryClients.Modified then
     DataModuleMySQL.ADQueryClients.Post;
+  DataModuleMySQL.RefreshClientList;
 end;
 end.

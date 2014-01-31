@@ -49,6 +49,7 @@ type
     procedure ShowArchiveClient;
     procedure ShowBlackListClient;
     procedure RefreshClient;
+    procedure RefreshClientList;
     //фрилансеры
     procedure SetFreelancerFlag(flag:integer);
     function GetNameFreelancer: string;
@@ -158,6 +159,11 @@ end;
 procedure TDataModuleMySQL.RefreshClient;
 begin
   ADQueryClients.Refresh;
+end;
+
+procedure TDataModuleMySQL.RefreshClientList;
+begin
+  ADQueryClientList.Refresh;
 end;
 
 procedure TDataModuleMySQL.SetClientFlag(flag: integer);

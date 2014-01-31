@@ -64,8 +64,8 @@ object EditTaskForm: TEditTaskForm
   object LabelChange: TLabel
     Left = 408
     Top = 16
-    Width = 249
-    Height = 42
+    Width = 105
+    Height = 13
     Caption = #1053#1086#1074#1099#1081' '#1080#1089#1087#1086#1083#1085#1080#1090#1077#1083#1100':'
   end
   object Label3: TLabel
@@ -216,7 +216,7 @@ object EditTaskForm: TEditTaskForm
     Top = 304
     Width = 191
     Height = 160
-    Date = 41668.404812210650000000
+    Date = 41668.532979930550000000
     TabOrder = 8
     OnClick = MonthCalendar1Click
   end
