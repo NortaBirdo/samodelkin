@@ -5,42 +5,50 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.Grids, Vcl.DBGrids,
-  Vcl.StdCtrls, Vcl.DBCtrls, Vcl.Mask;
+  Vcl.StdCtrls, Vcl.DBCtrls, Vcl.Mask, Vcl.ComCtrls, DB;
 
 type
   TMainForm = class(TForm)
+    MainMenu1: TMainMenu;
     N1: TMenuItem;
     N2: TMenuItem;
-    N3: TMenuItem;
-    N4: TMenuItem;
-    N5: TMenuItem;
     N6: TMenuItem;
     N7: TMenuItem;
     N8: TMenuItem;
     N9: TMenuItem;
     N10: TMenuItem;
-    N11: TMenuItem;
-    Label1: TLabel;
-    Label2: TLabel;
-    DBGrid1: TDBGrid;
-    DBGrid2: TDBGrid;
-    Label3: TLabel;
-    Label4: TLabel;
-    Label5: TLabel;
-    ComboBox1: TComboBox;
-    N13: TMenuItem;
-    N14: TMenuItem;
-    DBText1: TDBText;
-    DBMemo1: TDBMemo;
-    MainMenu1: TMainMenu;
     N12: TMenuItem;
-    DBMemo2: TDBMemo;
-    Label6: TLabel;
+    N13: TMenuItem;
+    N11: TMenuItem;
+    N14: TMenuItem;
     N15: TMenuItem;
     N17: TMenuItem;
     N16: TMenuItem;
+    N5: TMenuItem;
+    N3: TMenuItem;
+    N4: TMenuItem;
+    PageControl1: TPageControl;
+    MindTapeSheet: TTabSheet;
+    ProjectTaskSheet: TTabSheet;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    DBText1: TDBText;
+    Label6: TLabel;
+    ProjectGrid: TDBGrid;
+    TaskGrid: TDBGrid;
+    ComboBox1: TComboBox;
+    DBMemo1: TDBMemo;
+    DBMemo2: TDBMemo;
     PopupMenu1: TPopupMenu;
     N18: TMenuItem;
+    TaskTape: TDBGrid;
+    Label7: TLabel;
+    Label8: TLabel;
+    DBMemo3: TDBMemo;
+    ShowTaskCheckBox: TCheckBox;
     procedure N5Click(Sender: TObject);
     procedure N7Click(Sender: TObject);
     procedure N8Click(Sender: TObject);
@@ -54,6 +62,14 @@ type
     procedure N16Click(Sender: TObject);
     procedure N17Click(Sender: TObject);
     procedure N18Click(Sender: TObject);
+    procedure TaskTapeDrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure ProjectGridDrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure TaskGridDrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure ShowTaskCheckBoxClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
 
   private
     { Private declarations }
@@ -96,6 +112,11 @@ begin
   FreelanceForm.ShowModal;
 end;
 
+procedure TMainForm.FormCreate(Sender: TObject);
+begin
+PageControl1.TabIndex := 0;
+end;
+
 //==========================================
 //Раборта с проектами
 
@@ -111,6 +132,7 @@ begin
   DataModuleMySQL.ADQueryTask.Insert;
   DataModuleMySQL.SetProjectLink(DataModuleMySQL.GetIDProject);
   EditTaskForm.ShowModal;
+  DataModuleMySQL.RefreshTask;
 end;
 
 //переходы
@@ -122,6 +144,7 @@ end;
 procedure TMainForm.N14Click(Sender: TObject);
 begin
   EditTaskForm.ShowModal;
+  DataModuleMySQL.RefreshTask;
 end;
 
 //фильтрация проектов
@@ -161,4 +184,73 @@ begin
    Clipboard.SetTextBuf(PChar(DBText1.DataSource.DataSet.FieldByName(DBText1.DataField).AsString));
 end;
 
+//закраска обласетй на ленте задач
+procedure TMainForm.TaskTapeDrawColumnCell(Sender: TObject; const Rect: TRect;
+  DataCol: Integer; Column: TColumn; State: TGridDrawState);
+begin
+if (TaskTape.DataSource.DataSet.FieldByName('status').AsString = 'приоритет') OR
+  (TaskTape.DataSource.DataSet.FieldByName('status_1').AsString = 'приоритет')then
+  begin
+  TaskTape.Canvas.Brush.Color := clRed;
+  TaskTape.Canvas.Font.Color := clWhite;
+  end;
+
+if (TaskTape.DataSource.DataSet.FieldByName('deadline').AsDateTime < now)  AND
+  (TaskTape.DataSource.DataSet.FieldByName('deadline').AsString <> '') AND
+  (TaskTape.DataSource.DataSet.FieldByName('status').AsString <> 'ожидаю заказчика') then
+  begin
+  TaskTape.Canvas.Brush.Color := clMaroon;
+  TaskTape.Canvas.Font.Color := clWhite;
+  end;
+
+TaskTape.DefaultDrawColumnCell(Rect,DataCol,Column,State);
+end;
+
+//покраска проектов
+procedure TMainForm.ProjectGridDrawColumnCell(Sender: TObject; const Rect: TRect;
+  DataCol: Integer; Column: TColumn; State: TGridDrawState);
+begin
+if ProjectGrid.DataSource.DataSet.FieldByName('status').AsString = 'приоритет' then
+  begin
+  ProjectGrid.Canvas.Brush.Color := clRed;
+  ProjectGrid.Canvas.Font.Color := clWhite;
+  end;
+
+if ProjectGrid.DataSource.DataSet.FieldByName('status').AsString = 'заморожен' then
+  begin
+  ProjectGrid.Canvas.Brush.Color := clBlue;
+  ProjectGrid.Canvas.Font.Color := clWhite;
+  end;
+
+ProjectGrid.DefaultDrawColumnCell(Rect,DataCol,Column,State);
+end;
+
+//покраска задач
+procedure TMainForm.TaskGridDrawColumnCell(Sender: TObject; const Rect: TRect;
+  DataCol: Integer; Column: TColumn; State: TGridDrawState);
+begin
+if TaskGrid.DataSource.DataSet.FieldByName('status').AsString = 'приоритет' then
+  begin
+  TaskGrid.Canvas.Brush.Color := clRed;
+  TaskGrid.Canvas.Font.Color := clWhite;
+  end;
+
+if (TaskGrid.DataSource.DataSet.FieldByName('deadline').AsDateTime < now)  AND
+  (TaskGrid.DataSource.DataSet.FieldByName('deadline').AsString <> '') AND
+  (TaskGrid.DataSource.DataSet.FieldByName('status').AsString <> 'ожидаю заказчика') AND
+  (TaskGrid.DataSource.DataSet.FieldByName('status').AsString <> 'закрыта') then
+  begin
+  TaskGrid.Canvas.Brush.Color := clMaroon;
+  TaskGrid.Canvas.Font.Color := clWhite;
+  end;
+
+TaskGrid.DefaultDrawColumnCell(Rect,DataCol,Column,State);
+end;
+
+//скрыть/показать закрытые таски
+procedure TMainForm.ShowTaskCheckBoxClick(Sender: TObject);
+begin
+DataModuleMySQL.SetShowCloseTask(ShowTaskCheckBox.Checked);
+DataModuleMySQL.GetTasks;
+end;
 end.

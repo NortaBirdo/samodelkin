@@ -26,12 +26,15 @@ type
     BtnCancel: TButton;
     Label3: TLabel;
     MonthCalendar1: TMonthCalendar;
+    NullDeadlineBtn: TButton;
+    DBText2: TDBText;
     procedure BtnOkClick(Sender: TObject);
     procedure BtnChangeFreelancerClick(Sender: TObject);
     procedure BtnCancelClick(Sender: TObject);
     procedure MonthCalendar1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure NullDeadlineBtnClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -92,6 +95,12 @@ end;
 procedure TEditTaskForm.MonthCalendar1Click(Sender: TObject);
 begin
   DataModuleMySQL.SetDeadline(MonthCalendar1.Date);
+end;
+
+//Обнулить deadline
+procedure TEditTaskForm.NullDeadlineBtnClick(Sender: TObject);
+begin
+  DataModuleMySQL.SetDeadlineNull;
 end;
 
 end.

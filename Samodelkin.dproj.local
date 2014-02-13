@@ -1,29 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
 	<Transactions>
-    <Transaction>1899.12.30 00:00:00.000.902,=C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.520,C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.pas=C:\Users\Nikolay\Documents\GitHub\samodelkin\EditTaskFormUnit.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.549,=C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.652,=C:\Users\Nikolay\Documents\GitHub\samodelkin\SettingFormUnit.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.824,C:\Users\Nikolay\Documents\RAD Studio\Projects\Unit1.dfm=C:\Users\Nikolay\Documents\GitHub\samodelkin\MainUnit.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.652,C:\Users\Nikolay\Documents\RAD Studio\Projects\Project1.dproj=C:\Users\Nikolay\Documents\GitHub\samodelkin\Samodelkin.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.248,=C:\Users\Nikolay\Documents\GitHub\samodelkin\DataModuleSQLite.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.520,C:\Users\Nikolay\Documents\GitHub\samodelkin\EditTaskFormUnit.pas=C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.171,C:\Users\Nikolay\Documents\GitHub\samodelkin\OperationFormUnit.dfm=C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.102,C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.dfm=C:\Users\Nikolay\Documents\GitHub\samodelkin\ClientsFormUnit.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.824,C:\Users\Nikolay\Documents\RAD Studio\Projects\Unit1.pas=C:\Users\Nikolay\Documents\GitHub\samodelkin\MainUnit.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.109,=C:\Users\Nikolay\Documents\RAD Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.038,C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.dfm=C:\Users\Nikolay\Documents\GitHub\samodelkin\EditProjectFormUnit.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.315,C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.dfm=C:\Users\Nikolay\Documents\GitHub\samodelkin\DataModuleMySQLUnit.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.516,C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.dfm=C:\Users\Nikolay\Documents\GitHub\samodelkin\FreelanceFormUnit.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.940,=C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.726,=C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.636,=C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.520,C:\Users\Nikolay\Documents\GitHub\samodelkin\EditTaskFormUnit.dfm=C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.902,=C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.549,=C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.038,C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.pas=C:\Users\Nikolay\Documents\GitHub\samodelkin\EditProjectFormUnit.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.102,C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.pas=C:\Users\Nikolay\Documents\GitHub\samodelkin\ClientsFormUnit.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.171,C:\Users\Nikolay\Documents\GitHub\samodelkin\OperationFormUnit.pas=C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.716,=C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.824,C:\Users\Nikolay\Documents\GitHub\samodelkin\MainUnit.dfm=C:\Users\Nikolay\Documents\RAD Studio\Projects\Unit1.dfm</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.315,C:\Users\Nikolay\Documents\GitHub\samodelkin\DataModuleMySQLUnit.pas=C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.652,=C:\Users\Nikolay\Documents\GitHub\samodelkin\SettingFormUnit.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.171,C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.pas=C:\Users\Nikolay\Documents\GitHub\samodelkin\OperationFormUnit.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.652,C:\Users\Nikolay\Documents\GitHub\samodelkin\Samodelkin.dproj=C:\Users\Nikolay\Documents\RAD Studio\Projects\Project1.dproj</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.516,C:\Users\Nikolay\Documents\GitHub\samodelkin\FreelanceFormUnit.pas=C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.315,C:\Users\Nikolay\Documents\GitHub\samodelkin\DataModuleMySQLUnit.dfm=C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.dfm</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.824,C:\Users\Nikolay\Documents\GitHub\samodelkin\MainUnit.pas=C:\Users\Nikolay\Documents\RAD Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.520,C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.dfm=C:\Users\Nikolay\Documents\GitHub\samodelkin\EditTaskFormUnit.dfm</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.038,C:\Users\Nikolay\Documents\GitHub\samodelkin\EditProjectFormUnit.pas=C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.248,=C:\Users\Nikolay\Documents\GitHub\samodelkin\DataModuleSQLite.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.038,C:\Users\Nikolay\Documents\GitHub\samodelkin\EditProjectFormUnit.dfm=C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.dfm</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.516,C:\Users\Nikolay\Documents\GitHub\samodelkin\FreelanceFormUnit.dfm=C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.dfm</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.102,C:\Users\Nikolay\Documents\GitHub\samodelkin\ClientsFormUnit.pas=C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.940,=C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.171,C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.dfm=C:\Users\Nikolay\Documents\GitHub\samodelkin\OperationFormUnit.dfm</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.102,C:\Users\Nikolay\Documents\GitHub\samodelkin\ClientsFormUnit.dfm=C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.dfm</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.109,=C:\Users\Nikolay\Documents\RAD Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.315,C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.pas=C:\Users\Nikolay\Documents\GitHub\samodelkin\DataModuleMySQLUnit.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.516,C:\Users\Nikolay\Documents\GitHub\samodelkin\Unit1.pas=C:\Users\Nikolay\Documents\GitHub\samodelkin\FreelanceFormUnit.pas</Transaction>
   </Transactions>
 </BorlandProject>

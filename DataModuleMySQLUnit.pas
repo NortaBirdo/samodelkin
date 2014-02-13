@@ -32,6 +32,8 @@ type
     DataSourceClientAccount: TDataSource;
     ADQueryFreelancerAccount: TADQuery;
     DataSourceFreelancerAccount: TDataSource;
+    ADQueryMindTape: TADQuery;
+    DataSourceMindTape: TDataSource;
     procedure DataModuleCreate(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure ADQueryProjectAfterGetRecord(DataSet: TADDataSet);
@@ -39,7 +41,7 @@ type
     procedure ADQueryProjectAfterRefresh(DataSet: TDataSet);
     procedure ADQueryClientsAfterScroll(DataSet: TDataSet);
   private
-    { Private declarations }
+    ShowCloseTask: boolean;
   public
     //клиенты
     procedure SetClientFlag(flag:integer);
@@ -75,7 +77,10 @@ type
     procedure SetProjectLink(id:integer);
     procedure SetFreelancerLink(id: integer);
     procedure SetDeadline(Dt: TDate);
+    procedure SetDeadlineNull;
     procedure RefreshTask;
+    procedure SetShowCloseTask(show: boolean);
+
     //деньги
     procedure CalcProjectBudget(id: integer);
     procedure CalcProjectBalance(id: integer);
@@ -134,6 +139,7 @@ ADQueryFreelancer.Active := true;
 ADQueryProject.Active := true;
 ADQueryClientAccount.Active := true;
 ADQueryFreelancerAccount.Active := true;
+ADQueryMindTape.Active := true;
 end;
 
 //поддержание соединения
@@ -359,14 +365,26 @@ end;
 //======================================
 //работа с тасками
 
+//показать/скрыть закрытые таски
+procedure TDataModuleMySQL.SetShowCloseTask(show: boolean);
+begin
+ShowCloseTask := show;
+end;
+
 procedure TDataModuleMySQL.GetTasks;
 begin
   with ADQueryTask do
   begin
     close;
     Sql.Clear;
+
+    if ShowCloseTask then
     Sql.Add('Select TASK.*, FREELANCER.Id, FREELANCER.fio from TASK, FREELANCER ' +
-      'WHERE TASK.freelancer_link = FREELANCER.id AND TASK.project_link = ' + IntToStr(GetIDProject));
+      'WHERE TASK.freelancer_link = FREELANCER.id AND TASK.project_link = ' + IntToStr(GetIDProject))
+    else
+    Sql.Add('Select TASK.*, FREELANCER.Id, FREELANCER.fio from TASK, FREELANCER ' +
+      'WHERE TASK.freelancer_link = FREELANCER.id AND TASK.project_link = ' + IntToStr(GetIDProject) +
+      ' AND TASK.status <> ' + QuotedStr('закрыта'));
     open;
   end;
 end;
@@ -414,9 +432,16 @@ begin
   ADQueryTask.FieldByName('deadline').Value := Dt;
 end;
 
+procedure TDataModuleMySQL.SetDeadlineNull;
+begin
+ { ADQueryTask.Edit;
+  ADQueryTask.FieldByName('deadline').Value := null;  }
+end;
+
 procedure TDataModuleMySQL.RefreshTask;
 begin
   ADQueryTask.Refresh;
+  ADQueryMindTape.Refresh;
 end;
 
 //=================================
@@ -496,5 +521,7 @@ procedure TDataModuleMySQL.ADQueryClientsAfterScroll(DataSet: TDataSet);
 begin
   GetFreelancerAccount;
 end;
+
+
 
 end.

@@ -2,7 +2,7 @@ object DataModuleMySQL: TDataModuleMySQL
   OldCreateOrder = False
   OnCreate = DataModuleCreate
   Height = 428
-  Width = 661
+  Width = 802
   object ADConnection1: TADConnection
     Params.Strings = (
       'Server=bora.beget.ru'
@@ -85,13 +85,13 @@ object DataModuleMySQL: TDataModuleMySQL
     SQL.Strings = (
       'SELECT * FROM CLIENT'
       'WHERE flag = 0')
-    Left = 456
-    Top = 64
+    Left = 552
+    Top = 56
   end
   object DataSourceClientList: TDataSource
     DataSet = ADQueryClientList
-    Left = 560
-    Top = 64
+    Left = 656
+    Top = 56
   end
   object ADQueryTime: TADQuery
     Connection = ADConnection1
@@ -113,7 +113,8 @@ object DataModuleMySQL: TDataModuleMySQL
       
         'Select TASK.*, FREELANCER.Id, FREELANCER.fio from TASK, FREELANC' +
         'ER'
-      'WHERE TASK.freelancer_link = FREELANCER.id')
+      'WHERE TASK.freelancer_link = FREELANCER.id'
+      'AND TASK.status <> '#39#1079#1072#1082#1088#1099#1090#1072#39)
     Left = 256
     Top = 256
   end
@@ -128,7 +129,6 @@ object DataModuleMySQL: TDataModuleMySQL
     Top = 264
   end
   object ADQueryClientAccount: TADQuery
-    Active = True
     Connection = ADConnection1
     SQL.Strings = (
       'SELECT PERSONAL_ACCOUNT.*,'
@@ -145,7 +145,6 @@ object DataModuleMySQL: TDataModuleMySQL
     Top = 312
   end
   object ADQueryFreelancerAccount: TADQuery
-    Active = True
     Connection = ADConnection1
     SQL.Strings = (
       'SELECT PERSONAL_ACCOUNT.*,'
@@ -160,5 +159,21 @@ object DataModuleMySQL: TDataModuleMySQL
     DataSet = ADQueryFreelancerAccount
     Left = 408
     Top = 376
+  end
+  object ADQueryMindTape: TADQuery
+    Connection = ADConnection1
+    SQL.Strings = (
+      'SELECT T.*, P.* FROM TASK T, PROJECT P'
+      'WHERE T.status <> '#39#1079#1072#1082#1088#1099#1090#1072#39' AND T.status <> '#39#1086#1090#1083#1086#1078#1077#1085#1072#39
+      'AND T.project_link = P.id AND P.status <> '#39#1079#1072#1082#1088#1099#1090#39' '
+      'AND P.status <> '#39#1086#1090#1084#1077#1085#1077#1085#39
+      'ORDER BY T.deadline DESC')
+    Left = 552
+    Top = 120
+  end
+  object DataSourceMindTape: TDataSource
+    DataSet = ADQueryMindTape
+    Left = 656
+    Top = 120
   end
 end

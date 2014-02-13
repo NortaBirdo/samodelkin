@@ -4,7 +4,7 @@ object EditTaskForm: TEditTaskForm
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = #1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1085#1080#1077' '#1079#1072#1076#1072#1095#1080
-  ClientHeight = 536
+  ClientHeight = 560
   ClientWidth = 699
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -74,6 +74,14 @@ object EditTaskForm: TEditTaskForm
     Width = 41
     Height = 13
     Caption = 'Deadline'
+  end
+  object DBText2: TDBText
+    Left = 455
+    Top = 304
+    Width = 85
+    Height = 12
+    DataField = 'deadline'
+    DataSource = DataModuleMySQL.DataSourceTask
   end
   object DBMemo1: TDBMemo
     Left = 24
@@ -212,12 +220,21 @@ object EditTaskForm: TEditTaskForm
     OnClick = BtnCancelClick
   end
   object MonthCalendar1: TMonthCalendar
-    Left = 466
-    Top = 304
+    Left = 408
+    Top = 336
     Width = 191
     Height = 160
-    Date = 41668.532979930550000000
+    Date = 41668.941704641210000000
     TabOrder = 8
     OnClick = MonthCalendar1Click
+  end
+  object NullDeadlineBtn: TButton
+    Left = 546
+    Top = 299
+    Width = 111
+    Height = 25
+    Caption = #1054#1073#1085#1091#1083#1080#1090#1100' deadline'
+    TabOrder = 9
+    OnClick = NullDeadlineBtnClick
   end
 end
