@@ -28,6 +28,7 @@ type
     procedure ToolBtnSaveClick(Sender: TObject);
     procedure ToolBtnArchClick(Sender: TObject);
     procedure ToolBtnBlackListClick(Sender: TObject);
+    procedure DBGrid2CellClick(Column: TColumn);
   private
     { Private declarations }
   public
@@ -89,6 +90,11 @@ DataModuleMySQL.RefreshClient;
 end;
 
 //добалвение нового клиента
+procedure TClientsForm.DBGrid2CellClick(Column: TColumn);
+begin
+DataModuleMySQL.RefreshOperationClient;
+end;
+
 procedure TClientsForm.ToolBtnAddClick(Sender: TObject);
 begin
  DataModuleMySQL.ADQueryClients.Insert;

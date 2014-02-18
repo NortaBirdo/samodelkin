@@ -18,7 +18,7 @@ object FreelanceForm: TFreelanceForm
   TextHeight = 13
   object Label1: TLabel
     Left = 743
-    Top = 48
+    Top = 91
     Width = 42
     Height = 13
     Caption = #1059#1089#1083#1086#1074#1080#1103
@@ -32,7 +32,7 @@ object FreelanceForm: TFreelanceForm
   end
   object Label3: TLabel
     Left = 743
-    Top = 224
+    Top = 253
     Width = 61
     Height = 13
     Caption = #1055#1088#1080#1084#1077#1095#1072#1085#1080#1103
@@ -43,6 +43,32 @@ object FreelanceForm: TFreelanceForm
     Width = 99
     Height = 13
     Caption = #1044#1074#1080#1078#1077#1085#1080#1077' '#1087#1086' '#1089#1095#1077#1090#1091
+  end
+  object BalanceLabel: TLabel
+    Left = 816
+    Top = 67
+    Width = 32
+    Height = 18
+    Caption = 'DNE'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -15
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object Label5: TLabel
+    Left = 743
+    Top = 67
+    Width = 55
+    Height = 18
+    Caption = #1041#1072#1083#1072#1085#1089
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -15
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
   end
   object ControlBar1: TControlBar
     Left = 0
@@ -115,6 +141,7 @@ object FreelanceForm: TFreelanceForm
     TitleFont.Height = -11
     TitleFont.Name = 'Tahoma'
     TitleFont.Style = []
+    OnCellClick = DBGrid1CellClick
     Columns = <
       item
         Expanded = False
@@ -177,9 +204,9 @@ object FreelanceForm: TFreelanceForm
   end
   object DBMemo1: TDBMemo
     Left = 743
-    Top = 67
+    Top = 110
     Width = 306
-    Height = 150
+    Height = 137
     DataField = 'condition'
     DataSource = DataModuleMySQL.DataSource2
     ScrollBars = ssVertical
@@ -201,9 +228,9 @@ object FreelanceForm: TFreelanceForm
   end
   object DBMemo2: TDBMemo
     Left = 743
-    Top = 243
+    Top = 272
     Width = 306
-    Height = 150
+    Height = 121
     DataField = 'note'
     DataSource = DataModuleMySQL.DataSource2
     ScrollBars = ssVertical

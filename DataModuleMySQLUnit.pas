@@ -40,8 +40,12 @@ type
     procedure ADQueryProjectAfterScroll(DataSet: TDataSet);
     procedure ADQueryProjectAfterRefresh(DataSet: TDataSet);
     procedure ADQueryClientsAfterScroll(DataSet: TDataSet);
+    procedure ADQueryFreelancerAfterGetRecord(DataSet: TADDataSet);
+    procedure ADQueryFreelancerAfterScroll(DataSet: TDataSet);
+    procedure ADQueryClientsAfterGetRecord(DataSet: TADDataSet);
   private
     ShowCloseTask: boolean;
+
   public
     //клиенты
     procedure SetClientFlag(flag:integer);
@@ -87,7 +91,9 @@ type
     procedure CalcTaskBalance;
     procedure CalcProjectSalary;
     procedure CalcTaskSalary(sum: integer);
-    procedure GetFreelancerAccount;
+    procedure RefreshOperationFL;
+    procedure RefreshOperationClient;
+    procedure GetBalance;
 
  end;
 
@@ -394,6 +400,7 @@ begin
  result := DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger
 end;
 
+
 procedure TDataModuleMySQL.ADQueryProjectAfterGetRecord(DataSet: TADDataSet);
 begin
   GetTasks;
@@ -512,16 +519,82 @@ with ADQueryTask do
 
 end;
 
-procedure TDataModuleMySQL.GetFreelancerAccount;
+procedure TDataModuleMySQL.RefreshOperationFL;
+var
+query: string;
 begin
+with ADQueryFreelancerAccount do
+begin
+  close;
+  sql.Clear;
+  query := 'SELECT * FROM PERSONAL_ACCOUNT ' +
+    'WHERE account_type = 1 AND link = ' + ADQueryFreelancer.FieldByName('id').AsString;
+  sql.Add(query);
+  open;
+end;
+end;
 
+procedure TDataModuleMySQL.RefreshOperationClient;
+var
+query: string;
+begin
+with ADQueryClientAccount do
+begin
+  close;
+  sql.Clear;
+  query := 'SELECT * FROM PERSONAL_ACCOUNT ' +
+    'WHERE account_type = 0 AND link = ' + ADQueryClients.FieldByName('id').AsString;
+  sql.Add(query);
+  open;
+end;
+end;
+
+//вывод операций клиента
+procedure TDataModuleMySQL.ADQueryClientsAfterGetRecord(DataSet: TADDataSet);
+begin
+RefreshOperationClient;
 end;
 
 procedure TDataModuleMySQL.ADQueryClientsAfterScroll(DataSet: TDataSet);
 begin
-  GetFreelancerAccount;
+RefreshOperationClient;
 end;
 
+//вывод операций фрилансров
+procedure TDataModuleMySQL.ADQueryFreelancerAfterGetRecord(DataSet: TADDataSet);
+begin
+  RefreshOperationFL;
+end;
+
+
+procedure TDataModuleMySQL.ADQueryFreelancerAfterScroll(DataSet: TDataSet);
+begin
+  RefreshOperationFL;
+end;
+
+//расчет баланса фрилансеров
+procedure TDataModuleMySQL.GetBalance;
+var
+debet, kredit: integer;
+begin
+with ADQuerySQL do
+begin
+  close;
+  sql.Clear;
+  sql.Add('SELECT SUM(operation) as kredit FROM PERSONAL_ACCOUNT WHERE account_type = 1 AND link = '
+   + ADQueryFreelancer.FieldByName('id').AsString);
+  open;
+  kredit := FieldByName('kredit').AsInteger;
+
+  close;
+  sql.Clear;
+  sql.Add('SELECT SUM(budget) as debet FROM TASK WHERE link = '
+   + ADQueryFreelancer.FieldByName('id').AsString);
+  open;
+  debet := FieldByName('debet').AsInteger;
+
+end;
+end;
 
 
 end.

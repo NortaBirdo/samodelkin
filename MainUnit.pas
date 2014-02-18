@@ -94,7 +94,7 @@ end;
 
 procedure TMainForm.N4Click(Sender: TObject);
 begin
-  ShowMessage('Разработик: Сокловский Николай (sokolovskynik@gmail.com), январь 2014');
+  ShowMessage('Разработик: Соколовский Николай (sokolovskynik@gmail.com), январь 2014');
 end;
 
 procedure TMainForm.N5Click(Sender: TObject);

@@ -204,6 +204,7 @@ object ClientsForm: TClientsForm
     TitleFont.Height = -11
     TitleFont.Name = 'Tahoma'
     TitleFont.Style = []
+    OnCellClick = DBGrid2CellClick
     Columns = <
       item
         Expanded = False

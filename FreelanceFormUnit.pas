@@ -25,11 +25,14 @@ type
     DBMemo2: TDBMemo;
     Label4: TLabel;
     DBGrid2: TDBGrid;
+    BalanceLabel: TLabel;
+    Label5: TLabel;
     procedure ToolBtnArchClick(Sender: TObject);
     procedure ComboBox1Change(Sender: TObject);
     procedure ToolBtnBlackListClick(Sender: TObject);
     procedure ToolBtnAddClick(Sender: TObject);
     procedure ToolBtnSaveClick(Sender: TObject);
+    procedure DBGrid1CellClick(Column: TColumn);
   private
     { Private declarations }
   public
@@ -64,6 +67,11 @@ case ComboBox1.ItemIndex of
    DataModuleMySQL.ShowBlackListFreelancer;
    end;
 end;
+end;
+
+procedure TFreelanceForm.DBGrid1CellClick(Column: TColumn);
+begin
+DataModuleMySQL.RefreshOperationFl;
 end;
 
 procedure TFreelanceForm.ToolBtnAddClick(Sender: TObject);

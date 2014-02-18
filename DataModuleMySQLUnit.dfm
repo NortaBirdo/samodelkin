@@ -13,7 +13,6 @@ object DataModuleMySQL: TDataModuleMySQL
       'ReadTimeout=50000'
       'WriteTimeout=50000'
       'DriverID=MySQL')
-    Connected = True
     LoginPrompt = False
     Transaction = ADTransaction1
     Left = 56
@@ -26,6 +25,7 @@ object DataModuleMySQL: TDataModuleMySQL
   end
   object ADQueryClients: TADQuery
     AfterScroll = ADQueryClientsAfterScroll
+    AfterGetRecord = ADQueryClientsAfterGetRecord
     Connection = ADConnection1
     SQL.Strings = (
       'SELECT * FROM CLIENT'
@@ -48,6 +48,8 @@ object DataModuleMySQL: TDataModuleMySQL
     Top = 56
   end
   object ADQueryFreelancer: TADQuery
+    AfterScroll = ADQueryFreelancerAfterScroll
+    AfterGetRecord = ADQueryFreelancerAfterGetRecord
     Connection = ADConnection1
     SQL.Strings = (
       'SELECT * FROM FREELANCER'
@@ -141,7 +143,7 @@ object DataModuleMySQL: TDataModuleMySQL
   end
   object DataSourceClientAccount: TDataSource
     DataSet = ADQueryClientAccount
-    Left = 360
+    Left = 392
     Top = 312
   end
   object ADQueryFreelancerAccount: TADQuery
