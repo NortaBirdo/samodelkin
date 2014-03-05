@@ -13,6 +13,7 @@ object DataModuleMySQL: TDataModuleMySQL
       'ReadTimeout=50000'
       'WriteTimeout=50000'
       'DriverID=MySQL')
+    Connected = True
     LoginPrompt = False
     Transaction = ADTransaction1
     Left = 56
@@ -163,6 +164,7 @@ object DataModuleMySQL: TDataModuleMySQL
     Top = 376
   end
   object ADQueryMindTape: TADQuery
+    Active = True
     Connection = ADConnection1
     SQL.Strings = (
       'SELECT T.*, P.* FROM TASK T, PROJECT P'

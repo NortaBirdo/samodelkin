@@ -49,6 +49,20 @@ type
     Label8: TLabel;
     DBMemo3: TDBMemo;
     ShowTaskCheckBox: TCheckBox;
+    PopupMenuTape: TPopupMenu;
+    N20: TMenuItem;
+    N22: TMenuItem;
+    N23: TMenuItem;
+    N26: TMenuItem;
+    N27: TMenuItem;
+    N28: TMenuItem;
+    N21: TMenuItem;
+    N19: TMenuItem;
+    N31: TMenuItem;
+    N32: TMenuItem;
+    N33: TMenuItem;
+    N34: TMenuItem;
+    N35: TMenuItem;
     procedure N5Click(Sender: TObject);
     procedure N7Click(Sender: TObject);
     procedure N8Click(Sender: TObject);
@@ -70,15 +84,22 @@ type
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure ShowTaskCheckBoxClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure N31Click(Sender: TObject);
+    procedure N32Click(Sender: TObject);
+    procedure N33Click(Sender: TObject);
+    procedure N34Click(Sender: TObject);
+    procedure N35Click(Sender: TObject);
+
 
   private
-    { Private declarations }
+
   public
-    { Public declarations }
+
   end;
 
 var
   MainForm: TMainForm;
+  grids: string;
 
 implementation
 
@@ -253,4 +274,40 @@ begin
 DataModuleMySQL.SetShowCloseTask(ShowTaskCheckBox.Checked);
 DataModuleMySQL.GetTasks;
 end;
+
+//таска - в работе
+procedure TMainForm.N31Click(Sender: TObject);
+begin
+  DataModuleMySQL.SetStatusTask(work);
+  DataModuleMySQL.RefreshTape;
+end;
+
+//таска -  приорите
+procedure TMainForm.N32Click(Sender: TObject);
+begin
+  DataModuleMySQL.SetStatusTask(prior);
+  DataModuleMySQL.RefreshTape;
+end;
+
+//таска - в ожидании заказчика
+procedure TMainForm.N33Click(Sender: TObject);
+begin
+  DataModuleMySQL.SetStatusTask(wait);
+  DataModuleMySQL.RefreshTape;
+end;
+
+//таска - отложена
+procedure TMainForm.N34Click(Sender: TObject);
+begin
+  DataModuleMySQL.SetStatusTask(Delayed);
+  DataModuleMySQL.RefreshTape;
+end;
+
+//таска - закрыта
+procedure TMainForm.N35Click(Sender: TObject);
+begin
+  DataModuleMySQL.SetStatusTask(Closer);
+  DataModuleMySQL.RefreshTape;
+end;
+
 end.

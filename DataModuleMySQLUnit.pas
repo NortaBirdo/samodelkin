@@ -47,6 +47,9 @@ type
     ShowCloseTask: boolean;
 
   public
+  type
+    TStatusTask = (Closer, Work, Prior, Delayed, Wait);
+
     //клиенты
     procedure SetClientFlag(flag:integer);
     function GetClientID: integer;
@@ -94,6 +97,10 @@ type
     procedure RefreshOperationFL;
     procedure RefreshOperationClient;
     procedure GetBalance;
+
+    //смена задачи
+    procedure SetStatusTask(newStatus: TStatusTask);
+    procedure RefreshTape;
 
  end;
 
@@ -377,6 +384,30 @@ begin
 ShowCloseTask := show;
 end;
 
+//смена статуса у таски
+procedure TDataModuleMySQL.SetStatusTask(newStatus: TStatusTask);
+var
+  sQuery: string;
+
+begin
+  case newStatus of
+  closer: sQuery := 'закрыта';
+  Work: sQuery := 'в работе';
+  Prior: sQuery := 'приоритет';
+  Delayed: sQuery := 'отложена';
+  Wait: sQuery := 'ожидаю заказчика';
+  end;
+
+  with ADQuerySQL do
+  begin
+    close;
+    sql.Clear;
+    squery := 'UPDATE TASK SET status = ' + QuotedStr(sQuery) + ' WHERE id = ' + ADQueryMindTape.FieldByName('id').AsString;
+    sql.Add(sQuery);
+    ExecSQL;
+  end;
+end;
+
 procedure TDataModuleMySQL.GetTasks;
 begin
   with ADQueryTask do
@@ -443,6 +474,11 @@ procedure TDataModuleMySQL.SetDeadlineNull;
 begin
  { ADQueryTask.Edit;
   ADQueryTask.FieldByName('deadline').Value := null;  }
+end;
+
+procedure TDataModuleMySQL.RefreshTape;
+begin
+  ADQueryMindTape.Refresh;
 end;
 
 procedure TDataModuleMySQL.RefreshTask;
