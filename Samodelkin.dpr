@@ -10,7 +10,8 @@ uses
   DataModuleMySQLUnit in 'DataModuleMySQLUnit.pas' {DataModuleMySQL: TDataModule},
   EditProjectFormUnit in 'EditProjectFormUnit.pas' {EditProjectForm},
   EditTaskFormUnit in 'EditTaskFormUnit.pas' {EditTaskForm},
-  OperationFormUnit in 'OperationFormUnit.pas' {OperationForm};
+  OperationFormUnit in 'OperationFormUnit.pas' {OperationForm},
+  TaskModelUnit in 'TaskModelUnit.pas';
 
 {$R *.res}
 

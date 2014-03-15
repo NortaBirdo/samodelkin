@@ -84,7 +84,6 @@ type
     procedure SetProjectLink(id:integer);
     procedure SetFreelancerLink(id: integer);
     procedure SetDeadline(Dt: TDate);
-    procedure SetDeadlineNull;
     procedure RefreshTask;
     procedure SetShowCloseTask(show: boolean);
 
@@ -99,7 +98,7 @@ type
     procedure GetBalance;
 
     //смена задачи
-    procedure SetStatusTask(newStatus: TStatusTask);
+//    procedure SetStatusTask(newStatus: TStatusTask);
     procedure RefreshTape;
 
  end;
@@ -385,7 +384,7 @@ ShowCloseTask := show;
 end;
 
 //смена статуса у таски
-procedure TDataModuleMySQL.SetStatusTask(newStatus: TStatusTask);
+{procedure TDataModuleMySQL.SetStatusTask(newStatus: TStatusTask);
 var
   sQuery: string;
 
@@ -406,7 +405,7 @@ begin
     sql.Add(sQuery);
     ExecSQL;
   end;
-end;
+end;   }
 
 procedure TDataModuleMySQL.GetTasks;
 begin
@@ -468,12 +467,6 @@ procedure TDataModuleMySQL.SetDeadline(Dt: TDate);
 begin
   ADQueryTask.Edit;
   ADQueryTask.FieldByName('deadline').Value := Dt;
-end;
-
-procedure TDataModuleMySQL.SetDeadlineNull;
-begin
- { ADQueryTask.Edit;
-  ADQueryTask.FieldByName('deadline').Value := null;  }
 end;
 
 procedure TDataModuleMySQL.RefreshTape;

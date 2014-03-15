@@ -133,6 +133,7 @@
             <Form>OperationForm</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="TaskModelUnit.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

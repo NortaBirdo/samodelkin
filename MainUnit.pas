@@ -63,6 +63,15 @@ type
     N33: TMenuItem;
     N34: TMenuItem;
     N35: TMenuItem;
+    N24: TMenuItem;
+    N25: TMenuItem;
+    PopupMenuTask: TPopupMenu;
+    N29: TMenuItem;
+    N30: TMenuItem;
+    N36: TMenuItem;
+    N38: TMenuItem;
+    N39: TMenuItem;
+    N40: TMenuItem;
     procedure N5Click(Sender: TObject);
     procedure N7Click(Sender: TObject);
     procedure N8Click(Sender: TObject);
@@ -89,6 +98,12 @@ type
     procedure N33Click(Sender: TObject);
     procedure N34Click(Sender: TObject);
     procedure N35Click(Sender: TObject);
+    procedure N25Click(Sender: TObject);
+    procedure N30Click(Sender: TObject);
+    procedure N36Click(Sender: TObject);
+    procedure N38Click(Sender: TObject);
+    procedure N39Click(Sender: TObject);
+    procedure N40Click(Sender: TObject);
 
 
   private
@@ -101,12 +116,35 @@ var
   MainForm: TMainForm;
   grids: string;
 
+
 implementation
 
 {$R *.dfm}
 
 uses SettingFormUnit, ClientsFormUnit, FreelanceFormUnit, DataModuleMySQLUnit,
-  EditProjectFormUnit, EditTaskFormUnit, OperationFormUnit, Clipbrd;
+  EditProjectFormUnit, EditTaskFormUnit, OperationFormUnit, Clipbrd,
+  TaskModelUnit;
+
+var
+  MyTask: TTaskModel;
+
+//удалить задачу
+procedure TMainForm.N25Click(Sender: TObject);
+begin
+  if MessageDlg('Вы действително хотите удалить задачу?', mtConfirmation, mbYesNo, 0) = idYes then
+  begin
+
+    MyTask.QueryConnect := DataModuleMySQL.ADQuerySQL;
+    MyTask.DeleteTask(DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
+    MyTask.Free;
+
+    DataModuleMySQL.RefreshTask;
+    DataModuleMySQL.CalcProjectBudget(DataModuleMySQL.ADQueryProject.FieldByName('id').AsInteger);
+    DataModuleMySQL.CalcProjectBalance(DataModuleMySQL.ADQueryProject.FieldByName('id').AsInteger);
+    DataModuleMySQL.RefreshProject;
+  end;
+
+end;
 
 procedure TMainForm.N2Click(Sender: TObject);
 begin
@@ -135,7 +173,8 @@ end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
-PageControl1.TabIndex := 0;
+  PageControl1.TabIndex := 0;
+  MyTask := TTaskModel.Create(DataModuleMySQL.ADConnection1);
 end;
 
 //==========================================
@@ -278,36 +317,75 @@ end;
 //таска - в работе
 procedure TMainForm.N31Click(Sender: TObject);
 begin
-  DataModuleMySQL.SetStatusTask(work);
+//  DataModuleMySQL.SetStatusTask(work);
+  MyTask.SetStatusTask(work, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
   DataModuleMySQL.RefreshTape;
 end;
 
 //таска -  приорите
 procedure TMainForm.N32Click(Sender: TObject);
 begin
-  DataModuleMySQL.SetStatusTask(prior);
+  MyTask.SetStatusTask(prior, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
   DataModuleMySQL.RefreshTape;
 end;
 
 //таска - в ожидании заказчика
 procedure TMainForm.N33Click(Sender: TObject);
 begin
-  DataModuleMySQL.SetStatusTask(wait);
+  MyTask.SetStatusTask(wait, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
   DataModuleMySQL.RefreshTape;
 end;
 
 //таска - отложена
 procedure TMainForm.N34Click(Sender: TObject);
 begin
-  DataModuleMySQL.SetStatusTask(Delayed);
+  MyTask.SetStatusTask(Delayed, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
   DataModuleMySQL.RefreshTape;
 end;
 
 //таска - закрыта
 procedure TMainForm.N35Click(Sender: TObject);
 begin
-  DataModuleMySQL.SetStatusTask(Closer);
+  MyTask.SetStatusTask(Closer, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
   DataModuleMySQL.RefreshTape;
+end;
+
+//===========================================
+//тоже, но из меню тасков
+
+//в работе
+procedure TMainForm.N30Click(Sender: TObject);
+begin
+  MyTask.SetStatusTask(work, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
+  DataModuleMySQL.RefreshTask;
+end;
+
+//приоритет
+procedure TMainForm.N36Click(Sender: TObject);
+begin
+  MyTask.SetStatusTask(prior, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
+  DataModuleMySQL.RefreshTask;
+end;
+
+//ожидаю заказчика
+procedure TMainForm.N40Click(Sender: TObject);
+begin
+  MyTask.SetStatusTask(wait, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
+  DataModuleMySQL.RefreshTask;
+end;
+
+//отложена
+procedure TMainForm.N38Click(Sender: TObject);
+begin
+  MyTask.SetStatusTask(Delayed, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
+  DataModuleMySQL.RefreshTask;
+end;
+
+//закрыта
+procedure TMainForm.N39Click(Sender: TObject);
+begin
+  MyTask.SetStatusTask(Closer, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
+  DataModuleMySQL.RefreshTask;
 end;
 
 end.
