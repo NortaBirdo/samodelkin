@@ -124,7 +124,6 @@ object EditTaskForm: TEditTaskForm
       #1086#1090#1083#1086#1078#1077#1085#1072
       #1086#1078#1080#1076#1072#1102' '#1079#1072#1082#1072#1079#1095#1080#1082#1072)
     TabOrder = 3
-    OnClick = DBComboBox1Click
   end
   object DBGrid1: TDBGrid
     Left = 408
@@ -225,7 +224,7 @@ object EditTaskForm: TEditTaskForm
     Top = 336
     Width = 191
     Height = 160
-    Date = 41668.923687141210000000
+    Date = 41668.457997453700000000
     TabOrder = 8
     OnClick = MonthCalendar1Click
   end

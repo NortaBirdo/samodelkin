@@ -26,11 +26,16 @@ type
     BtnCancel: TButton;
     Label3: TLabel;
     MonthCalendar1: TMonthCalendar;
+    NullDeadlineBtn: TButton;
+    DBText2: TDBText;
     procedure BtnOkClick(Sender: TObject);
     procedure BtnChangeFreelancerClick(Sender: TObject);
     procedure BtnCancelClick(Sender: TObject);
     procedure MonthCalendar1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure NullDeadlineBtnClick(Sender: TObject);
+    procedure DBComboBox1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -44,7 +49,7 @@ implementation
 
 {$R *.dfm}
 
-uses DataModuleMySQLUnit;
+uses DataModuleMySQLUnit, TaskModelUnit;
 
 procedure TEditTaskForm.BtnCancelClick(Sender: TObject);
 begin
@@ -70,11 +75,22 @@ begin
     CalcProjectBudget(GetIDProject);
     CalcProjectBalance(GetIDProject);
     CalcTaskBalance;
+    RefreshTask;
     RefreshProject;
   end;
 EditTaskForm.Close;
 end;
 
+end;
+
+procedure TEditTaskForm.DBComboBox1Click(Sender: TObject);
+begin
+  DBComboBox1.DroppedDown := true;
+end;
+
+procedure TEditTaskForm.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  BtnCancelClick(sender);
 end;
 
 procedure TEditTaskForm.FormShow(Sender: TObject);
@@ -85,6 +101,18 @@ end;
 procedure TEditTaskForm.MonthCalendar1Click(Sender: TObject);
 begin
   DataModuleMySQL.SetDeadline(MonthCalendar1.Date);
+end;
+
+//Обнулить deadline
+procedure TEditTaskForm.NullDeadlineBtnClick(Sender: TObject);
+var
+  MyTask: TTaskModel;
+begin
+  MyTask := TTaskModel.Create(DataModuleMySQL.ADConnection1);
+  MyTask.SetDeadlineNull(DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
+  MyTask.Free;
+
+  DataModuleMySQL.RefreshTask;
 end;
 
 end.

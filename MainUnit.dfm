@@ -547,8 +547,8 @@ object MainForm: TMainForm
     end
   end
   object PopupMenuTape: TPopupMenu
-    Left = 688
-    Top = 16
+    Left = 80
+    Top = 200
     object N20: TMenuItem
       Caption = #1057#1084#1077#1085#1080#1090#1100' '#1089#1090#1072#1090#1091#1089' '#1087#1088#1086#1077#1082#1090#1072
       Enabled = False
@@ -596,8 +596,9 @@ object MainForm: TMainForm
     end
   end
   object PopupMenuTask: TPopupMenu
-    Left = 688
-    Top = 432
+    OnPopup = PopupMenuTaskPopup
+    Left = 664
+    Top = 456
     object N29: TMenuItem
       Caption = #1057#1084#1077#1085#1080#1090#1100' '#1089#1090#1072#1090#1091#1089
       object N30: TMenuItem
@@ -620,6 +621,9 @@ object MainForm: TMainForm
         Caption = #1047#1072#1082#1088#1099#1090#1072
         OnClick = N39Click
       end
+    end
+    object N37: TMenuItem
+      Caption = #1055#1077#1088#1077#1085#1086#1089' '#1079#1072#1076#1072#1095#1080
     end
   end
 end

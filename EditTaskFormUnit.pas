@@ -35,7 +35,6 @@ type
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure NullDeadlineBtnClick(Sender: TObject);
-    procedure DBComboBox1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -81,11 +80,6 @@ begin
 EditTaskForm.Close;
 end;
 
-end;
-
-procedure TEditTaskForm.DBComboBox1Click(Sender: TObject);
-begin
-  DBComboBox1.DroppedDown := true;
 end;
 
 procedure TEditTaskForm.FormClose(Sender: TObject; var Action: TCloseAction);
