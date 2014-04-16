@@ -68,8 +68,13 @@ if DataModuleMySQL.ADQueryTask.Modified then
 begin
   with DataModuleMySQL do
   begin
+    try
+      ADQueryTask.Post;
+    except
+      ShowMessage('Не заполнено одно из обязательных полей (название, статус или исполнитель). Заполните и повторите попытку.');
+      exit;
+    end;
 
-    ADQueryTask.Post;
     //калькуляция бюджета проекта
     CalcProjectBudget(GetIDProject);
     CalcProjectBalance(GetIDProject);

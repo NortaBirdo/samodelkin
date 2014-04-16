@@ -227,6 +227,7 @@ object MainForm: TMainForm
         Width = 801
         Height = 241
         DataSource = DataModuleMySQL.DataSource3
+        PopupMenu = PopupMenu1
         ReadOnly = True
         TabOrder = 0
         TitleFont.Charset = DEFAULT_CHARSET
@@ -321,6 +322,7 @@ object MainForm: TMainForm
         Width = 801
         Height = 217
         DataSource = DataModuleMySQL.DataSourceTask
+        PopupMenu = PopupMenuTask
         ReadOnly = True
         TabOrder = 1
         TitleFont.Charset = DEFAULT_CHARSET
@@ -538,18 +540,23 @@ object MainForm: TMainForm
     end
   end
   object PopupMenu1: TPopupMenu
-    Left = 1000
-    Top = 16
+    Left = 976
+    Top = 56
     object N18: TMenuItem
       Caption = #1050#1086#1087#1080#1088#1086#1074#1072#1090#1100
       OnClick = N18Click
     end
+    object N42: TMenuItem
+      Caption = #1053#1086#1074#1072#1103' '#1079#1072#1076#1072#1095#1072
+      OnClick = N42Click
+    end
   end
   object PopupMenuTape: TPopupMenu
-    Left = 704
-    Top = 24
+    Left = 80
+    Top = 200
     object N20: TMenuItem
       Caption = #1057#1084#1077#1085#1080#1090#1100' '#1089#1090#1072#1090#1091#1089' '#1087#1088#1086#1077#1082#1090#1072
+      Enabled = False
       object N22: TMenuItem
         Caption = #1042' '#1088#1072#1073#1086#1090#1077
       end
@@ -591,6 +598,48 @@ object MainForm: TMainForm
         Caption = #1047#1072#1082#1088#1099#1090#1072
         OnClick = N35Click
       end
+    end
+  end
+  object PopupMenuTask: TPopupMenu
+    OnPopup = PopupMenuTaskPopup
+    Left = 664
+    Top = 456
+    object N29: TMenuItem
+      Caption = #1057#1084#1077#1085#1080#1090#1100' '#1089#1090#1072#1090#1091#1089
+      object N30: TMenuItem
+        Caption = #1042' '#1088#1072#1073#1086#1090#1077
+        OnClick = N30Click
+      end
+      object N36: TMenuItem
+        Caption = #1055#1088#1080#1086#1088#1080#1090#1077#1090
+        OnClick = N36Click
+      end
+      object N40: TMenuItem
+        Caption = #1054#1078#1080#1076#1072#1102' '#1079#1072#1082#1072#1079#1095#1080#1082#1072
+        OnClick = N40Click
+      end
+      object N38: TMenuItem
+        Caption = #1054#1090#1083#1086#1078#1077#1085#1072
+        OnClick = N38Click
+      end
+      object N39: TMenuItem
+        Caption = #1047#1072#1082#1088#1099#1090#1072
+        OnClick = N39Click
+      end
+    end
+    object N37: TMenuItem
+      Caption = #1055#1077#1088#1077#1085#1086#1089' '#1079#1072#1076#1072#1095#1080
+    end
+    object N43: TMenuItem
+      Caption = '-'
+    end
+    object N41: TMenuItem
+      Caption = #1053#1086#1074#1072#1103' '#1079#1072#1076#1072#1095#1072
+      OnClick = N41Click
+    end
+    object N44: TMenuItem
+      Caption = #1048#1079#1084#1077#1085#1080#1090#1100' '#1079#1072#1076#1072#1095#1091
+      OnClick = N44Click
     end
   end
 end

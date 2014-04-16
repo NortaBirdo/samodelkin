@@ -211,7 +211,7 @@ object MainForm: TMainForm
         Height = 33
         DataField = 'git'
         DataSource = DataModuleMySQL.DataSource3
-        PopupMenu = PopupMenu1
+        PopupMenu = PopupMenuProject
         WordWrap = True
       end
       object Label6: TLabel
@@ -227,6 +227,7 @@ object MainForm: TMainForm
         Width = 801
         Height = 241
         DataSource = DataModuleMySQL.DataSource3
+        PopupMenu = PopupMenuProject
         ReadOnly = True
         TabOrder = 0
         TitleFont.Charset = DEFAULT_CHARSET
@@ -538,12 +539,16 @@ object MainForm: TMainForm
       end
     end
   end
-  object PopupMenu1: TPopupMenu
+  object PopupMenuProject: TPopupMenu
     Left = 976
     Top = 56
     object N18: TMenuItem
       Caption = #1050#1086#1087#1080#1088#1086#1074#1072#1090#1100
       OnClick = N18Click
+    end
+    object N42: TMenuItem
+      Caption = #1053#1086#1074#1072#1103' '#1079#1072#1076#1072#1095#1072
+      OnClick = N42Click
     end
   end
   object PopupMenuTape: TPopupMenu
@@ -624,6 +629,17 @@ object MainForm: TMainForm
     end
     object N37: TMenuItem
       Caption = #1055#1077#1088#1077#1085#1086#1089' '#1079#1072#1076#1072#1095#1080
+    end
+    object N43: TMenuItem
+      Caption = '-'
+    end
+    object N41: TMenuItem
+      Caption = #1053#1086#1074#1072#1103' '#1079#1072#1076#1072#1095#1072
+      OnClick = N41Click
+    end
+    object N44: TMenuItem
+      Caption = #1048#1079#1084#1077#1085#1080#1090#1100' '#1079#1072#1076#1072#1095#1091
+      OnClick = N44Click
     end
   end
 end

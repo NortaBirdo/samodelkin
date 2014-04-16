@@ -42,7 +42,7 @@ type
     ComboBox1: TComboBox;
     DBMemo1: TDBMemo;
     DBMemo2: TDBMemo;
-    PopupMenu1: TPopupMenu;
+    PopupMenuProject: TPopupMenu;
     N18: TMenuItem;
     TaskTape: TDBGrid;
     Label7: TLabel;
@@ -73,6 +73,10 @@ type
     N38: TMenuItem;
     N39: TMenuItem;
     N37: TMenuItem;
+    N41: TMenuItem;
+    N42: TMenuItem;
+    N43: TMenuItem;
+    N44: TMenuItem;
     procedure N5Click(Sender: TObject);
     procedure N7Click(Sender: TObject);
     procedure N8Click(Sender: TObject);
@@ -106,6 +110,9 @@ type
     procedure N39Click(Sender: TObject);
     procedure N40Click(Sender: TObject);
     procedure PopupMenuTaskPopup(Sender: TObject);
+    procedure N41Click(Sender: TObject);
+    procedure N42Click(Sender: TObject);
+    procedure N44Click(Sender: TObject);
 
 
   private
@@ -216,6 +223,24 @@ begin
   DataModuleMySQL.RefreshTape;
 end;
 
+//новая задача из подменю тасков
+procedure TMainForm.N41Click(Sender: TObject);
+begin
+  N11Click(Sender);
+end;
+
+//новая задача из подменю проектов
+procedure TMainForm.N42Click(Sender: TObject);
+begin
+  N11Click(Sender);
+end;
+
+//изменить задачу из подменю проектов
+procedure TMainForm.N44Click(Sender: TObject);
+begin
+  N14Click(Sender);
+end;
+
 //фильтрация проектов
 procedure TMainForm.ComboBox1Change(Sender: TObject);
 begin
@@ -250,7 +275,7 @@ end;
 //копирование в буфер
 procedure TMainForm.N18Click(Sender: TObject);
 begin
-   Clipboard.SetTextBuf(PChar(DBText1.DataSource.DataSet.FieldByName(DBText1.DataField).AsString));
+   Clipboard.SetTextBuf(PChar(ProjectGrid.DataSource.DataSet.FieldByName(ProjectGrid.SelectedField.FieldName).AsString));
 end;
 
 //закраска обласетй на ленте задач

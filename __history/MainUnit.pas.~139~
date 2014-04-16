@@ -73,6 +73,10 @@ type
     N38: TMenuItem;
     N39: TMenuItem;
     N37: TMenuItem;
+    N41: TMenuItem;
+    N42: TMenuItem;
+    N43: TMenuItem;
+    N44: TMenuItem;
     procedure N5Click(Sender: TObject);
     procedure N7Click(Sender: TObject);
     procedure N8Click(Sender: TObject);
@@ -106,6 +110,9 @@ type
     procedure N39Click(Sender: TObject);
     procedure N40Click(Sender: TObject);
     procedure PopupMenuTaskPopup(Sender: TObject);
+    procedure N41Click(Sender: TObject);
+    procedure N42Click(Sender: TObject);
+    procedure N44Click(Sender: TObject);
 
 
   private
@@ -214,6 +221,24 @@ begin
   EditTaskForm.ShowModal;
   DataModuleMySQL.RefreshTask;
   DataModuleMySQL.RefreshTape;
+end;
+
+//новая задача из подменю тасков
+procedure TMainForm.N41Click(Sender: TObject);
+begin
+  N11Click(Sender);
+end;
+
+//новая задача из подменю проектов
+procedure TMainForm.N42Click(Sender: TObject);
+begin
+  N11Click(Sender);
+end;
+
+//изменить задачу из подменю проектов
+procedure TMainForm.N44Click(Sender: TObject);
+begin
+  N14Click(Sender);
 end;
 
 //фильтрация проектов
@@ -418,7 +443,7 @@ begin
 
   id := DataModuleMySQL.ADQueryProject.FieldByName('id').AsInteger;
 
-  DataModuleMySQL.ADQueryProject.First;
+ { DataModuleMySQL.ADQueryProject.First;
 
   i := 0;
   SetLength(ar, i);
@@ -438,8 +463,18 @@ begin
     DataModuleMySQL.ADQueryProject.Next;
   end;
 
-  for I := 0 to High(ar) do
-    PopupMenuTask.Items[1].add(ar[i]);
+  if Length(ar)<>0 then
+  begin
+    for I := 0 to PopupMenuTask.Items[1].Items.Count do
+      begin
+      id := PopupMenuTask.Items.IndexOf(PopupMenuTask.Items[1].Items[i]);
+      PopupMenuTask.Items[1].Delete(id);
+      end;
+
+    PopupMenuTask.Items[1].Count;
+    for I := 0 to High(ar) do
+      PopupMenuTask.Items[1].add(ar[i]);
+  end;    }
 
 end;
 

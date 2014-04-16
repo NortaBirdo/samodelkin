@@ -418,29 +418,38 @@ begin
 
   id := DataModuleMySQL.ADQueryProject.FieldByName('id').AsInteger;
 
-  DataModuleMySQL.ADQueryProject.First;
+ { DataModuleMySQL.ADQueryProject.First;
 
   i := 0;
   SetLength(ar, i);
 
   while not (DataModuleMySQL.ADQueryProject.Eof) do
   begin
-    if DataModuleMySQL.ADQueryProject.FieldByName('caption').AsString =  then
+    if id <> DataModuleMySQL.GetIDProject then
+    begin
+      i := i + 1;
+      SetLength(ar, i);
 
-
-    i := i + 1;
-    SetLength(ar, i);
-
-    ar[i-1] := TMenuItem.Create(self);
-    ar[i-1].Caption := DataModuleMySQL.ADQueryProject.FieldByName('caption').AsString;
-    ar[i-1].Tag := DataModuleMySQL.GetIDProject;
+      ar[i-1] := TMenuItem.Create(self);
+      ar[i-1].Caption := DataModuleMySQL.ADQueryProject.FieldByName('caption').AsString;
+      ar[i-1].Tag := DataModuleMySQL.GetIDProject;
+    end;
 
     DataModuleMySQL.ADQueryProject.Next;
   end;
 
-  for I := 0 to High(ar) do
-    PopupMenuTask.Items[1].add(ar[i]);
+  if Length(ar)<>0 then
+  begin
+    for I := 0 to PopupMenuTask.Items[1].Items.Count do
+      begin
+      id := PopupMenuTask.Items.IndexOf(PopupMenuTask.Items[1].Items[i]);
+      PopupMenuTask.Items[1].Delete(id);
+      end;
 
+    PopupMenuTask.Items[1].Count;
+    for I := 0 to High(ar) do
+      PopupMenuTask.Items[1].add(ar[i]);
+  end;    }
 
 end;
 
