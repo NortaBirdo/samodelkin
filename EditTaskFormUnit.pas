@@ -95,6 +95,7 @@ end;
 procedure TEditTaskForm.FormShow(Sender: TObject);
 begin
   LabelChange.Caption := 'Новый исполнитель: ';
+  MonthCalendar1.Date := now;
 end;
 
 procedure TEditTaskForm.MonthCalendar1Click(Sender: TObject);

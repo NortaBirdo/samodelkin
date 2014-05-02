@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.Grids, Vcl.DBGrids,
-  Vcl.StdCtrls, Vcl.DBCtrls, Vcl.Mask, Vcl.ComCtrls, DB;
+  Vcl.StdCtrls, Vcl.DBCtrls, Vcl.Mask, Vcl.ComCtrls, DB, ShellAPI;
 
 type
   TMainForm = class(TForm)
@@ -35,7 +35,7 @@ type
     Label3: TLabel;
     Label4: TLabel;
     Label5: TLabel;
-    DBText1: TDBText;
+    GitText: TDBText;
     Label6: TLabel;
     ProjectGrid: TDBGrid;
     TaskGrid: TDBGrid;
@@ -113,6 +113,7 @@ type
     procedure N41Click(Sender: TObject);
     procedure N42Click(Sender: TObject);
     procedure N44Click(Sender: TObject);
+    procedure GitTextClick(Sender: TObject);
 
 
   private
@@ -184,6 +185,13 @@ procedure TMainForm.FormCreate(Sender: TObject);
 begin
   PageControl1.TabIndex := 0;
   MyTask := TTaskModel.Create(DataModuleMySQL.ADConnection1);
+end;
+
+//переход по ссылке git
+procedure TMainForm.GitTextClick(Sender: TObject);
+begin
+if GitText.Caption <> '' then
+  ShellExecute(Handle, 'open', PChar(GitText.Caption), nil, nil, SW_SHOW);
 end;
 
 //==========================================
@@ -259,7 +267,9 @@ end;
 procedure TMainForm.N16Click(Sender: TObject);
 begin
   OperationForm.LabelType.caption := 'клиент';
+  OperationForm.LabelName.Caption := DataModuleMySQL.ADQueryProject.FieldByName('cl_fio').AsString;
   OperationForm.SetDataSet(DataModuleMySQL.DataSourceClientAccount);
+  OperationForm.notes := '¬нос по проекту ' + DataModuleMySQL.ADQueryProject.FieldByName('caption').AsString;
   OperationForm.ShowModal;
 end;
 
@@ -267,7 +277,11 @@ end;
 procedure TMainForm.N17Click(Sender: TObject);
 begin
   OperationForm.LabelType.caption := 'фрилансер';
+  OperationForm.LabelName.Caption := DataModuleMySQL.ADQueryTask.FieldByName('fio').AsString;
   OperationForm.SetDataSet(DataModuleMySQL.DataSourceFreelancerAccount);
+  OperationForm.notes := '¬ыплата по проекту: ' + DataModuleMySQL.ADQueryProject.FieldByName('caption').AsString +
+    ', задаче: ' + DataModuleMySQL.ADQueryTask.FieldByName('caption').AsString;
+
   OperationForm.ShowModal;
   DataModuleMySQL.ADQueryTask.Refresh;
 end;
@@ -433,6 +447,11 @@ end;
 //===========================
 //перенос задачи между проектами
 
+procedure MyClick(Sender: TObject);
+begin
+//
+end;
+
 procedure TMainForm.PopupMenuTaskPopup(Sender: TObject);
 var
   TItem: TMenuItem;
@@ -444,6 +463,9 @@ begin
   id := DataModuleMySQL.ADQueryProject.FieldByName('id').AsInteger;
 
  { DataModuleMySQL.ADQueryProject.First;
+
+  PopupMenuTask.Items.Delete(PopupMenuTask.Items.IndexOf(PopupMenuTask.Items[1]));
+
 
   i := 0;
   SetLength(ar, i);
@@ -458,6 +480,7 @@ begin
       ar[i-1] := TMenuItem.Create(self);
       ar[i-1].Caption := DataModuleMySQL.ADQueryProject.FieldByName('caption').AsString;
       ar[i-1].Tag := DataModuleMySQL.GetIDProject;
+   //   ar[i-1].OnClick := MyClick;
     end;
 
     DataModuleMySQL.ADQueryProject.Next;
@@ -465,7 +488,8 @@ begin
 
   if Length(ar)<>0 then
   begin
-    for I := 0 to PopupMenuTask.Items[1].Items.Count do
+ //   PopupMenuTask.Items[1].Clear;
+    for I := 0 to PopupMenuTask.Items[1].Count do
       begin
       id := PopupMenuTask.Items.IndexOf(PopupMenuTask.Items[1].Items[i]);
       PopupMenuTask.Items[1].Delete(id);
@@ -474,7 +498,7 @@ begin
     PopupMenuTask.Items[1].Count;
     for I := 0 to High(ar) do
       PopupMenuTask.Items[1].add(ar[i]);
-  end;    }
+  end;                        }
 
 end;
 

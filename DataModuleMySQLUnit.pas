@@ -34,6 +34,7 @@ type
     DataSourceFreelancerAccount: TDataSource;
     ADQueryMindTape: TADQuery;
     DataSourceMindTape: TDataSource;
+    ADQueryProjectSuch: TADQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure ADQueryProjectAfterGetRecord(DataSet: TADDataSet);

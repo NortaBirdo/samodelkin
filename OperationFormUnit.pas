@@ -16,6 +16,8 @@ type
     Button1: TButton;
     Button2: TButton;
     LabelType: TLabel;
+    Label4: TLabel;
+    LabelName: TLabel;
     procedure Button2Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -23,6 +25,8 @@ type
     CurrentDS: TDataSource;
   public
     procedure SetDataSet(ds: TDataSource);
+    var
+    notes: string;
   end;
 
 var
@@ -74,6 +78,9 @@ end;
 procedure TOperationForm.FormShow(Sender: TObject);
 begin
   CurrentDS.DataSet.Insert;
+  DBMemoNOTE.Lines.Clear;
+  DBMemoNOTE.Lines.Add(Notes);
+
 end;
 
 procedure TOperationForm.SetDataSet(ds: TDataSource);
@@ -81,6 +88,7 @@ begin
   DBEditSUM.DataSource := ds;
   DBMemoNOTE.DataSource := ds;
   CurrentDS := ds;
+
 end;
 
 end.

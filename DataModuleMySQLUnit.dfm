@@ -180,4 +180,16 @@ object DataModuleMySQL: TDataModuleMySQL
     Left = 656
     Top = 120
   end
+  object ADQueryProjectSuch: TADQuery
+    Connection = ADConnection1
+    SQL.Strings = (
+      'SELECT P.*, '
+      'CLIENT.fio as cl_fio, '
+      'CLIENT.id'
+      'FROM PROJECT P, CLIENT'
+      'WHERE P.status <> '#39#1086#1090#1084#1077#1085#1077#1085#39' AND P.status <> '#39#1079#1072#1082#1088#1099#1090#39
+      'AND CLIENT.id = P.client_link')
+    Left = 440
+    Top = 184
+  end
 end

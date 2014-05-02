@@ -27,7 +27,7 @@ object MainForm: TMainForm
     Align = alClient
     TabOrder = 0
     object MindTapeSheet: TTabSheet
-      Caption = #1051#1077#1085#1090#1072' '#1089#1086#1079#1085#1072#1085#1080#1103
+      Caption = #1051#1077#1085#1090#1072
       object Label7: TLabel
         Left = 3
         Top = 21
@@ -204,15 +204,23 @@ object MainForm: TMainForm
         Height = 13
         Caption = #1054#1090#1086#1073#1088#1072#1078#1072#1090#1100
       end
-      object DBText1: TDBText
+      object GitText: TDBText
         Left = 823
         Top = 62
         Width = 250
         Height = 33
+        Cursor = crHandPoint
         DataField = 'git'
         DataSource = DataModuleMySQL.DataSource3
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlue
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold, fsUnderline]
+        ParentFont = False
         PopupMenu = PopupMenuProject
         WordWrap = True
+        OnClick = GitTextClick
       end
       object Label6: TLabel
         Left = 823
