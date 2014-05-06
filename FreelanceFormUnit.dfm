@@ -5,7 +5,7 @@ object FreelanceForm: TFreelanceForm
   BorderStyle = bsSingle
   Caption = #1060#1088#1080#1083#1072#1085#1089#1077#1088#1099
   ClientHeight = 567
-  ClientWidth = 1058
+  ClientWidth = 1134
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -17,7 +17,7 @@ object FreelanceForm: TFreelanceForm
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
-    Left = 743
+    Left = 823
     Top = 91
     Width = 42
     Height = 13
@@ -31,21 +31,21 @@ object FreelanceForm: TFreelanceForm
     Caption = #1054#1090#1086#1073#1088#1072#1078#1072#1090#1100
   end
   object Label3: TLabel
-    Left = 743
+    Left = 823
     Top = 253
     Width = 61
     Height = 13
     Caption = #1055#1088#1080#1084#1077#1095#1072#1085#1080#1103
   end
   object Label4: TLabel
-    Left = 743
+    Left = 823
     Top = 399
     Width = 99
     Height = 13
     Caption = #1044#1074#1080#1078#1077#1085#1080#1077' '#1087#1086' '#1089#1095#1077#1090#1091
   end
   object BalanceLabel: TLabel
-    Left = 816
+    Left = 896
     Top = 67
     Width = 32
     Height = 18
@@ -58,7 +58,7 @@ object FreelanceForm: TFreelanceForm
     ParentFont = False
   end
   object Label5: TLabel
-    Left = 743
+    Left = 823
     Top = 67
     Width = 55
     Height = 18
@@ -73,10 +73,11 @@ object FreelanceForm: TFreelanceForm
   object ControlBar1: TControlBar
     Left = 0
     Top = 0
-    Width = 1058
+    Width = 1134
     Height = 33
     Align = alTop
     TabOrder = 0
+    ExplicitWidth = 1058
     object ToolBar1: TToolBar
       Left = 11
       Top = 2
@@ -132,7 +133,7 @@ object FreelanceForm: TFreelanceForm
   object DBGrid1: TDBGrid
     Left = 8
     Top = 67
-    Width = 729
+    Width = 801
     Height = 486
     DataSource = DataModuleMySQL.DataSource2
     TabOrder = 1
@@ -153,6 +154,13 @@ object FreelanceForm: TFreelanceForm
         FieldName = 'fio'
         Title.Caption = #1060'.'#1048'.'#1054'.'
         Width = 150
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'spezialization'
+        Title.Caption = #1057#1087#1077#1094#1080#1072#1083#1100#1085#1086#1089#1090#1100
+        Width = 85
         Visible = True
       end
       item
@@ -187,7 +195,7 @@ object FreelanceForm: TFreelanceForm
         Expanded = False
         FieldName = 'fl_link'
         Title.Caption = #1057#1089#1099#1083#1082#1072' '#1085#1072' '#1087#1088#1086#1092#1080#1083#1100
-        Width = 150
+        Width = 124
         Visible = True
       end
       item
@@ -203,7 +211,7 @@ object FreelanceForm: TFreelanceForm
       end>
   end
   object DBMemo1: TDBMemo
-    Left = 743
+    Left = 823
     Top = 110
     Width = 306
     Height = 137
@@ -227,7 +235,7 @@ object FreelanceForm: TFreelanceForm
       #1063#1077#1088#1085#1099#1081' '#1089#1087#1080#1089#1086#1082)
   end
   object DBMemo2: TDBMemo
-    Left = 743
+    Left = 823
     Top = 272
     Width = 306
     Height = 121
@@ -237,7 +245,7 @@ object FreelanceForm: TFreelanceForm
     TabOrder = 4
   end
   object DBGrid2: TDBGrid
-    Left = 743
+    Left = 823
     Top = 418
     Width = 306
     Height = 135

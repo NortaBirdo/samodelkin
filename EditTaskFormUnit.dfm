@@ -5,7 +5,7 @@ object EditTaskForm: TEditTaskForm
   BorderStyle = bsSingle
   Caption = #1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1085#1080#1077' '#1079#1072#1076#1072#1095#1080
   ClientHeight = 560
-  ClientWidth = 699
+  ClientWidth = 740
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -128,7 +128,7 @@ object EditTaskForm: TEditTaskForm
   object DBGrid1: TDBGrid
     Left = 408
     Top = 64
-    Width = 249
+    Width = 321
     Height = 185
     DataSource = DataModuleMySQL.DataSource2
     ReadOnly = True
@@ -148,7 +148,7 @@ object EditTaskForm: TEditTaskForm
         Expanded = False
         FieldName = 'fio'
         Title.Caption = #1060'.'#1048'.'#1054'.'
-        Width = 201
+        Width = 190
         Visible = True
       end
       item
@@ -190,6 +190,13 @@ object EditTaskForm: TEditTaskForm
         Expanded = False
         FieldName = 'flag'
         Visible = False
+      end
+      item
+        Expanded = False
+        FieldName = 'spezialization'
+        Title.Caption = #1057#1087#1077#1094#1080#1072#1083#1080#1079#1072#1094#1080#1103
+        Width = 91
+        Visible = True
       end>
   end
   object BtnChangeFreelancer: TButton
@@ -224,7 +231,7 @@ object EditTaskForm: TEditTaskForm
     Top = 336
     Width = 191
     Height = 160
-    Date = 41668.457997453700000000
+    Date = 41668.345182245370000000
     TabOrder = 8
     OnClick = MonthCalendar1Click
   end
