@@ -14,18 +14,26 @@ type
     DBMemo1: TDBMemo;
     ControlBar1: TControlBar;
     ToolBar1: TToolBar;
-    ToolButton1: TToolButton;
-    ToolButton2: TToolButton;
+    ToolBtnAdd: TToolButton;
+    ToolBtnSave: TToolButton;
     ToolBtnArch: TToolButton;
     ToolButton4: TToolButton;
     ToolBtnBlackList: TToolButton;
     ComboBox1: TComboBox;
     Label2: TLabel;
+    Label4: TLabel;
+    DBGrid2: TDBGrid;
+    Label3: TLabel;
+    BalLabel: TLabel;
     procedure ComboBox1Change(Sender: TObject);
-    procedure ToolButton1Click(Sender: TObject);
-    procedure ToolButton2Click(Sender: TObject);
+    procedure ToolBtnAddClick(Sender: TObject);
+    procedure ToolBtnSaveClick(Sender: TObject);
     procedure ToolBtnArchClick(Sender: TObject);
     procedure ToolBtnBlackListClick(Sender: TObject);
+    procedure DBGrid2CellClick(Column: TColumn);
+    procedure DBGrid1CellClick(Column: TColumn);
+    procedure DBGrid1MouseWheel(Sender: TObject; Shift: TShiftState;
+      WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
   private
     { Private declarations }
   public
@@ -47,14 +55,17 @@ case ComboBox1.ItemIndex of
 0: begin
    ToolBtnArch.Caption := 'Архивировать';
    ToolBtnBlackList.Caption := 'В черный список';
+   DataModuleMySQL.ShowActiveClient;
    end;
 1: begin
    ToolBtnArch.Caption := 'Активировать';
    ToolBtnBlackList.Caption := 'В черный список';
+   DataModuleMySQL.ShowArchiveClient;
    end;
 2: begin
    ToolBtnArch.Caption := 'Архивировать';
    ToolBtnBlackList.Caption := 'Удалить из черного списка';
+   DataModuleMySQL.ShowBlackListClient;
    end;
 end;
 end;
@@ -68,6 +79,7 @@ if ToolBtnArch.Caption = 'Архивировать' then
   DataModuleMySQL.SetClientFlag(0);
 
 DataModuleMySQL.ADQueryClients.Post;
+DataModuleMySQL.RefreshClient;
 end;
 
 //управление черным списком
@@ -78,20 +90,40 @@ if ToolBtnBlackList.Caption = 'В черный список' then
   else
   DataModuleMySQL.SetClientFlag(0);
 
-  DataModuleMySQL.ADQueryClients.Post;
+DataModuleMySQL.ADQueryClients.Post;
+DataModuleMySQL.RefreshClient;
+end;
+
+//Обновление баланса
+procedure TClientsForm.DBGrid1CellClick(Column: TColumn);
+begin
+  BalLabel.Caption := IntToStr(DataModuleMySQL.BalanceClient);
+end;
+
+procedure TClientsForm.DBGrid1MouseWheel(Sender: TObject; Shift: TShiftState;
+  WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
+begin
+  BalLabel.Caption := IntToStr(DataModuleMySQL.BalanceClient);
+end;
+
+procedure TClientsForm.DBGrid2CellClick(Column: TColumn);
+begin
+  DataModuleMySQL.RefreshOperationClient;
 end;
 
 //добалвение нового клиента
-procedure TClientsForm.ToolButton1Click(Sender: TObject);
+procedure TClientsForm.ToolBtnAddClick(Sender: TObject);
 begin
  DataModuleMySQL.ADQueryClients.Insert;
  DataModuleMySQL.SetClientFlag(0);
 end;
 
 //сохранение клиента
-procedure TClientsForm.ToolButton2Click(Sender: TObject);
+procedure TClientsForm.ToolBtnSaveClick(Sender: TObject);
 begin
   if DataModuleMySQL.ADQueryClients.Modified then
     DataModuleMySQL.ADQueryClients.Post;
+  DataModuleMySQL.RefreshClientList;
 end;
+
 end.

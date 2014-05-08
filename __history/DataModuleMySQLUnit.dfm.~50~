@@ -26,6 +26,7 @@ object DataModuleMySQL: TDataModuleMySQL
   end
   object ADQueryClients: TADQuery
     AfterScroll = ADQueryClientsAfterScroll
+    AfterGetRecord = ADQueryClientsAfterGetRecord
     Connection = ADConnection1
     SQL.Strings = (
       'SELECT * FROM CLIENT'
@@ -48,6 +49,8 @@ object DataModuleMySQL: TDataModuleMySQL
     Top = 56
   end
   object ADQueryFreelancer: TADQuery
+    AfterScroll = ADQueryFreelancerAfterScroll
+    AfterGetRecord = ADQueryFreelancerAfterGetRecord
     Connection = ADConnection1
     SQL.Strings = (
       'SELECT * FROM FREELANCER'
@@ -113,7 +116,8 @@ object DataModuleMySQL: TDataModuleMySQL
       
         'Select TASK.*, FREELANCER.Id, FREELANCER.fio from TASK, FREELANC' +
         'ER'
-      'WHERE TASK.freelancer_link = FREELANCER.id')
+      'WHERE TASK.freelancer_link = FREELANCER.id'
+      'AND TASK.status <> '#39#1079#1072#1082#1088#1099#1090#1072#39)
     Left = 256
     Top = 256
   end
@@ -140,7 +144,7 @@ object DataModuleMySQL: TDataModuleMySQL
   end
   object DataSourceClientAccount: TDataSource
     DataSet = ADQueryClientAccount
-    Left = 360
+    Left = 392
     Top = 312
   end
   object ADQueryFreelancerAccount: TADQuery
@@ -160,6 +164,7 @@ object DataModuleMySQL: TDataModuleMySQL
     Top = 376
   end
   object ADQueryMindTape: TADQuery
+    Active = True
     Connection = ADConnection1
     SQL.Strings = (
       'SELECT T.*, P.* FROM TASK T, PROJECT P'
@@ -174,5 +179,17 @@ object DataModuleMySQL: TDataModuleMySQL
     DataSet = ADQueryMindTape
     Left = 656
     Top = 120
+  end
+  object ADQueryProjectSuch: TADQuery
+    Connection = ADConnection1
+    SQL.Strings = (
+      'SELECT P.*, '
+      'CLIENT.fio as cl_fio, '
+      'CLIENT.id'
+      'FROM PROJECT P, CLIENT'
+      'WHERE P.status <> '#39#1086#1090#1084#1077#1085#1077#1085#39' AND P.status <> '#39#1079#1072#1082#1088#1099#1090#39
+      'AND CLIENT.id = P.client_link')
+    Left = 440
+    Top = 184
   end
 end

@@ -89,6 +89,7 @@ type
     procedure SetShowCloseTask(show: boolean);
 
     //деньги
+    procedure RegOperationClientBal(sum: string);
     procedure CalcProjectBudget(id: integer);
     procedure CalcProjectBalance(id: integer);
     procedure CalcTaskBalance;
@@ -97,10 +98,14 @@ type
     procedure RefreshOperationFL;
     procedure RefreshOperationClient;
     procedure GetBalance;
+    function GetBalanceClient: integer;
 
     //смена задачи
 //    procedure SetStatusTask(newStatus: TStatusTask);
     procedure RefreshTape;
+
+    var
+      BalanceClient: integer;
 
  end;
 
@@ -111,7 +116,7 @@ implementation
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
-uses DataModuleSQLite;
+uses DataModuleSQLite, ClientsFormUnit;
 
 {$R *.dfm}
 //====================================================================
@@ -484,6 +489,12 @@ end;
 //=================================
 //деньги
 
+procedure TDataModuleMySQL.RegOperationClientBal(sum: string);
+begin
+ // ADQuery
+end;
+
+
 procedure TDataModuleMySQL.CalcProjectBalance(id: integer);
 begin
 with ADQueryProject do
@@ -573,7 +584,8 @@ begin
   close;
   sql.Clear;
   query := 'SELECT * FROM PERSONAL_ACCOUNT ' +
-    'WHERE account_type = 0 AND link = ' + ADQueryClients.FieldByName('id').AsString;
+    'WHERE account_type = 0 AND link = ' + ADQueryClients.FieldByName('id').AsString +
+    ' ORDER BY date_operation DESC';
   sql.Add(query);
   open;
 end;
@@ -582,18 +594,23 @@ end;
 //вывод операций клиента
 procedure TDataModuleMySQL.ADQueryClientsAfterGetRecord(DataSet: TADDataSet);
 begin
-RefreshOperationClient;
+  RefreshOperationClient;
+  BalanceClient := GetBalanceClient;
 end;
 
 procedure TDataModuleMySQL.ADQueryClientsAfterScroll(DataSet: TDataSet);
 begin
-RefreshOperationClient;
+  RefreshOperationClient;
+  BalanceClient := GetBalanceClient;
+
 end;
 
 //вывод операций фрилансров
 procedure TDataModuleMySQL.ADQueryFreelancerAfterGetRecord(DataSet: TADDataSet);
 begin
   RefreshOperationFL;
+  BalanceClient := GetBalanceClient;
+
 end;
 
 
@@ -626,5 +643,23 @@ begin
 end;
 end;
 
+//считаем баланс клиента
+function TDataModuleMySQL.GetBalanceClient: integer;
+var
+  sQuery: string;
+begin
+  with ADQuerySQL do
+  begin
+    close;
+    sql.Clear;
+    sQuery := 'SELECT SUM(operation) as bal FROM PERSONAL_ACCOUNT WHERE account_type = 0 AND link = '
+     + ADQueryClients.FieldByName('id').AsString;
+    sql.Add(sQuery);
+    open;
+    result := FieldByName('bal').AsInteger;
+
+  end;
+
+end;
 
 end.

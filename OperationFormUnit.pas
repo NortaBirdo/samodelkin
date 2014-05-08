@@ -25,8 +25,10 @@ type
     CurrentDS: TDataSource;
   public
     procedure SetDataSet(ds: TDataSource);
+
     var
     notes: string;
+
   end;
 
 var
@@ -57,12 +59,15 @@ if LabelType.Caption = 'клиент' then
     FieldByName('account_type').Value := 1;
     FieldByName('link').Value := DataModuleMySQL.ADQueryTask.FieldByName('Id_1').AsInteger;
     post;
+
     //перерасчет выплат по задаче и проекту
     DataModuleMySQL.CalcTaskSalary(StrToInt(DBEditSUM.Text));
     DataModuleMySQL.CalcTaskBalance;
     DataModuleMySQL.CalcProjectSalary;
     DataModuleMySQL.CalcProjectBudget(DataModuleMySQL.GetIDProject);
     DataModuleMySQL.CalcProjectBalance(DataModuleMySQL.GetIDProject);
+
+    //списываем со счета клиента
   end;
 
 end;

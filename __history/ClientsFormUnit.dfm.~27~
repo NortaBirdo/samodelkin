@@ -18,7 +18,7 @@ object ClientsForm: TClientsForm
   TextHeight = 13
   object Label1: TLabel
     Left = 743
-    Top = 48
+    Top = 89
     Width = 61
     Height = 13
     Caption = #1055#1088#1080#1084#1077#1095#1072#1085#1080#1103
@@ -36,6 +36,32 @@ object ClientsForm: TClientsForm
     Width = 99
     Height = 13
     Caption = #1044#1074#1080#1078#1077#1085#1080#1077' '#1087#1086' '#1089#1095#1077#1090#1091
+  end
+  object Label3: TLabel
+    Left = 743
+    Top = 67
+    Width = 48
+    Height = 16
+    Caption = #1041#1072#1083#1072#1085#1089
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object BalLabel: TLabel
+    Left = 831
+    Top = 67
+    Width = 48
+    Height = 16
+    Caption = #1041#1072#1083#1072#1085#1089
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
   end
   object DBGrid1: TDBGrid
     Left = 8
@@ -111,9 +137,9 @@ object ClientsForm: TClientsForm
   end
   object DBMemo1: TDBMemo
     Left = 743
-    Top = 67
+    Top = 108
     Width = 306
-    Height = 230
+    Height = 189
     DataField = 'note'
     DataSource = DataModuleMySQL.DataSource1
     ScrollBars = ssVertical
@@ -126,7 +152,6 @@ object ClientsForm: TClientsForm
     Height = 33
     Align = alTop
     TabOrder = 2
-    ExplicitWidth = 969
     object ToolBar1: TToolBar
       Left = 11
       Top = 2
@@ -205,6 +230,7 @@ object ClientsForm: TClientsForm
     TitleFont.Height = -11
     TitleFont.Name = 'Tahoma'
     TitleFont.Style = []
+    OnCellClick = DBGrid2CellClick
     Columns = <
       item
         Expanded = False

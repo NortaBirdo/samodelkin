@@ -138,7 +138,8 @@ object DataModuleMySQL: TDataModuleMySQL
       'CLIENT.id'
       'FROM PERSONAL_ACCOUNT, CLIENT'
       'WHERE PERSONAL_ACCOUNT.link = CLIENT.id'
-      ' AND account_type = 0')
+      ' AND account_type = 0'
+      'ORDER BY date_operation DESC')
     Left = 256
     Top = 312
   end

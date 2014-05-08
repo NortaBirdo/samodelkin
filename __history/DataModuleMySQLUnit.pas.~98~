@@ -34,6 +34,7 @@ type
     DataSourceFreelancerAccount: TDataSource;
     ADQueryMindTape: TADQuery;
     DataSourceMindTape: TDataSource;
+    ADQueryProjectSuch: TADQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure ADQueryProjectAfterGetRecord(DataSet: TADDataSet);
@@ -48,7 +49,7 @@ type
 
   public
   type
-    TStatusTask = (Close, Work, Prior, Delayed, Wait);
+    TStatusTask = (Closer, Work, Prior, Delayed, Wait);
 
     //клиенты
     procedure SetClientFlag(flag:integer);
@@ -84,7 +85,6 @@ type
     procedure SetProjectLink(id:integer);
     procedure SetFreelancerLink(id: integer);
     procedure SetDeadline(Dt: TDate);
-    procedure SetDeadlineNull;
     procedure RefreshTask;
     procedure SetShowCloseTask(show: boolean);
 
@@ -99,7 +99,8 @@ type
     procedure GetBalance;
 
     //смена задачи
-    procedure SetStatusTask(newStatus: TStatusTask);
+//    procedure SetStatusTask(newStatus: TStatusTask);
+    procedure RefreshTape;
 
  end;
 
@@ -384,13 +385,13 @@ ShowCloseTask := show;
 end;
 
 //смена статуса у таски
-procedure TDataModuleMySQL.SetStatusTask(newStatus: TStatusTask);
+{procedure TDataModuleMySQL.SetStatusTask(newStatus: TStatusTask);
 var
   sQuery: string;
 
 begin
   case newStatus of
-  close: sQuery := 'закрыта';
+  closer: sQuery := 'закрыта';
   Work: sQuery := 'в работе';
   Prior: sQuery := 'приоритет';
   Delayed: sQuery := 'отложена';
@@ -401,9 +402,11 @@ begin
   begin
     close;
     sql.Clear;
-    sql.Add('UPDATE TASK (status) VALUES (' + sQuery + ') WHERE id = ' + ADQueryMindTape.FieldByName(''));
+    squery := 'UPDATE TASK SET status = ' + QuotedStr(sQuery) + ' WHERE id = ' + ADQueryMindTape.FieldByName('id').AsString;
+    sql.Add(sQuery);
+    ExecSQL;
   end;
-end;
+end;   }
 
 procedure TDataModuleMySQL.GetTasks;
 begin
@@ -467,10 +470,9 @@ begin
   ADQueryTask.FieldByName('deadline').Value := Dt;
 end;
 
-procedure TDataModuleMySQL.SetDeadlineNull;
+procedure TDataModuleMySQL.RefreshTape;
 begin
- { ADQueryTask.Edit;
-  ADQueryTask.FieldByName('deadline').Value := null;  }
+  ADQueryMindTape.Refresh;
 end;
 
 procedure TDataModuleMySQL.RefreshTask;

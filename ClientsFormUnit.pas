@@ -23,12 +23,16 @@ type
     Label2: TLabel;
     Label4: TLabel;
     DBGrid2: TDBGrid;
+    Label3: TLabel;
+    BalLabel: TLabel;
     procedure ComboBox1Change(Sender: TObject);
     procedure ToolBtnAddClick(Sender: TObject);
     procedure ToolBtnSaveClick(Sender: TObject);
     procedure ToolBtnArchClick(Sender: TObject);
     procedure ToolBtnBlackListClick(Sender: TObject);
-    procedure DBGrid2CellClick(Column: TColumn);
+    procedure DBGrid1CellClick(Column: TColumn);
+    procedure FormShow(Sender: TObject);
+
   private
     { Private declarations }
   public
@@ -89,10 +93,15 @@ DataModuleMySQL.ADQueryClients.Post;
 DataModuleMySQL.RefreshClient;
 end;
 
-//добалвение нового клиента
-procedure TClientsForm.DBGrid2CellClick(Column: TColumn);
+//добавление нового клиента
+procedure TClientsForm.DBGrid1CellClick(Column: TColumn);
 begin
-DataModuleMySQL.RefreshOperationClient;
+  ClientsForm.BalLabel.Caption := IntToStr(DataModuleMySQL.BalanceClient);
+end;
+
+procedure TClientsForm.FormShow(Sender: TObject);
+begin
+  ClientsForm.BalLabel.Caption := IntToStr(DataModuleMySQL.BalanceClient);
 end;
 
 procedure TClientsForm.ToolBtnAddClick(Sender: TObject);
@@ -108,4 +117,5 @@ begin
     DataModuleMySQL.ADQueryClients.Post;
   DataModuleMySQL.RefreshClientList;
 end;
+
 end.

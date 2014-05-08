@@ -34,6 +34,7 @@ type
     DataSourceFreelancerAccount: TDataSource;
     ADQueryMindTape: TADQuery;
     DataSourceMindTape: TDataSource;
+    ADQueryProjectSuch: TADQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure ADQueryProjectAfterGetRecord(DataSet: TADDataSet);
@@ -84,11 +85,11 @@ type
     procedure SetProjectLink(id:integer);
     procedure SetFreelancerLink(id: integer);
     procedure SetDeadline(Dt: TDate);
-    procedure SetDeadlineNull;
     procedure RefreshTask;
     procedure SetShowCloseTask(show: boolean);
 
     //деньги
+    procedure RegOperationClientBal(sum: string);
     procedure CalcProjectBudget(id: integer);
     procedure CalcProjectBalance(id: integer);
     procedure CalcTaskBalance;
@@ -97,9 +98,14 @@ type
     procedure RefreshOperationFL;
     procedure RefreshOperationClient;
     procedure GetBalance;
+    function GetBalanceClient: integer;
 
     //смена задачи
-    procedure SetStatusTask(newStatus: TStatusTask);
+//    procedure SetStatusTask(newStatus: TStatusTask);
+    procedure RefreshTape;
+
+    var
+      BalanceClient: integer;
 
  end;
 
@@ -384,7 +390,7 @@ ShowCloseTask := show;
 end;
 
 //смена статуса у таски
-procedure TDataModuleMySQL.SetStatusTask(newStatus: TStatusTask);
+{procedure TDataModuleMySQL.SetStatusTask(newStatus: TStatusTask);
 var
   sQuery: string;
 
@@ -401,11 +407,11 @@ begin
   begin
     close;
     sql.Clear;
-    squery := 'UPDATE TASK SET status = ' + QuotedStr(sQuery) + ') WHERE id = ' + ADQueryMindTape.FieldByName('id').AsString;
+    squery := 'UPDATE TASK SET status = ' + QuotedStr(sQuery) + ' WHERE id = ' + ADQueryMindTape.FieldByName('id').AsString;
     sql.Add(sQuery);
     ExecSQL;
   end;
-end;
+end;   }
 
 procedure TDataModuleMySQL.GetTasks;
 begin
@@ -469,10 +475,9 @@ begin
   ADQueryTask.FieldByName('deadline').Value := Dt;
 end;
 
-procedure TDataModuleMySQL.SetDeadlineNull;
+procedure TDataModuleMySQL.RefreshTape;
 begin
- { ADQueryTask.Edit;
-  ADQueryTask.FieldByName('deadline').Value := null;  }
+  ADQueryMindTape.Refresh;
 end;
 
 procedure TDataModuleMySQL.RefreshTask;
@@ -483,6 +488,12 @@ end;
 
 //=================================
 //деньги
+
+procedure TDataModuleMySQL.RegOperationClientBal(sum: string);
+begin
+ // ADQuery
+end;
+
 
 procedure TDataModuleMySQL.CalcProjectBalance(id: integer);
 begin
@@ -573,7 +584,8 @@ begin
   close;
   sql.Clear;
   query := 'SELECT * FROM PERSONAL_ACCOUNT ' +
-    'WHERE account_type = 0 AND link = ' + ADQueryClients.FieldByName('id').AsString;
+    'WHERE account_type = 0 AND link = ' + ADQueryClients.FieldByName('id').AsString +
+    ' ORDER BY date_operation DESC';
   sql.Add(query);
   open;
 end;
@@ -582,12 +594,14 @@ end;
 //вывод операций клиента
 procedure TDataModuleMySQL.ADQueryClientsAfterGetRecord(DataSet: TADDataSet);
 begin
-RefreshOperationClient;
+  RefreshOperationClient;
+  BalanceClient := GetBalanceClient;
 end;
 
 procedure TDataModuleMySQL.ADQueryClientsAfterScroll(DataSet: TDataSet);
 begin
-RefreshOperationClient;
+  RefreshOperationClient;
+  BalanceClient := GetBalanceClient;
 end;
 
 //вывод операций фрилансров
@@ -626,5 +640,23 @@ begin
 end;
 end;
 
+//считаем баланс клиента
+function TDataModuleMySQL.GetBalanceClient: integer;
+var
+  sQuery: string;
+begin
+  with ADQuerySQL do
+  begin
+    close;
+    sql.Clear;
+    sQuery := 'SELECT SUM(operation) as bal FROM PERSONAL_ACCOUNT WHERE account_type = 0 AND link = '
+     + ADQueryClients.FieldByName('id').AsString;
+    sql.Add(sQuery);
+    open;
+    result := FieldByName('bal').AsInteger;
+
+  end;
+
+end;
 
 end.
