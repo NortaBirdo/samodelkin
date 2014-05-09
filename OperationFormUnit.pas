@@ -28,7 +28,7 @@ type
 
     var
     notes: string;
-
+    id_client: integer;
   end;
 
 var
@@ -43,6 +43,8 @@ uses DataModuleMySQLUnit;
 { TOperationForm }
 
 procedure TOperationForm.Button1Click(Sender: TObject);
+var
+  sum: integer;
 begin
 with CurrentDS.DataSet do
 begin
@@ -58,6 +60,7 @@ if LabelType.Caption = 'клиент' then
   begin
     FieldByName('account_type').Value := 1;
     FieldByName('link').Value := DataModuleMySQL.ADQueryTask.FieldByName('Id_1').AsInteger;
+    sum := StrToInt(DBEditSUM.Text);
     post;
 
     //перерасчет выплат по задаче и проекту
@@ -67,7 +70,14 @@ if LabelType.Caption = 'клиент' then
     DataModuleMySQL.CalcProjectBudget(DataModuleMySQL.GetIDProject);
     DataModuleMySQL.CalcProjectBalance(DataModuleMySQL.GetIDProject);
 
-    //списываем со счета клиента
+    //списываем с клиента
+    insert;
+    FieldByName('date_operation').Value := now;
+    FieldByName('account_type').Value := 0;
+    FieldByName('link').Value := id_client;
+    FieldByName('operation').Value := sum;
+    FieldByName('note').Value := notes;
+    post;
   end;
 
 end;

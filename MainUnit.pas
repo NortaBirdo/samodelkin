@@ -279,6 +279,9 @@ begin
   OperationForm.LabelType.caption := 'фрилансер';
   OperationForm.LabelName.Caption := DataModuleMySQL.ADQueryTask.FieldByName('fio').AsString;
   OperationForm.SetDataSet(DataModuleMySQL.DataSourceFreelancerAccount);
+
+  OperationForm.id_client := DataModuleMySQL.ADQueryProject.FieldByName('client_link').AsInteger;
+
   OperationForm.notes := 'Выплата по проекту: ' + DataModuleMySQL.ADQueryProject.FieldByName('caption').AsString +
     ', задаче: ' + DataModuleMySQL.ADQueryTask.FieldByName('caption').AsString;
 
