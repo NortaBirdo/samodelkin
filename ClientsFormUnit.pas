@@ -93,17 +93,20 @@ DataModuleMySQL.ADQueryClients.Post;
 DataModuleMySQL.RefreshClient;
 end;
 
-//добавление нового клиента
+//Обновление баланса
 procedure TClientsForm.DBGrid1CellClick(Column: TColumn);
 begin
+  DataModuleMySQL.FirstStart := false;
   ClientsForm.BalLabel.Caption := IntToStr(DataModuleMySQL.BalanceClient);
 end;
 
 procedure TClientsForm.FormShow(Sender: TObject);
 begin
+  DataModuleMySQL.FirstStart := false;
   ClientsForm.BalLabel.Caption := IntToStr(DataModuleMySQL.BalanceClient);
 end;
 
+//добавление нового клиента
 procedure TClientsForm.ToolBtnAddClick(Sender: TObject);
 begin
  DataModuleMySQL.ADQueryClients.Insert;

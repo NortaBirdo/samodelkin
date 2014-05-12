@@ -33,6 +33,7 @@ type
     procedure ToolBtnAddClick(Sender: TObject);
     procedure ToolBtnSaveClick(Sender: TObject);
     procedure DBGrid1CellClick(Column: TColumn);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
   public
@@ -71,7 +72,14 @@ end;
 
 procedure TFreelanceForm.DBGrid1CellClick(Column: TColumn);
 begin
-DataModuleMySQL.RefreshOperationFl;
+  DataModuleMySQL.RefreshOperationFl;
+  BalanceLabel.Caption := IntToStr(DataModuleMySQL.GetBalance);
+end;
+
+procedure TFreelanceForm.FormShow(Sender: TObject);
+begin
+  DataModuleMySQL.FirstStart := false;
+  BalanceLabel.Caption := IntToStr(DataModuleMySQL.GetBalance);
 end;
 
 procedure TFreelanceForm.ToolBtnAddClick(Sender: TObject);

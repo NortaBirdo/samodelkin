@@ -97,7 +97,7 @@ type
     procedure CalcTaskSalary(sum: integer);
     procedure RefreshOperationFL;
     procedure RefreshOperationClient;
-    procedure GetBalance;
+    function GetBalance: integer;
     function GetBalanceClient: integer;
 
     //смена задачи
@@ -106,6 +106,7 @@ type
 
     var
       BalanceClient: integer;
+      FirstStart: boolean;
 
  end;
 
@@ -116,7 +117,7 @@ implementation
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
-uses DataModuleSQLite, ClientsFormUnit;
+uses DataModuleSQLite, ClientsFormUnit, FreelanceFormUnit;
 
 {$R *.dfm}
 //====================================================================
@@ -150,6 +151,8 @@ begin
   Add('DriverID=MySQL');
 end;
 
+FirstStart := true;
+
 ADConnection1.Connected := true;
 ADQueryClients.Active := true;
 ADQueryClientList.Active := true;
@@ -158,6 +161,8 @@ ADQueryProject.Active := true;
 ADQueryClientAccount.Active := true;
 ADQueryFreelancerAccount.Active := true;
 ADQueryMindTape.Active := true;
+
+
 end;
 
 //поддержание соединения
@@ -591,11 +596,14 @@ begin
 end;
 end;
 
-//вывод операций клиента
+//вывод операций баланса клиента
 procedure TDataModuleMySQL.ADQueryClientsAfterGetRecord(DataSet: TADDataSet);
 begin
   RefreshOperationClient;
   BalanceClient := GetBalanceClient;
+
+  if not FirstStart then ClientsForm.BalLabel.Caption := IntToStr(BalanceClient);
+
 end;
 
 procedure TDataModuleMySQL.ADQueryClientsAfterScroll(DataSet: TDataSet);
@@ -603,43 +611,54 @@ begin
   RefreshOperationClient;
   BalanceClient := GetBalanceClient;
 
+  if not FirstStart then ClientsForm.BalLabel.Caption := IntToStr(BalanceClient);
+
+
 end;
 
-//вывод операций фрилансров
+//вывод операций баланса фрилансеров
 procedure TDataModuleMySQL.ADQueryFreelancerAfterGetRecord(DataSet: TADDataSet);
 begin
-  RefreshOperationFL;
-  BalanceClient := GetBalanceClient;
+  if not FirstStart then FreelanceForm.BalanceLabel.Caption := IntToStr(GetBalance);
 
+  RefreshOperationFL;
 end;
 
 
 procedure TDataModuleMySQL.ADQueryFreelancerAfterScroll(DataSet: TDataSet);
 begin
+  if not FirstStart then FreelanceForm.BalanceLabel.Caption := IntToStr(GetBalance);
+
   RefreshOperationFL;
 end;
 
 //расчет баланса фрилансеров
-procedure TDataModuleMySQL.GetBalance;
+function TDataModuleMySQL.GetBalance: integer;
 var
 debet, kredit: integer;
+sQuery: string;
 begin
 with ADQuerySQL do
 begin
   close;
   sql.Clear;
-  sql.Add('SELECT SUM(operation) as kredit FROM PERSONAL_ACCOUNT WHERE account_type = 1 AND link = '
-   + ADQueryFreelancer.FieldByName('id').AsString);
+  sQuery := 'SELECT SUM(operation) as kredit FROM PERSONAL_ACCOUNT WHERE account_type = 1 AND link = '
+   + ADQueryFreelancer.FieldByName('id').AsString;
+
+  sql.Add(sQuery);
   open;
   kredit := FieldByName('kredit').AsInteger;
 
   close;
   sql.Clear;
-  sql.Add('SELECT SUM(budget) as debet FROM TASK WHERE link = '
-   + ADQueryFreelancer.FieldByName('id').AsString);
+
+  sQuery := 'SELECT SUM(budget) as debet FROM TASK WHERE freelancer_link = '
+   + ADQueryFreelancer.FieldByName('id').AsString;
+  sql.Add(sQuery);
   open;
   debet := FieldByName('debet').AsInteger;
 
+  result := debet - kredit;
 end;
 end;
 

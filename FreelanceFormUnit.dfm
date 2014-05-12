@@ -14,6 +14,7 @@ object FreelanceForm: TFreelanceForm
   Font.Style = []
   OldCreateOrder = False
   Position = poDesktopCenter
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
@@ -77,7 +78,6 @@ object FreelanceForm: TFreelanceForm
     Height = 33
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 1058
     object ToolBar1: TToolBar
       Left = 11
       Top = 2
