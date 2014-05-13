@@ -25,6 +25,8 @@ type
     DBGrid2: TDBGrid;
     Label3: TLabel;
     BalLabel: TLabel;
+    ToolButton1: TToolButton;
+    AddMoneyToolBtn: TToolButton;
     procedure ComboBox1Change(Sender: TObject);
     procedure ToolBtnAddClick(Sender: TObject);
     procedure ToolBtnSaveClick(Sender: TObject);
@@ -32,6 +34,7 @@ type
     procedure ToolBtnBlackListClick(Sender: TObject);
     procedure DBGrid1CellClick(Column: TColumn);
     procedure FormShow(Sender: TObject);
+    procedure AddMoneyToolBtnClick(Sender: TObject);
 
   private
     { Private declarations }
@@ -46,7 +49,17 @@ implementation
 
 {$R *.dfm}
 
-uses DataModuleMySQLUnit;
+uses DataModuleMySQLUnit, OperationFormUnit;
+
+//зачислить на счет
+procedure TClientsForm.AddMoneyToolBtnClick(Sender: TObject);
+begin
+  OperationForm.LabelType.caption := 'клиент';
+  OperationForm.LabelName.Caption := DataModuleMySQL.ADQueryClients.FieldByName('fio').AsString;
+  OperationForm.SetDataSet(DataModuleMySQL.DataSourceClientAccount);
+  OperationForm.notes := '«ачисление аванса';
+  OperationForm.ShowModal;
+end;
 
 procedure TClientsForm.ComboBox1Change(Sender: TObject);
 begin

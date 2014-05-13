@@ -411,6 +411,7 @@ end;
 procedure TMainForm.N30Click(Sender: TObject);
 begin
   MyTask.SetStatusTask(work, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
+  DataModuleMySQL.RefreshProject;
   DataModuleMySQL.RefreshTask;
   DataModuleMySQL.RefreshTape;
 end;
@@ -419,6 +420,7 @@ end;
 procedure TMainForm.N36Click(Sender: TObject);
 begin
   MyTask.SetStatusTask(prior, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
+  DataModuleMySQL.RefreshProject;
   DataModuleMySQL.RefreshTask;
   DataModuleMySQL.RefreshTape;
 end;
@@ -427,6 +429,7 @@ end;
 procedure TMainForm.N40Click(Sender: TObject);
 begin
   MyTask.SetStatusTask(wait, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
+  DataModuleMySQL.RefreshProject;
   DataModuleMySQL.RefreshTask;
   DataModuleMySQL.RefreshTape;
 end;
@@ -435,6 +438,7 @@ end;
 procedure TMainForm.N38Click(Sender: TObject);
 begin
   MyTask.SetStatusTask(Delayed, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
+  DataModuleMySQL.RefreshProject;
   DataModuleMySQL.RefreshTask;
   DataModuleMySQL.RefreshTape;
 end;
@@ -443,6 +447,7 @@ end;
 procedure TMainForm.N39Click(Sender: TObject);
 begin
   MyTask.SetStatusTask(Closer, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
+  DataModuleMySQL.RefreshProject;
   DataModuleMySQL.RefreshTask;
   DataModuleMySQL.RefreshTape;
 end;

@@ -157,10 +157,10 @@ object ClientsForm: TClientsForm
     object ToolBar1: TToolBar
       Left = 11
       Top = 2
-      Width = 390
+      Width = 574
       Height = 22
       ButtonHeight = 21
-      ButtonWidth = 91
+      ButtonWidth = 101
       Caption = 'ToolBar1'
       ShowCaptions = True
       TabOrder = 0
@@ -203,6 +203,21 @@ object ClientsForm: TClientsForm
         Caption = #1042' '#1095#1077#1088#1085#1099#1081' '#1089#1087#1080#1089#1086#1082
         ImageIndex = 3
         OnClick = ToolBtnBlackListClick
+      end
+      object ToolButton1: TToolButton
+        Left = 314
+        Top = 0
+        Width = 8
+        Caption = 'ToolButton1'
+        ImageIndex = 4
+        Style = tbsSeparator
+      end
+      object AddMoneyToolBtn: TToolButton
+        Left = 322
+        Top = 0
+        Caption = #1047#1072#1095#1080#1089#1083#1080#1090#1100' '#1085#1072' '#1089#1095#1077#1090
+        ImageIndex = 4
+        OnClick = AddMoneyToolBtnClick
       end
     end
   end
