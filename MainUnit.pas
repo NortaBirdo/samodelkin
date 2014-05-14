@@ -114,6 +114,7 @@ type
     procedure N42Click(Sender: TObject);
     procedure N44Click(Sender: TObject);
     procedure GitTextClick(Sender: TObject);
+    procedure N37Click(Sender: TObject);
 
 
   private
@@ -133,7 +134,7 @@ implementation
 
 uses SettingFormUnit, ClientsFormUnit, FreelanceFormUnit, DataModuleMySQLUnit,
   EditProjectFormUnit, EditTaskFormUnit, OperationFormUnit, Clipbrd,
-  TaskModelUnit;
+  TaskModelUnit, TrtansferTaskFormUnit;
 
 var
   MyTask: TTaskModel;
@@ -374,6 +375,8 @@ procedure TMainForm.N31Click(Sender: TObject);
 begin
   MyTask.SetStatusTask(work, DataModuleMySQL.ADQueryMindTape.FieldByName('id').AsInteger);
   DataModuleMySQL.RefreshTape;
+  DataModuleMySQL.RefreshProject;
+  DataModuleMySQL.RefreshTask;
 end;
 
 //таска -  приорите
@@ -381,6 +384,8 @@ procedure TMainForm.N32Click(Sender: TObject);
 begin
   MyTask.SetStatusTask(prior, DataModuleMySQL.ADQueryMindTape.FieldByName('id').AsInteger);
   DataModuleMySQL.RefreshTape;
+  DataModuleMySQL.RefreshProject;
+  DataModuleMySQL.RefreshTask;
 end;
 
 //таска - в ожидании заказчика
@@ -388,6 +393,8 @@ procedure TMainForm.N33Click(Sender: TObject);
 begin
   MyTask.SetStatusTask(wait, DataModuleMySQL.ADQueryMindTape.FieldByName('id').AsInteger);
   DataModuleMySQL.RefreshTape;
+  DataModuleMySQL.RefreshProject;
+  DataModuleMySQL.RefreshTask;
 end;
 
 //таска - отложена
@@ -395,6 +402,8 @@ procedure TMainForm.N34Click(Sender: TObject);
 begin
   MyTask.SetStatusTask(Delayed, DataModuleMySQL.ADQueryMindTape.FieldByName('id').AsInteger);
   DataModuleMySQL.RefreshTape;
+  DataModuleMySQL.RefreshProject;
+  DataModuleMySQL.RefreshTask;
 end;
 
 //таска - закрыта
@@ -402,6 +411,8 @@ procedure TMainForm.N35Click(Sender: TObject);
 begin
   MyTask.SetStatusTask(Closer, DataModuleMySQL.ADQueryMindTape.FieldByName('id').AsInteger);
   DataModuleMySQL.RefreshTape;
+  DataModuleMySQL.RefreshProject;
+  DataModuleMySQL.RefreshTask;
 end;
 
 //===========================================
@@ -454,6 +465,17 @@ end;
 
 //===========================
 //перенос задачи между проектами
+
+procedure TMainForm.N37Click(Sender: TObject);
+begin
+  TransferTaskForm.id_task := TaskGrid.DataSource.DataSet.FieldByName('id').AsInteger;
+  TransferTaskForm.ShowModal;
+
+  DataModuleMySQL.RefreshProject;
+  DataModuleMySQL.RefreshTask;
+  DataModuleMySQL.RefreshTape;
+end;
+
 
 procedure MyClick(Sender: TObject);
 begin

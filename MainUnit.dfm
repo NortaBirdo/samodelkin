@@ -23,7 +23,7 @@ object MainForm: TMainForm
     Top = 0
     Width = 1093
     Height = 603
-    ActivePage = ProjectTaskSheet
+    ActivePage = MindTapeSheet
     Align = alClient
     TabOrder = 0
     object MindTapeSheet: TTabSheet
@@ -637,6 +637,7 @@ object MainForm: TMainForm
     end
     object N37: TMenuItem
       Caption = #1055#1077#1088#1077#1085#1086#1089' '#1079#1072#1076#1072#1095#1080
+      OnClick = N37Click
     end
     object N43: TMenuItem
       Caption = '-'

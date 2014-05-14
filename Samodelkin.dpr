@@ -11,7 +11,9 @@ uses
   EditProjectFormUnit in 'EditProjectFormUnit.pas' {EditProjectForm},
   EditTaskFormUnit in 'EditTaskFormUnit.pas' {EditTaskForm},
   OperationFormUnit in 'OperationFormUnit.pas' {OperationForm},
-  TaskModelUnit in 'TaskModelUnit.pas';
+  TaskModelUnit in 'TaskModelUnit.pas',
+  TrtansferTaskFormUnit in 'TrtansferTaskFormUnit.pas' {TransferTaskForm},
+  TransferTaskModelUnit in 'TransferTaskModelUnit.pas' {TransferTaskModel: TDataModule};
 
 {$R *.res}
 
@@ -27,5 +29,7 @@ begin
   Application.CreateForm(TEditProjectForm, EditProjectForm);
   Application.CreateForm(TEditTaskForm, EditTaskForm);
   Application.CreateForm(TOperationForm, OperationForm);
+  Application.CreateForm(TTransferTaskForm, TransferTaskForm);
+  Application.CreateForm(TTransferTaskModel, TransferTaskModel);
   Application.Run;
 end.

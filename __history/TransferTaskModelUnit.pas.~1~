@@ -1,0 +1,31 @@
+unit TransferTaskModelUnit;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, uADStanIntf, uADStanOption, uADStanParam,
+  uADStanError, uADDatSManager, uADPhysIntf, uADDAptIntf, uADStanAsync,
+  uADDAptManager, Data.DB, uADCompDataSet, uADCompClient;
+
+type
+  TTransferTaskModel = class(TDataModule)
+    ADQueryProjectList: TADQuery;
+    DataSource1: TDataSource;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  TransferTaskModel: TTransferTaskModel;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+uses DataModuleMySQLUnit;
+
+{$R *.dfm}
+
+end.

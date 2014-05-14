@@ -165,7 +165,6 @@ object DataModuleMySQL: TDataModuleMySQL
     Top = 376
   end
   object ADQueryMindTape: TADQuery
-    Active = True
     Connection = ADConnection1
     SQL.Strings = (
       'SELECT T.*, P.* FROM TASK T, PROJECT P'
