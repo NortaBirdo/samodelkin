@@ -69,6 +69,7 @@ object MainForm: TMainForm
         TitleFont.Name = 'Tahoma'
         TitleFont.Style = []
         OnDrawColumnCell = TaskTapeDrawColumnCell
+        OnTitleClick = TaskTapeTitleClick
         Columns = <
           item
             Expanded = False

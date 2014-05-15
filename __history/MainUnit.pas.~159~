@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.Grids, Vcl.DBGrids,
-  Vcl.StdCtrls, Vcl.DBCtrls, Vcl.Mask, Vcl.ComCtrls, DB;
+  Vcl.StdCtrls, Vcl.DBCtrls, Vcl.Mask, Vcl.ComCtrls, DB, ShellAPI;
 
 type
   TMainForm = class(TForm)
@@ -35,7 +35,7 @@ type
     Label3: TLabel;
     Label4: TLabel;
     Label5: TLabel;
-    DBText1: TDBText;
+    GitText: TDBText;
     Label6: TLabel;
     ProjectGrid: TDBGrid;
     TaskGrid: TDBGrid;
@@ -113,6 +113,8 @@ type
     procedure N41Click(Sender: TObject);
     procedure N42Click(Sender: TObject);
     procedure N44Click(Sender: TObject);
+    procedure GitTextClick(Sender: TObject);
+    procedure N37Click(Sender: TObject);
 
 
   private
@@ -132,7 +134,7 @@ implementation
 
 uses SettingFormUnit, ClientsFormUnit, FreelanceFormUnit, DataModuleMySQLUnit,
   EditProjectFormUnit, EditTaskFormUnit, OperationFormUnit, Clipbrd,
-  TaskModelUnit;
+  TaskModelUnit, TrtansferTaskFormUnit;
 
 var
   MyTask: TTaskModel;
@@ -184,6 +186,13 @@ procedure TMainForm.FormCreate(Sender: TObject);
 begin
   PageControl1.TabIndex := 0;
   MyTask := TTaskModel.Create(DataModuleMySQL.ADConnection1);
+end;
+
+//переход по ссылке git
+procedure TMainForm.GitTextClick(Sender: TObject);
+begin
+if GitText.Caption <> '' then
+  ShellExecute(Handle, 'open', PChar(GitText.Caption), nil, nil, SW_SHOW);
 end;
 
 //==========================================
@@ -261,6 +270,7 @@ begin
   OperationForm.LabelType.caption := 'клиент';
   OperationForm.LabelName.Caption := DataModuleMySQL.ADQueryProject.FieldByName('cl_fio').AsString;
   OperationForm.SetDataSet(DataModuleMySQL.DataSourceClientAccount);
+  OperationForm.notes := '¬нос по проекту ' + DataModuleMySQL.ADQueryProject.FieldByName('caption').AsString;
   OperationForm.ShowModal;
 end;
 
@@ -268,7 +278,14 @@ end;
 procedure TMainForm.N17Click(Sender: TObject);
 begin
   OperationForm.LabelType.caption := 'фрилансер';
+  OperationForm.LabelName.Caption := DataModuleMySQL.ADQueryTask.FieldByName('fio').AsString;
   OperationForm.SetDataSet(DataModuleMySQL.DataSourceFreelancerAccount);
+
+  OperationForm.id_client := DataModuleMySQL.ADQueryProject.FieldByName('client_link').AsInteger;
+
+  OperationForm.notes := '¬ыплата по проекту: ' + DataModuleMySQL.ADQueryProject.FieldByName('caption').AsString +
+    ', задаче: ' + DataModuleMySQL.ADQueryTask.FieldByName('caption').AsString;
+
   OperationForm.ShowModal;
   DataModuleMySQL.ADQueryTask.Refresh;
 end;
@@ -358,6 +375,8 @@ procedure TMainForm.N31Click(Sender: TObject);
 begin
   MyTask.SetStatusTask(work, DataModuleMySQL.ADQueryMindTape.FieldByName('id').AsInteger);
   DataModuleMySQL.RefreshTape;
+  DataModuleMySQL.RefreshProject;
+  DataModuleMySQL.RefreshTask;
 end;
 
 //таска -  приорите
@@ -365,6 +384,8 @@ procedure TMainForm.N32Click(Sender: TObject);
 begin
   MyTask.SetStatusTask(prior, DataModuleMySQL.ADQueryMindTape.FieldByName('id').AsInteger);
   DataModuleMySQL.RefreshTape;
+  DataModuleMySQL.RefreshProject;
+  DataModuleMySQL.RefreshTask;
 end;
 
 //таска - в ожидании заказчика
@@ -372,6 +393,8 @@ procedure TMainForm.N33Click(Sender: TObject);
 begin
   MyTask.SetStatusTask(wait, DataModuleMySQL.ADQueryMindTape.FieldByName('id').AsInteger);
   DataModuleMySQL.RefreshTape;
+  DataModuleMySQL.RefreshProject;
+  DataModuleMySQL.RefreshTask;
 end;
 
 //таска - отложена
@@ -379,6 +402,8 @@ procedure TMainForm.N34Click(Sender: TObject);
 begin
   MyTask.SetStatusTask(Delayed, DataModuleMySQL.ADQueryMindTape.FieldByName('id').AsInteger);
   DataModuleMySQL.RefreshTape;
+  DataModuleMySQL.RefreshProject;
+  DataModuleMySQL.RefreshTask;
 end;
 
 //таска - закрыта
@@ -386,6 +411,8 @@ procedure TMainForm.N35Click(Sender: TObject);
 begin
   MyTask.SetStatusTask(Closer, DataModuleMySQL.ADQueryMindTape.FieldByName('id').AsInteger);
   DataModuleMySQL.RefreshTape;
+  DataModuleMySQL.RefreshProject;
+  DataModuleMySQL.RefreshTask;
 end;
 
 //===========================================
@@ -395,6 +422,7 @@ end;
 procedure TMainForm.N30Click(Sender: TObject);
 begin
   MyTask.SetStatusTask(work, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
+  DataModuleMySQL.RefreshProject;
   DataModuleMySQL.RefreshTask;
   DataModuleMySQL.RefreshTape;
 end;
@@ -403,6 +431,7 @@ end;
 procedure TMainForm.N36Click(Sender: TObject);
 begin
   MyTask.SetStatusTask(prior, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
+  DataModuleMySQL.RefreshProject;
   DataModuleMySQL.RefreshTask;
   DataModuleMySQL.RefreshTape;
 end;
@@ -411,6 +440,7 @@ end;
 procedure TMainForm.N40Click(Sender: TObject);
 begin
   MyTask.SetStatusTask(wait, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
+  DataModuleMySQL.RefreshProject;
   DataModuleMySQL.RefreshTask;
   DataModuleMySQL.RefreshTape;
 end;
@@ -419,6 +449,7 @@ end;
 procedure TMainForm.N38Click(Sender: TObject);
 begin
   MyTask.SetStatusTask(Delayed, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
+  DataModuleMySQL.RefreshProject;
   DataModuleMySQL.RefreshTask;
   DataModuleMySQL.RefreshTape;
 end;
@@ -427,12 +458,24 @@ end;
 procedure TMainForm.N39Click(Sender: TObject);
 begin
   MyTask.SetStatusTask(Closer, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
+  DataModuleMySQL.RefreshProject;
   DataModuleMySQL.RefreshTask;
   DataModuleMySQL.RefreshTape;
 end;
 
 //===========================
 //перенос задачи между проектами
+
+procedure TMainForm.N37Click(Sender: TObject);
+begin
+  TransferTaskForm.id_task := TaskGrid.DataSource.DataSet.FieldByName('id').AsInteger;
+  TransferTaskForm.ShowModal;
+
+  DataModuleMySQL.RefreshProject;
+  DataModuleMySQL.RefreshTask;
+  DataModuleMySQL.RefreshTape;
+end;
+
 
 procedure MyClick(Sender: TObject);
 begin

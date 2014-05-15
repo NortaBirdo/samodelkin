@@ -97,12 +97,20 @@ type
     procedure CalcTaskSalary(sum: integer);
     procedure RefreshOperationFL;
     procedure RefreshOperationClient;
-    procedure GetBalance;
+    function GetBalance: integer;
     function GetBalanceClient: integer;
 
     //смена задачи
 //    procedure SetStatusTask(newStatus: TStatusTask);
     procedure RefreshTape;
+
+    //сортировка ленты
+    procedure SortById;
+    procedure SortByTask;
+    procedure SortByPriorTask;
+    procedure SortByDeadline;
+    procedure SortByProject;
+    procedure SortByPriorProject;
 
     var
       BalanceClient: integer;
@@ -117,7 +125,7 @@ implementation
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
-uses DataModuleSQLite, ClientsFormUnit;
+uses DataModuleSQLite, ClientsFormUnit, FreelanceFormUnit;
 
 {$R *.dfm}
 //====================================================================
@@ -596,7 +604,7 @@ begin
 end;
 end;
 
-//вывод операций клиента
+//вывод операций баланса клиента
 procedure TDataModuleMySQL.ADQueryClientsAfterGetRecord(DataSet: TADDataSet);
 begin
   RefreshOperationClient;
@@ -616,40 +624,49 @@ begin
 
 end;
 
-//вывод операций фрилансров
+//вывод операций баланса фрилансеров
 procedure TDataModuleMySQL.ADQueryFreelancerAfterGetRecord(DataSet: TADDataSet);
 begin
+  if not FirstStart then FreelanceForm.BalanceLabel.Caption := IntToStr(GetBalance);
+
   RefreshOperationFL;
-  BalanceClient := GetBalanceClient;
 end;
 
 
 procedure TDataModuleMySQL.ADQueryFreelancerAfterScroll(DataSet: TDataSet);
 begin
+  if not FirstStart then FreelanceForm.BalanceLabel.Caption := IntToStr(GetBalance);
+
   RefreshOperationFL;
 end;
 
 //расчет баланса фрилансеров
-procedure TDataModuleMySQL.GetBalance;
+function TDataModuleMySQL.GetBalance: integer;
 var
 debet, kredit: integer;
+sQuery: string;
 begin
 with ADQuerySQL do
 begin
   close;
   sql.Clear;
-  sql.Add('SELECT SUM(operation) as kredit FROM PERSONAL_ACCOUNT WHERE account_type = 1 AND link = '
-   + ADQueryFreelancer.FieldByName('id').AsString);
+  sQuery := 'SELECT SUM(operation) as kredit FROM PERSONAL_ACCOUNT WHERE account_type = 1 AND link = '
+   + ADQueryFreelancer.FieldByName('id').AsString;
+
+  sql.Add(sQuery);
   open;
   kredit := FieldByName('kredit').AsInteger;
 
   close;
   sql.Clear;
-  sql.Add('SELECT SUM(budget) as debet FROM TASK WHERE link = '
-   + ADQueryFreelancer.FieldByName('id').AsString);
+
+  sQuery := 'SELECT SUM(budget) as debet FROM TASK WHERE freelancer_link = '
+   + ADQueryFreelancer.FieldByName('id').AsString;
+  sql.Add(sQuery);
   open;
   debet := FieldByName('debet').AsInteger;
 
+  result := debet - kredit;
 end;
 end;
 
@@ -669,6 +686,68 @@ begin
     result := FieldByName('bal').AsInteger;
 
   end;
+
+end;
+
+//========================================
+//сортировка в ленте
+
+
+procedure TDataModuleMySQL.SortByDeadline;
+var
+  sQuery: string;
+begin
+
+  with ADQueryMindTape do
+  begin
+    Close;
+    SQl.Clear;
+
+    sQuery := 'SELECT T.*, P.* FROM TASK T, PROJECT P WHERE T.status <> ' + QuotedStr('закрыта') +
+      ' AND T.status <> ' + QuotedStr('отложена')+
+      ' AND T.project_link = P.id AND P.status <> ' + QuotedStr('закрыт') + ' AND P.status <> ' +
+      QuotedStr('отменен') + ' ORDER BY T.deadline DESC';
+    SQL.Add(sQuery);
+    Open;
+  end;
+end;
+
+procedure TDataModuleMySQL.SortById;
+var
+  sQuery: string;
+begin
+
+  with ADQueryMindTape do
+  begin
+    Close;
+    SQl.Clear;
+
+    sQuery := 'SELECT T.*, P.* FROM TASK T, PROJECT P WHERE T.status <> ' + QuotedStr('закрыта') +
+      ' AND T.status <> ' + QuotedStr('отложена')+
+      ' AND T.project_link = P.id AND P.status <> ' + QuotedStr('закрыт') + ' AND P.status <> ' +
+      QuotedStr('отменен') + ' ORDER BY T.ID ASC';
+    SQL.Add(sQuery);
+    Open;
+  end;
+end;
+
+procedure TDataModuleMySQL.SortByPriorProject;
+begin
+
+end;
+
+procedure TDataModuleMySQL.SortByPriorTask;
+begin
+
+end;
+
+procedure TDataModuleMySQL.SortByProject;
+begin
+
+end;
+
+procedure TDataModuleMySQL.SortByTask;
+begin
 
 end;
 

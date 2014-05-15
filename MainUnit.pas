@@ -115,6 +115,7 @@ type
     procedure N44Click(Sender: TObject);
     procedure GitTextClick(Sender: TObject);
     procedure N37Click(Sender: TObject);
+    procedure TaskTapeTitleClick(Column: TColumn);
 
 
   private
@@ -316,6 +317,40 @@ if (TaskTape.DataSource.DataSet.FieldByName('deadline').AsDateTime < now)  AND
   end;
 
 TaskTape.DefaultDrawColumnCell(Rect,DataCol,Column,State);
+end;
+
+//сортировка по столбцам
+procedure TMainForm.TaskTapeTitleClick(Column: TColumn);
+begin
+  if Column.Title.Caption = '#' then
+  begin
+    DataModuleMySQL.SortById;
+  end;
+
+  if Column.Title.Caption = 'Задача' then
+  begin
+    DataModuleMySQL.SortByTask;
+  end;
+
+  if Column.Title.Caption = 'Статус задачи' then
+  begin
+    DataModuleMySQL.SortByPriorTask;
+  end;
+
+  if Column.Title.Caption = 'Deadline' then
+  begin
+    DataModuleMySQL.SortByDeadline;
+  end;
+
+  if Column.Title.Caption = 'Проект' then
+  begin
+    DataModuleMySQL.SortByProject;
+  end;
+
+  if Column.Title.Caption = 'Статус проекта' then
+  begin
+    DataModuleMySQL.SortByPriorProject;
+  end;
 end;
 
 //покраска проектов
