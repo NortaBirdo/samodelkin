@@ -1,0 +1,240 @@
+unit ProjectModelUnit;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, uADStanIntf, uADStanOption, uADStanParam,
+  uADStanError, uADDatSManager, uADPhysIntf, uADDAptIntf, uADStanAsync,
+  uADDAptManager, Data.DB, uADCompDataSet, uADCompClient;
+
+type
+  TProjectModel = class(TDataModule)
+    ADQueryProject: TADQuery;
+    DataSourceProject: TDataSource;
+    ADQueryProjectSuch: TADQuery;
+    ADQuerySQL: TADQuery;
+    procedure ADQueryProjectAfterGetRecord(DataSet: TADDataSet);
+    procedure ADQueryProjectAfterScroll(DataSet: TDataSet);
+    procedure ADQueryProjectAfterRefresh(DataSet: TDataSet);
+    procedure DataModuleCreate(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    procedure SetStatusWork;
+    procedure SetStatusFreeze;
+    procedure SetStatusPrior;
+    procedure SetStatusClose;
+    procedure SetStatusCancel;
+
+    procedure SetClient(id: integer);
+    procedure RefreshProject;
+    procedure ShowAllActiveProject;
+    procedure ShowWorkProject;
+    procedure ShowFreezProject;
+    procedure ShowPriorProject;
+    procedure ShowCloseProject;
+    procedure ShowCancelProject;
+    function GetIDProject: integer;
+
+    procedure CalcProjectBalance(id: integer);
+    procedure CalcProjectBudget(id: integer);
+    procedure CalcProjectSalary;
+  end;
+
+var
+  ProjectModel: TProjectModel;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+uses DataModuleMySQLUnit;
+
+{$R *.dfm}
+
+{ TDataModule1 }
+
+//управление статусами.
+
+procedure TProjectModel.SetStatusCancel;
+begin
+  ADQueryProject.FieldByName('status').Value := 'отменен';
+  ADQueryProject.Post;
+end;
+
+procedure TProjectModel.SetStatusClose;
+begin
+  ADQueryProject.FieldByName('status').Value := 'закрыт';
+  ADQueryProject.Post;
+end;
+
+procedure TProjectModel.SetStatusFreeze;
+begin
+  ADQueryProject.FieldByName('status').Value := 'заморожен';
+  ADQueryProject.Post;
+end;
+
+procedure TProjectModel.SetStatusPrior;
+begin
+  ADQueryProject.FieldByName('status').Value := 'приоритет';
+  ADQueryProject.Post;
+end;
+
+procedure TProjectModel.SetStatusWork;
+begin
+  ADQueryProject.FieldByName('status').Value := 'в работе';
+  ADQueryProject.Post;
+end;
+
+procedure TProjectModel.SetClient(id: integer);
+begin
+  ADQueryProject.Edit;
+  ADQueryProject.FieldByName('client_link').Value := id;
+end;
+
+procedure TProjectModel.RefreshProject;
+begin
+  ADQueryProject.Refresh;
+end;
+
+procedure TProjectModel.ShowAllActiveProject;
+begin
+  with ADQueryProject do
+  begin
+    close;
+    sql.Clear;
+    sql.Add('SELECT P.*, CLIENT.fio as cl_fio, CLIENT.id FROM PROJECT P, CLIENT WHERE '+
+      'P.status <> ' + QuotedStr('Отменен') + ' AND P.status <> ' + QuotedStr('закрыт') +
+      ' AND CLIENT.id = P.client_link');
+    open;
+  end;
+end;
+
+procedure TProjectModel.ShowCancelProject;
+begin
+  with ADQueryProject do
+  begin
+    close;
+    sql.Clear;
+    sql.Add('SELECT P.*, CLIENT.fio as cl_fio, CLIENT.id FROM PROJECT P, CLIENT WHERE '+
+      'P.status = ' + QuotedStr('отменен') + ' AND CLIENT.id = P.client_link');
+    open;
+  end;
+end;
+
+procedure TProjectModel.ShowCloseProject;
+begin
+  with ADQueryProject do
+  begin
+    close;
+    sql.Clear;
+    sql.Add('SELECT P.*, CLIENT.fio as cl_fio, CLIENT.id FROM PROJECT P, CLIENT WHERE '+
+      'P.status = ' + QuotedStr('закрыт') + ' AND CLIENT.id = P.client_link');
+    open;
+  end;
+end;
+
+procedure TProjectModel.ShowFreezProject;
+begin
+  with ADQueryProject do
+  begin
+    close;
+    sql.Clear;
+    sql.Add('SELECT P.*, CLIENT.fio as cl_fio, CLIENT.id FROM PROJECT P, CLIENT WHERE '+
+      'P.status = ' + QuotedStr('заморожен') + ' AND CLIENT.id = P.client_link');
+    open;
+  end;
+end;
+
+procedure TProjectModel.ShowPriorProject;
+begin
+  with ADQueryProject do
+  begin
+    close;
+    sql.Clear;
+    sql.Add('SELECT P.*, CLIENT.fio as cl_fio, CLIENT.id FROM PROJECT P, CLIENT WHERE '+
+      'P.status = ' + QuotedStr('приоритет') + ' AND CLIENT.id = P.client_link');
+    open;
+  end;
+end;
+
+procedure TProjectModel.ShowWorkProject;
+begin
+  with ADQueryProject do
+  begin
+    close;
+    sql.Clear;
+    sql.Add('SELECT P.*, CLIENT.fio as cl_fio, CLIENT.id FROM PROJECT P, CLIENT WHERE '+
+      'P.status = ' + QuotedStr('в работе') + ' AND CLIENT.id = P.client_link');
+    open;
+  end;
+end;
+
+procedure TProjectModel.ADQueryProjectAfterGetRecord(DataSet: TADDataSet);
+begin
+  DataModuleMySQL.GetTasks;
+end;
+
+procedure TProjectModel.ADQueryProjectAfterRefresh(DataSet: TDataSet);
+begin
+  DataModuleMySQL.GetTasks;
+end;
+
+procedure TProjectModel.ADQueryProjectAfterScroll(DataSet: TDataSet);
+begin
+  DataModuleMySQL.GetTasks;
+end;
+
+procedure TProjectModel.CalcProjectBalance(id: integer);
+begin
+with ADQueryProject do
+  begin
+  edit;
+  FieldByName('balance').Value := FieldByName('salary').AsInteger - FieldByName('budget').AsInteger;
+  post;
+  end;
+end;
+
+procedure TProjectModel.CalcProjectBudget(id: integer);
+begin
+ADQueryProject.Edit;
+
+with ADQuerySQL do
+begin
+  close;
+  sql.Clear;
+  sql.Add('SELECT SUM(budget) AS total_budget FROM TASK WHERE project_link = ' + IntToStr(id));
+  open;
+end;
+ADQueryProject.FieldByName('budget').Value := ADQuerySQL.FieldByName('total_budget').AsInteger;
+ADQueryProject.Post;
+
+end;
+
+procedure TProjectModel.CalcProjectSalary;
+begin
+ADQueryProject.Edit;
+
+with ADQuerySQL do
+begin
+  close;
+  sql.Clear;
+  sql.Add('SELECT SUM(salary) AS total_salary FROM TASK WHERE project_link = ' + ADQueryProject.FieldByName('id').AsString);
+  open;
+end;
+
+ADQueryProject.FieldByName('salary').Value := ADQuerySQL.FieldByName('total_salary').AsInteger;
+ADQueryProject.Post;
+end;
+
+procedure TProjectModel.DataModuleCreate(Sender: TObject);
+begin
+  ADQueryProject.Active;
+end;
+
+function TProjectModel.GetIDProject: integer;
+begin
+  result := ADQueryProject.FieldByName('id').AsInteger;
+end;
+
+end.

@@ -1,0 +1,68 @@
+unit ProjectModelUnit;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, uADStanIntf, uADStanOption, uADStanParam,
+  uADStanError, uADDatSManager, uADPhysIntf, uADDAptIntf, uADStanAsync,
+  uADDAptManager, Data.DB, uADCompDataSet, uADCompClient;
+
+type
+  TDataModule1 = class(TDataModule)
+    ADQueryProject: TADQuery;
+    DataSourceProject: TDataSource;
+    ADQueryProjectSuch: TADQuery;
+  private
+    { Private declarations }
+  public
+    procedure SetStatusWork;
+    procedure SetStatusFreeze;
+    procedure SetStatusPrior;
+    procedure SetStatusClose;
+    procedure SetStatusCancel;
+  end;
+
+var
+  DataModule1: TDataModule1;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+{ TDataModule1 }
+
+//управление статусами.
+
+procedure TDataModule1.SetStatusCancel;
+begin
+  ADQueryProject.FieldByName('status').Value := 'отменен';
+  ADQueryProject.Post;
+end;
+
+procedure TDataModule1.SetStatusClose;
+begin
+  ADQueryProject.FieldByName('status').Value := 'закрыт';
+  ADQueryProject.Post;
+end;
+
+procedure TDataModule1.SetStatusFreeze;
+begin
+  ADQueryProject.FieldByName('status').Value := 'заморожен';
+  ADQueryProject.Post;
+end;
+
+procedure TDataModule1.SetStatusPrior;
+begin
+  ADQueryProject.FieldByName('status').Value := 'приоритет';
+  ADQueryProject.Post;
+end;
+
+procedure TDataModule1.SetStatusWork;
+begin
+  ADQueryProject.FieldByName('status').Value := 'в работе';
+  ADQueryProject.Post;
+end;
+
+end.

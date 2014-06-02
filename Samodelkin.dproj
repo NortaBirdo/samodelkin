@@ -138,8 +138,8 @@
             <Form>TransferTaskForm</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="TransferTaskModelUnit.pas">
-            <Form>TransferTaskModel</Form>
+        <DCCReference Include="ProjectModelUnit.pas">
+            <Form>ProjectModel</Form>
             <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>

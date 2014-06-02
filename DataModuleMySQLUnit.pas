@@ -19,8 +19,6 @@ type
     DataSource1: TDataSource;
     ADQueryFreelancer: TADQuery;
     DataSource2: TDataSource;
-    ADQueryProject: TADQuery;
-    DataSource3: TDataSource;
     ADQueryClientList: TADQuery;
     DataSourceClientList: TDataSource;
     ADQueryTime: TADQuery;
@@ -34,12 +32,8 @@ type
     DataSourceFreelancerAccount: TDataSource;
     ADQueryMindTape: TADQuery;
     DataSourceMindTape: TDataSource;
-    ADQueryProjectSuch: TADQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
-    procedure ADQueryProjectAfterGetRecord(DataSet: TADDataSet);
-    procedure ADQueryProjectAfterScroll(DataSet: TDataSet);
-    procedure ADQueryProjectAfterRefresh(DataSet: TDataSet);
     procedure ADQueryClientsAfterScroll(DataSet: TDataSet);
     procedure ADQueryFreelancerAfterGetRecord(DataSet: TADDataSet);
     procedure ADQueryFreelancerAfterScroll(DataSet: TDataSet);
@@ -68,16 +62,7 @@ type
     procedure ShowArchiveFreelancer;
     procedure ShowBlackListFreelancer;
     procedure RefreshFreelancer;
-    //проекты
-    procedure SetClient(id: integer);
-    procedure RefreshProject;
-    procedure ShowAllActiveProject;
-    procedure ShowWorkProject;
-    procedure ShowFreezProject;
-    procedure ShowPriorProject;
-    procedure ShowCloseProject;
-    procedure ShowCancelProject;
-    function GetIDProject: integer;
+
     //задачи
     procedure GetTasks;
     function GetIdTask:integer;
@@ -90,10 +75,7 @@ type
 
     //деньги
     procedure RegOperationClientBal(sum: string);
-    procedure CalcProjectBudget(id: integer);
-    procedure CalcProjectBalance(id: integer);
     procedure CalcTaskBalance;
-    procedure CalcProjectSalary;
     procedure CalcTaskSalary(sum: integer);
     procedure RefreshOperationFL;
     procedure RefreshOperationClient;
@@ -101,7 +83,6 @@ type
     function GetBalanceClient: integer;
 
     //смена задачи
-//    procedure SetStatusTask(newStatus: TStatusTask);
     procedure RefreshTape;
 
     //сортировка ленты
@@ -125,7 +106,7 @@ implementation
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
-uses DataModuleSQLite, ClientsFormUnit, FreelanceFormUnit;
+uses DataModuleSQLite, ClientsFormUnit, FreelanceFormUnit, ProjectModelUnit;
 
 {$R *.dfm}
 //====================================================================
@@ -165,7 +146,6 @@ ADConnection1.Connected := true;
 ADQueryClients.Active := true;
 ADQueryClientList.Active := true;
 ADQueryFreelancer.Active := true;
-ADQueryProject.Active := true;
 ADQueryClientAccount.Active := true;
 ADQueryFreelancerAccount.Active := true;
 ADQueryMindTape.Active := true;
@@ -300,99 +280,6 @@ begin
 result := ADQueryFreelancer.FieldByName('fio').AsString;
 end;
 
-//=========================================
-//проекты
-
-procedure TDataModuleMySQL.SetClient(id: integer);
-begin
-  ADQueryProject.Edit;
-  ADQueryProject.FieldByName('client_link').Value := id;
-end;
-
-procedure TDataModuleMySQL.RefreshProject;
-begin
-  ADQueryProject.Refresh;
-end;
-
-procedure TDataModuleMySQL.ShowAllActiveProject;
-begin
-  with ADQueryProject do
-  begin
-    close;
-    sql.Clear;
-    sql.Add('SELECT P.*, CLIENT.fio as cl_fio, CLIENT.id FROM PROJECT P, CLIENT WHERE '+
-      'P.status <> ' + QuotedStr('Отменен') + ' AND P.status <> ' + QuotedStr('закрыт') +
-      ' AND CLIENT.id = P.client_link');
-    open;
-  end;
-end;
-
-procedure TDataModuleMySQL.ShowCancelProject;
-begin
-  with ADQueryProject do
-  begin
-    close;
-    sql.Clear;
-    sql.Add('SELECT P.*, CLIENT.fio as cl_fio, CLIENT.id FROM PROJECT P, CLIENT WHERE '+
-      'P.status = ' + QuotedStr('отменен') + ' AND CLIENT.id = P.client_link');
-    open;
-  end;
-end;
-
-procedure TDataModuleMySQL.ShowCloseProject;
-begin
-  with ADQueryProject do
-  begin
-    close;
-    sql.Clear;
-    sql.Add('SELECT P.*, CLIENT.fio as cl_fio, CLIENT.id FROM PROJECT P, CLIENT WHERE '+
-      'P.status = ' + QuotedStr('закрыт') + ' AND CLIENT.id = P.client_link');
-    open;
-  end;
-end;
-
-procedure TDataModuleMySQL.ShowFreezProject;
-begin
-  with ADQueryProject do
-  begin
-    close;
-    sql.Clear;
-    sql.Add('SELECT P.*, CLIENT.fio as cl_fio, CLIENT.id FROM PROJECT P, CLIENT WHERE '+
-      'P.status = ' + QuotedStr('заморожен') + ' AND CLIENT.id = P.client_link');
-    open;
-  end;
-end;
-
-procedure TDataModuleMySQL.ShowPriorProject;
-begin
-  with ADQueryProject do
-  begin
-    close;
-    sql.Clear;
-    sql.Add('SELECT P.*, CLIENT.fio as cl_fio, CLIENT.id FROM PROJECT P, CLIENT WHERE '+
-      'P.status = ' + QuotedStr('приоритет') + ' AND CLIENT.id = P.client_link');
-    open;
-  end;
-end;
-
-procedure TDataModuleMySQL.ShowWorkProject;
-begin
-  with ADQueryProject do
-  begin
-    close;
-    sql.Clear;
-    sql.Add('SELECT P.*, CLIENT.fio as cl_fio, CLIENT.id FROM PROJECT P, CLIENT WHERE '+
-      'P.status = ' + QuotedStr('в работе') + ' AND CLIENT.id = P.client_link');
-    open;
-  end;
-end;
-
-function TDataModuleMySQL.GetIDProject: integer;
-begin
-  result := ADQueryProject.FieldByName('id').AsInteger;
-end;
-
-
 //======================================
 //работа с тасками
 
@@ -402,30 +289,6 @@ begin
 ShowCloseTask := show;
 end;
 
-//смена статуса у таски
-{procedure TDataModuleMySQL.SetStatusTask(newStatus: TStatusTask);
-var
-  sQuery: string;
-
-begin
-  case newStatus of
-  closer: sQuery := 'закрыта';
-  Work: sQuery := 'в работе';
-  Prior: sQuery := 'приоритет';
-  Delayed: sQuery := 'отложена';
-  Wait: sQuery := 'ожидаю заказчика';
-  end;
-
-  with ADQuerySQL do
-  begin
-    close;
-    sql.Clear;
-    squery := 'UPDATE TASK SET status = ' + QuotedStr(sQuery) + ' WHERE id = ' + ADQueryMindTape.FieldByName('id').AsString;
-    sql.Add(sQuery);
-    ExecSQL;
-  end;
-end;   }
-
 procedure TDataModuleMySQL.GetTasks;
 begin
   with ADQueryTask do
@@ -434,11 +297,16 @@ begin
     Sql.Clear;
 
     if ShowCloseTask then
-    Sql.Add('Select TASK.*, FREELANCER.Id, FREELANCER.fio from TASK, FREELANCER ' +
-      'WHERE TASK.freelancer_link = FREELANCER.id AND TASK.project_link = ' + IntToStr(GetIDProject))
+   { Sql.Add('Select TASK.*, FREELANCER.Id, FREELANCER.fio from TASK, FREELANCER ' +
+      'WHERE TASK.freelancer_link = FREELANCER.id AND TASK.project_link = ' + IntToStr(GetIDProject)) }
+     Sql.Add('Select TASK.*, FREELANCER.Id, FREELANCER.fio from TASK, FREELANCER ' +
+      'WHERE TASK.freelancer_link = FREELANCER.id AND TASK.project_link = ' + IntToStr(ProjectModel.GetIDProject))
     else
-    Sql.Add('Select TASK.*, FREELANCER.Id, FREELANCER.fio from TASK, FREELANCER ' +
+   { Sql.Add('Select TASK.*, FREELANCER.Id, FREELANCER.fio from TASK, FREELANCER ' +
       'WHERE TASK.freelancer_link = FREELANCER.id AND TASK.project_link = ' + IntToStr(GetIDProject) +
+      ' AND TASK.status <> ' + QuotedStr('закрыта'));   }
+     Sql.Add('Select TASK.*, FREELANCER.Id, FREELANCER.fio from TASK, FREELANCER ' +
+      'WHERE TASK.freelancer_link = FREELANCER.id AND TASK.project_link = ' + IntToStr(ProjectModel.GetIDProject) +
       ' AND TASK.status <> ' + QuotedStr('закрыта'));
     open;
   end;
@@ -447,22 +315,6 @@ end;
 function TDataModuleMySQL.GetIdTask: integer;
 begin
  result := DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger
-end;
-
-
-procedure TDataModuleMySQL.ADQueryProjectAfterGetRecord(DataSet: TADDataSet);
-begin
-  GetTasks;
-end;
-
-procedure TDataModuleMySQL.ADQueryProjectAfterRefresh(DataSet: TDataSet);
-begin
-  GetTasks;
-end;
-
-procedure TDataModuleMySQL.ADQueryProjectAfterScroll(DataSet: TDataSet);
-begin
-  GetTasks;
 end;
 
 function TDataModuleMySQL.GetSalaryTask: integer;
@@ -507,49 +359,6 @@ begin
  // ADQuery
 end;
 
-
-procedure TDataModuleMySQL.CalcProjectBalance(id: integer);
-begin
-with ADQueryProject do
-  begin
-  edit;
-  FieldByName('balance').Value := FieldByName('salary').AsInteger - FieldByName('budget').AsInteger;
-  post;
-  end;
-end;
-
-procedure TDataModuleMySQL.CalcProjectBudget(id: integer);
-begin
-ADQueryProject.Edit;
-
-with ADQuerySQL do
-begin
-  close;
-  sql.Clear;
-  sql.Add('SELECT SUM(budget) AS total_budget FROM TASK WHERE project_link = ' + IntToStr(id));
-  open;
-end;
-
-ADQueryProject.FieldByName('budget').Value := ADQuerySQL.FieldByName('total_budget').AsInteger;
-ADQueryProject.Post;
-
-end;
-
-procedure TDataModuleMySQL.CalcProjectSalary;
-begin
-ADQueryProject.Edit;
-
-with ADQuerySQL do
-begin
-  close;
-  sql.Clear;
-  sql.Add('SELECT SUM(salary) AS total_salary FROM TASK WHERE project_link = ' + ADQueryProject.FieldByName('id').AsString);
-  open;
-end;
-
-ADQueryProject.FieldByName('salary').Value := ADQuerySQL.FieldByName('total_salary').AsInteger;
-ADQueryProject.Post;
-end;
 
 procedure TDataModuleMySQL.CalcTaskBalance;
 begin
@@ -691,7 +500,6 @@ end;
 
 //========================================
 //сортировка в ленте
-
 
 procedure TDataModuleMySQL.SortByDeadline;
 var

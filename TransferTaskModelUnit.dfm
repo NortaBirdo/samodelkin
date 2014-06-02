@@ -21,7 +21,7 @@ object TransferTaskModel: TTransferTaskModel
   object ADQuerySQL: TADQuery
     Connection = DataModuleMySQL.ADConnection1
     Transaction = DataModuleMySQL.ADTransaction1
-    Left = 64
-    Top = 136
+    Left = 80
+    Top = 104
   end
 end

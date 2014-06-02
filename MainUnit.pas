@@ -77,6 +77,9 @@ type
     N42: TMenuItem;
     N43: TMenuItem;
     N44: TMenuItem;
+    N45: TMenuItem;
+    N46: TMenuItem;
+    N47: TMenuItem;
     procedure N5Click(Sender: TObject);
     procedure N7Click(Sender: TObject);
     procedure N8Click(Sender: TObject);
@@ -109,13 +112,14 @@ type
     procedure N38Click(Sender: TObject);
     procedure N39Click(Sender: TObject);
     procedure N40Click(Sender: TObject);
-    procedure PopupMenuTaskPopup(Sender: TObject);
     procedure N41Click(Sender: TObject);
     procedure N42Click(Sender: TObject);
     procedure N44Click(Sender: TObject);
     procedure GitTextClick(Sender: TObject);
     procedure N37Click(Sender: TObject);
     procedure TaskTapeTitleClick(Column: TColumn);
+    procedure N46Click(Sender: TObject);
+    procedure N47Click(Sender: TObject);
 
 
   private
@@ -135,7 +139,7 @@ implementation
 
 uses SettingFormUnit, ClientsFormUnit, FreelanceFormUnit, DataModuleMySQLUnit,
   EditProjectFormUnit, EditTaskFormUnit, OperationFormUnit, Clipbrd,
-  TaskModelUnit, TrtansferTaskFormUnit;
+  TaskModelUnit, TrtansferTaskFormUnit, ProjectModelUnit;
 
 var
   MyTask: TTaskModel;
@@ -151,9 +155,13 @@ begin
     MyTask.Free;
 
     DataModuleMySQL.RefreshTask;
-    DataModuleMySQL.CalcProjectBudget(DataModuleMySQL.ADQueryProject.FieldByName('id').AsInteger);
-    DataModuleMySQL.CalcProjectBalance(DataModuleMySQL.ADQueryProject.FieldByName('id').AsInteger);
-    DataModuleMySQL.RefreshProject;
+
+
+    ProjectModel.CalcProjectBudget(ProjectModel.ADQueryProject.FieldByName('id').AsInteger);
+    ProjectModel.CalcProjectBalance(ProjectModel.ADQueryProject.FieldByName('id').AsInteger);
+    ProjectModel.RefreshProject;
+
+    ProjectModel.RefreshProject;
   end;
 
 end;
@@ -202,27 +210,39 @@ end;
 //добавление проекта
 procedure TMainForm.N10Click(Sender: TObject);
 begin
-  DataModuleMySQL.ADQueryProject.Insert;
+  ProjectModel.ADQueryProject.Insert;
   EditProjectForm.ShowModal;
 
-  DataModuleMySQL.RefreshProject;
+  ProjectModel.RefreshProject;
   DataModuleMySQL.RefreshTape;
+end;
+
+procedure TMainForm.N46Click(Sender: TObject);
+begin
+  N10Click(sender);
 end;
 
 procedure TMainForm.N11Click(Sender: TObject);
 begin
   DataModuleMySQL.ADQueryTask.Insert;
-  DataModuleMySQL.SetProjectLink(DataModuleMySQL.GetIDProject);
+  DataModuleMySQL.SetProjectLink(ProjectModel.GetIDProject);
   EditTaskForm.ShowModal;
   DataModuleMySQL.RefreshTask;
   DataModuleMySQL.RefreshTape;
 end;
 
+
+procedure TMainForm.N47Click(Sender: TObject);
+begin
+  N12Click(sender);
+end;
+
+
 //переходы
 procedure TMainForm.N12Click(Sender: TObject);
 begin
   EditProjectForm.ShowModal;
-  DataModuleMySQL.RefreshProject;
+  ProjectModel.RefreshProject;
   DataModuleMySQL.RefreshTape;
 end;
 
@@ -256,22 +276,23 @@ procedure TMainForm.ComboBox1Change(Sender: TObject);
 begin
 
 case ComboBox1.ItemIndex of
-0: DataModuleMySQL.ShowAllActiveProject;
-1: DataModuleMySQL.ShowWorkProject;
-2: DataModuleMySQL.ShowFreezProject;
-3: DataModuleMySQL.ShowPriorProject;
-4: DataModuleMySQL.ShowCloseProject;
-5: DataModuleMySQL.ShowCancelProject;
+0: ProjectModel.ShowAllActiveProject;
+1: ProjectModel.ShowWorkProject;
+2: ProjectModel.ShowFreezProject;
+3: ProjectModel.ShowPriorProject;
+4: ProjectModel.ShowCloseProject;
+5: ProjectModel.ShowCancelProject;
 end;
+
 end;
 
 //оплата проекта
 procedure TMainForm.N16Click(Sender: TObject);
 begin
   OperationForm.LabelType.caption := 'клиент';
-  OperationForm.LabelName.Caption := DataModuleMySQL.ADQueryProject.FieldByName('cl_fio').AsString;
+  OperationForm.LabelName.Caption := ProjectModel.ADQueryProject.FieldByName('cl_fio').AsString;
   OperationForm.SetDataSet(DataModuleMySQL.DataSourceClientAccount);
-  OperationForm.notes := 'Внос по проекту ' + DataModuleMySQL.ADQueryProject.FieldByName('caption').AsString;
+  OperationForm.notes := 'Внос по проекту ' + ProjectModel.ADQueryProject.FieldByName('caption').AsString;
   OperationForm.ShowModal;
 end;
 
@@ -281,10 +302,8 @@ begin
   OperationForm.LabelType.caption := 'фрилансер';
   OperationForm.LabelName.Caption := DataModuleMySQL.ADQueryTask.FieldByName('fio').AsString;
   OperationForm.SetDataSet(DataModuleMySQL.DataSourceFreelancerAccount);
-
-  OperationForm.id_client := DataModuleMySQL.ADQueryProject.FieldByName('client_link').AsInteger;
-
-  OperationForm.notes := 'Выплата по проекту: ' + DataModuleMySQL.ADQueryProject.FieldByName('caption').AsString +
+  OperationForm.id_client := ProjectModel.ADQueryProject.FieldByName('client_link').AsInteger;
+  OperationForm.notes := 'Выплата по проекту: ' + ProjectModel.ADQueryProject.FieldByName('caption').AsString +
     ', задаче: ' + DataModuleMySQL.ADQueryTask.FieldByName('caption').AsString;
 
   OperationForm.ShowModal;
@@ -410,7 +429,7 @@ procedure TMainForm.N31Click(Sender: TObject);
 begin
   MyTask.SetStatusTask(work, DataModuleMySQL.ADQueryMindTape.FieldByName('id').AsInteger);
   DataModuleMySQL.RefreshTape;
-  DataModuleMySQL.RefreshProject;
+  ProjectModel.RefreshProject;
   DataModuleMySQL.RefreshTask;
 end;
 
@@ -419,7 +438,7 @@ procedure TMainForm.N32Click(Sender: TObject);
 begin
   MyTask.SetStatusTask(prior, DataModuleMySQL.ADQueryMindTape.FieldByName('id').AsInteger);
   DataModuleMySQL.RefreshTape;
-  DataModuleMySQL.RefreshProject;
+  ProjectModel.RefreshProject;
   DataModuleMySQL.RefreshTask;
 end;
 
@@ -428,7 +447,7 @@ procedure TMainForm.N33Click(Sender: TObject);
 begin
   MyTask.SetStatusTask(wait, DataModuleMySQL.ADQueryMindTape.FieldByName('id').AsInteger);
   DataModuleMySQL.RefreshTape;
-  DataModuleMySQL.RefreshProject;
+  ProjectModel.RefreshProject;
   DataModuleMySQL.RefreshTask;
 end;
 
@@ -437,7 +456,7 @@ procedure TMainForm.N34Click(Sender: TObject);
 begin
   MyTask.SetStatusTask(Delayed, DataModuleMySQL.ADQueryMindTape.FieldByName('id').AsInteger);
   DataModuleMySQL.RefreshTape;
-  DataModuleMySQL.RefreshProject;
+  ProjectModel.RefreshProject;
   DataModuleMySQL.RefreshTask;
 end;
 
@@ -446,7 +465,7 @@ procedure TMainForm.N35Click(Sender: TObject);
 begin
   MyTask.SetStatusTask(Closer, DataModuleMySQL.ADQueryMindTape.FieldByName('id').AsInteger);
   DataModuleMySQL.RefreshTape;
-  DataModuleMySQL.RefreshProject;
+  ProjectModel.RefreshProject;
   DataModuleMySQL.RefreshTask;
 end;
 
@@ -457,7 +476,7 @@ end;
 procedure TMainForm.N30Click(Sender: TObject);
 begin
   MyTask.SetStatusTask(work, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
-  DataModuleMySQL.RefreshProject;
+  ProjectModel.RefreshProject;
   DataModuleMySQL.RefreshTask;
   DataModuleMySQL.RefreshTape;
 end;
@@ -466,7 +485,7 @@ end;
 procedure TMainForm.N36Click(Sender: TObject);
 begin
   MyTask.SetStatusTask(prior, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
-  DataModuleMySQL.RefreshProject;
+  ProjectModel.RefreshProject;
   DataModuleMySQL.RefreshTask;
   DataModuleMySQL.RefreshTape;
 end;
@@ -475,7 +494,7 @@ end;
 procedure TMainForm.N40Click(Sender: TObject);
 begin
   MyTask.SetStatusTask(wait, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
-  DataModuleMySQL.RefreshProject;
+  ProjectModel.RefreshProject;
   DataModuleMySQL.RefreshTask;
   DataModuleMySQL.RefreshTape;
 end;
@@ -484,7 +503,7 @@ end;
 procedure TMainForm.N38Click(Sender: TObject);
 begin
   MyTask.SetStatusTask(Delayed, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
-  DataModuleMySQL.RefreshProject;
+  ProjectModel.RefreshProject;
   DataModuleMySQL.RefreshTask;
   DataModuleMySQL.RefreshTape;
 end;
@@ -493,7 +512,7 @@ end;
 procedure TMainForm.N39Click(Sender: TObject);
 begin
   MyTask.SetStatusTask(Closer, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
-  DataModuleMySQL.RefreshProject;
+  ProjectModel.RefreshProject;
   DataModuleMySQL.RefreshTask;
   DataModuleMySQL.RefreshTape;
 end;
@@ -506,65 +525,9 @@ begin
   TransferTaskForm.id_task := TaskGrid.DataSource.DataSet.FieldByName('id').AsInteger;
   TransferTaskForm.ShowModal;
 
-  DataModuleMySQL.RefreshProject;
+  ProjectModel.RefreshProject;
   DataModuleMySQL.RefreshTask;
   DataModuleMySQL.RefreshTape;
-end;
-
-
-procedure MyClick(Sender: TObject);
-begin
-//
-end;
-
-procedure TMainForm.PopupMenuTaskPopup(Sender: TObject);
-var
-  TItem: TMenuItem;
-  i: integer;
-  ar: array of TMenuItem;
-  id: integer;
-begin
-
-  id := DataModuleMySQL.ADQueryProject.FieldByName('id').AsInteger;
-
- { DataModuleMySQL.ADQueryProject.First;
-
-  PopupMenuTask.Items.Delete(PopupMenuTask.Items.IndexOf(PopupMenuTask.Items[1]));
-
-
-  i := 0;
-  SetLength(ar, i);
-
-  while not (DataModuleMySQL.ADQueryProject.Eof) do
-  begin
-    if id <> DataModuleMySQL.GetIDProject then
-    begin
-      i := i + 1;
-      SetLength(ar, i);
-
-      ar[i-1] := TMenuItem.Create(self);
-      ar[i-1].Caption := DataModuleMySQL.ADQueryProject.FieldByName('caption').AsString;
-      ar[i-1].Tag := DataModuleMySQL.GetIDProject;
-   //   ar[i-1].OnClick := MyClick;
-    end;
-
-    DataModuleMySQL.ADQueryProject.Next;
-  end;
-
-  if Length(ar)<>0 then
-  begin
- //   PopupMenuTask.Items[1].Clear;
-    for I := 0 to PopupMenuTask.Items[1].Count do
-      begin
-      id := PopupMenuTask.Items.IndexOf(PopupMenuTask.Items[1].Items[i]);
-      PopupMenuTask.Items[1].Delete(id);
-      end;
-
-    PopupMenuTask.Items[1].Count;
-    for I := 0 to High(ar) do
-      PopupMenuTask.Items[1].add(ar[i]);
-  end;                        }
-
 end;
 
 end.

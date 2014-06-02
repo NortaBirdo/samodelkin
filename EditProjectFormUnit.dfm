@@ -68,7 +68,7 @@ object EditProjectForm: TEditProjectForm
     Width = 132
     Height = 17
     DataField = 'cl_fio'
-    DataSource = DataModuleMySQL.DataSource3
+    DataSource = ProjectModel.DataSourceProject
   end
   object DBEdit1: TDBEdit
     Left = 103
@@ -76,7 +76,7 @@ object EditProjectForm: TEditProjectForm
     Width = 132
     Height = 21
     DataField = 'caption'
-    DataSource = DataModuleMySQL.DataSource3
+    DataSource = ProjectModel.DataSourceProject
     TabOrder = 0
   end
   object DBEdit2: TDBEdit
@@ -85,7 +85,7 @@ object EditProjectForm: TEditProjectForm
     Width = 132
     Height = 21
     DataField = 'git'
-    DataSource = DataModuleMySQL.DataSource3
+    DataSource = ProjectModel.DataSourceProject
     TabOrder = 1
   end
   object DBGrid1: TDBGrid
@@ -142,7 +142,7 @@ object EditProjectForm: TEditProjectForm
     Width = 213
     Height = 136
     DataField = 'note'
-    DataSource = DataModuleMySQL.DataSource3
+    DataSource = ProjectModel.DataSourceProject
     ScrollBars = ssVertical
     TabOrder = 6
   end
@@ -152,7 +152,7 @@ object EditProjectForm: TEditProjectForm
     Width = 132
     Height = 21
     DataField = 'status'
-    DataSource = DataModuleMySQL.DataSource3
+    DataSource = ProjectModel.DataSourceProject
     Items.Strings = (
       #1074' '#1088#1072#1073#1086#1090#1077
       #1079#1072#1084#1086#1088#1086#1078#1077#1085

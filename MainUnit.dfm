@@ -23,7 +23,7 @@ object MainForm: TMainForm
     Top = 0
     Width = 1093
     Height = 603
-    ActivePage = MindTapeSheet
+    ActivePage = ProjectTaskSheet
     Align = alClient
     TabOrder = 0
     object MindTapeSheet: TTabSheet
@@ -212,7 +212,7 @@ object MainForm: TMainForm
         Height = 33
         Cursor = crHandPoint
         DataField = 'git'
-        DataSource = DataModuleMySQL.DataSource3
+        DataSource = ProjectModel.DataSourceProject
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlue
         Font.Height = -11
@@ -235,7 +235,7 @@ object MainForm: TMainForm
         Top = 62
         Width = 801
         Height = 241
-        DataSource = DataModuleMySQL.DataSource3
+        DataSource = ProjectModel.DataSourceProject
         PopupMenu = PopupMenuProject
         ReadOnly = True
         TabOrder = 0
@@ -448,7 +448,7 @@ object MainForm: TMainForm
         Width = 250
         Height = 183
         DataField = 'note'
-        DataSource = DataModuleMySQL.DataSource3
+        DataSource = ProjectModel.DataSourceProject
         ReadOnly = True
         ScrollBars = ssVertical
         TabOrder = 3
@@ -559,6 +559,17 @@ object MainForm: TMainForm
       Caption = #1053#1086#1074#1072#1103' '#1079#1072#1076#1072#1095#1072
       OnClick = N42Click
     end
+    object N45: TMenuItem
+      Caption = '-'
+    end
+    object N46: TMenuItem
+      Caption = #1053#1086#1074#1099#1081' '#1087#1088#1086#1077#1082#1090
+      OnClick = N46Click
+    end
+    object N47: TMenuItem
+      Caption = #1048#1079#1084#1077#1085#1080#1090#1100' '#1087#1088#1086#1077#1082#1090
+      OnClick = N47Click
+    end
   end
   object PopupMenuTape: TPopupMenu
     Left = 80
@@ -610,7 +621,6 @@ object MainForm: TMainForm
     end
   end
   object PopupMenuTask: TPopupMenu
-    OnPopup = PopupMenuTaskPopup
     Left = 664
     Top = 456
     object N29: TMenuItem

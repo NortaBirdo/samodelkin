@@ -48,7 +48,7 @@ implementation
 
 {$R *.dfm}
 
-uses DataModuleMySQLUnit, TaskModelUnit;
+uses DataModuleMySQLUnit, TaskModelUnit, ProjectModelUnit;
 
 procedure TEditTaskForm.BtnCancelClick(Sender: TObject);
 begin
@@ -76,11 +76,11 @@ begin
     end;
 
     //калькул€ци€ бюджета проекта
-    CalcProjectBudget(GetIDProject);
-    CalcProjectBalance(GetIDProject);
+    ProjectModel.CalcProjectBudget(ProjectModel.GetIDProject);
+    ProjectModel.CalcProjectBalance(ProjectModel.GetIDProject);
     CalcTaskBalance;
     RefreshTask;
-    RefreshProject;
+    ProjectModel.RefreshProject;
   end;
 EditTaskForm.Close;
 end;

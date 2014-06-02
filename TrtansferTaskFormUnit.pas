@@ -28,7 +28,7 @@ implementation
 
 {$R *.dfm}
 
-uses TransferTaskModelUnit;
+uses TransferTaskModelUnit, ProjectModelUnit;
 
 //отмена переноса
 procedure TTransferTaskForm.CancelBtnClick(Sender: TObject);
@@ -39,7 +39,7 @@ end;
 //перенос
 procedure TTransferTaskForm.OkBtnClick(Sender: TObject);
 begin
-  TransferTaskModel.TransferTask(id_task);
+  ProjectModel.TransferTask(id_task);
   TransferTaskForm.Close;
 end;
 

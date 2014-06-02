@@ -38,7 +38,7 @@ implementation
 
 {$R *.dfm}
 
-uses DataModuleMySQLUnit;
+uses DataModuleMySQLUnit, ProjectModelUnit;
 
 { TOperationForm }
 
@@ -53,7 +53,8 @@ FieldByName('date_operation').Value := now;
 if LabelType.Caption = 'клиент' then
   begin
     FieldByName('account_type').Value := 0;
-    FieldByName('link').Value := DataModuleMySQL.ADQueryProject.FieldByName('Id_1').AsInteger;
+ //   FieldByName('link').Value := DataModuleMySQL.ADQueryProject.FieldByName('Id_1').AsInteger;
+    FieldByName('link').Value := ProjectModel.ADQueryProject.FieldByName('Id_1').AsInteger;
     post;
   end
   else
@@ -66,9 +67,14 @@ if LabelType.Caption = 'клиент' then
     //перерасчет выплат по задаче и проекту
     DataModuleMySQL.CalcTaskSalary(StrToInt(DBEditSUM.Text));
     DataModuleMySQL.CalcTaskBalance;
-    DataModuleMySQL.CalcProjectSalary;
-    DataModuleMySQL.CalcProjectBudget(DataModuleMySQL.GetIDProject);
-    DataModuleMySQL.CalcProjectBalance(DataModuleMySQL.GetIDProject);
+ //   DataModuleMySQL.CalcProjectSalary;
+    ProjectModel.CalcProjectSalary;
+   { DataModuleMySQL.CalcProjectBudget(DataModuleMySQL.GetIDProject);
+    DataModuleMySQL.CalcProjectBalance(DataModuleMySQL.GetIDProject);}
+   // DataModuleMySQL.CalcProjectBudget(ProjectModel.GetIDProject);
+//    DataModuleMySQL.CalcProjectBalance(ProjectModel.GetIDProject);
+    ProjectModel.CalcProjectBudget(ProjectModel.GetIDProject);
+    ProjectModel.CalcProjectBalance(ProjectModel.GetIDProject);
 
     //списываем с клиента
     insert;

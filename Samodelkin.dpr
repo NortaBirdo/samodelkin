@@ -13,7 +13,7 @@ uses
   OperationFormUnit in 'OperationFormUnit.pas' {OperationForm},
   TaskModelUnit in 'TaskModelUnit.pas',
   TrtansferTaskFormUnit in 'TrtansferTaskFormUnit.pas' {TransferTaskForm},
-  TransferTaskModelUnit in 'TransferTaskModelUnit.pas' {TransferTaskModel: TDataModule};
+  ProjectModelUnit in 'ProjectModelUnit.pas' {ProjectModel: TDataModule};
 
 {$R *.res}
 
@@ -22,6 +22,7 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TSQLiteDataModule, SQLiteDataModule);
   Application.CreateForm(TDataModuleMySQL, DataModuleMySQL);
+  Application.CreateForm(TProjectModel, ProjectModel);
   Application.CreateForm(TMainForm, MainForm);
   Application.CreateForm(TSettingForm, SettingForm);
   Application.CreateForm(TClientsForm, ClientsForm);
@@ -30,6 +31,5 @@ begin
   Application.CreateForm(TEditTaskForm, EditTaskForm);
   Application.CreateForm(TOperationForm, OperationForm);
   Application.CreateForm(TTransferTaskForm, TransferTaskForm);
-  Application.CreateForm(TTransferTaskModel, TransferTaskModel);
   Application.Run;
 end.
