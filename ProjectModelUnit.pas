@@ -62,30 +62,35 @@ uses DataModuleMySQLUnit;
 
 procedure TProjectModel.SetStatusCancel;
 begin
+  ADQueryProject.Edit;
   ADQueryProject.FieldByName('status').Value := 'отменен';
   ADQueryProject.Post;
 end;
 
 procedure TProjectModel.SetStatusClose;
 begin
+  ADQueryProject.Edit;
   ADQueryProject.FieldByName('status').Value := 'закрыт';
   ADQueryProject.Post;
 end;
 
 procedure TProjectModel.SetStatusFreeze;
 begin
+  ADQueryProject.Edit;
   ADQueryProject.FieldByName('status').Value := 'заморожен';
   ADQueryProject.Post;
 end;
 
 procedure TProjectModel.SetStatusPrior;
 begin
+  ADQueryProject.Edit;
   ADQueryProject.FieldByName('status').Value := 'приоритет';
   ADQueryProject.Post;
 end;
 
 procedure TProjectModel.SetStatusWork;
 begin
+  ADQueryProject.Edit;
   ADQueryProject.FieldByName('status').Value := 'в работе';
   ADQueryProject.Post;
 end;

@@ -5,7 +5,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.Grids, Vcl.DBGrids,
-  Vcl.StdCtrls, Vcl.DBCtrls, Vcl.Mask, Vcl.ComCtrls, DB, ShellAPI;
+  Vcl.StdCtrls, Vcl.DBCtrls, Vcl.Mask, Vcl.ComCtrls, DB, ShellAPI, Vcl.ToolWin,
+  Vcl.ExtCtrls;
 
 type
   TMainForm = class(TForm)
@@ -80,6 +81,18 @@ type
     N45: TMenuItem;
     N46: TMenuItem;
     N47: TMenuItem;
+    N48: TMenuItem;
+    N49: TMenuItem;
+    N50: TMenuItem;
+    N51: TMenuItem;
+    N52: TMenuItem;
+    N53: TMenuItem;
+    N54: TMenuItem;
+    ControlBar1: TControlBar;
+    ToolBar1: TToolBar;
+    ChangeTask: TToolButton;
+    ToolButton2: TToolButton;
+    ChangeProject: TToolButton;
     procedure N5Click(Sender: TObject);
     procedure N7Click(Sender: TObject);
     procedure N8Click(Sender: TObject);
@@ -120,7 +133,14 @@ type
     procedure TaskTapeTitleClick(Column: TColumn);
     procedure N46Click(Sender: TObject);
     procedure N47Click(Sender: TObject);
-
+    procedure N54Click(Sender: TObject);
+    procedure N53Click(Sender: TObject);
+    procedure N51Click(Sender: TObject);
+    procedure N52Click(Sender: TObject);
+    procedure N50Click(Sender: TObject);
+    procedure ChangeTaskClick(Sender: TObject);
+    procedure ChangeProjectClick(Sender: TObject);
+    procedure PageControl1Change(Sender: TObject);
 
   private
 
@@ -166,14 +186,11 @@ begin
 
 end;
 
+
+
 procedure TMainForm.N2Click(Sender: TObject);
 begin
   MainForm.Close;
-end;
-
-procedure TMainForm.N4Click(Sender: TObject);
-begin
-  ShowMessage('Разработик: Соколовский Николай (sokolovskynik@gmail.com), январь 2014');
 end;
 
 procedure TMainForm.N5Click(Sender: TObject);
@@ -204,9 +221,63 @@ if GitText.Caption <> '' then
   ShellExecute(Handle, 'open', PChar(GitText.Caption), nil, nil, SW_SHOW);
 end;
 
+procedure TMainForm.N4Click(Sender: TObject);
+begin
+  ShowMessage('Разработик: Соколовский Николай (sokolovskynik@gmail.com), январь 2014. Версия 1.10');
+end;
+
+//Смена статуса проекта
+//=====================================================
+//Меню проектов + меню ленты по смене проектов!!
+
+//смена статуса проекта  - в работе
+procedure TMainForm.N54Click(Sender: TObject);
+begin
+  ProjectModel.SetStatusWork;
+
+  ProjectModel.RefreshProject;
+  DataModuleMySQL.RefreshTape;
+end;
+
+//смена статуса проекта  - приоритет
+procedure TMainForm.N53Click(Sender: TObject);
+begin
+  ProjectModel.SetStatusPrior;
+
+  ProjectModel.RefreshProject;
+  DataModuleMySQL.RefreshTape;
+end;
+
+//смена статуса проекта  - закрыт
+procedure TMainForm.N51Click(Sender: TObject);
+begin
+  ProjectModel.SetStatusClose;
+
+  ProjectModel.RefreshProject;
+  DataModuleMySQL.RefreshTape;
+end;
+
+//смена статуса проекта  - заморожен
+procedure TMainForm.N52Click(Sender: TObject);
+begin
+  ProjectModel.SetStatusFreeze;
+
+  ProjectModel.RefreshProject;
+  DataModuleMySQL.RefreshTape;
+end;
+
+//смена статуса проекта  - отмена
+procedure TMainForm.N50Click(Sender: TObject);
+begin
+  ProjectModel.SetStatusCancel;
+
+  ProjectModel.RefreshProject;
+  DataModuleMySQL.RefreshTape;
+end;
+
+
 //==========================================
 //Раборта с проектами
-
 //добавление проекта
 procedure TMainForm.N10Click(Sender: TObject);
 begin
@@ -246,6 +317,12 @@ begin
   DataModuleMySQL.RefreshTape;
 end;
 
+//изменить проект из панели управления
+procedure TMainForm.ChangeProjectClick(Sender: TObject);
+begin
+  N12Click(Sender);
+end;
+
 procedure TMainForm.N14Click(Sender: TObject);
 begin
   EditTaskForm.ShowModal;
@@ -267,6 +344,12 @@ end;
 
 //изменить задачу из подменю проектов
 procedure TMainForm.N44Click(Sender: TObject);
+begin
+  N14Click(Sender);
+end;
+
+//изменить задачу из панели управления
+procedure TMainForm.ChangeTaskClick(Sender: TObject);
 begin
   N14Click(Sender);
 end;
@@ -369,6 +452,21 @@ begin
   if Column.Title.Caption = 'Статус проекта' then
   begin
     DataModuleMySQL.SortByPriorProject;
+  end;
+end;
+
+//Управление доступностью кнопок в панели управления
+procedure TMainForm.PageControl1Change(Sender: TObject);
+begin
+  if PageControl1.TabIndex = 0 then
+  begin
+    ChangeTask.Enabled := false;
+    ChangeProject.Enabled := false;
+  end
+  else
+  begin
+    ChangeTask.Enabled := true;
+    ChangeProject.Enabled := true;
   end;
 end;
 

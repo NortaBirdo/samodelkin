@@ -4,8 +4,8 @@ object EditTaskForm: TEditTaskForm
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = #1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1085#1080#1077' '#1079#1072#1076#1072#1095#1080
-  ClientHeight = 560
-  ClientWidth = 740
+  ClientHeight = 470
+  ClientWidth = 602
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,82 +19,83 @@ object EditTaskForm: TEditTaskForm
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
-    Left = 24
-    Top = 24
+    Left = 8
+    Top = 16
     Width = 112
     Height = 13
     Caption = #1053#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077' '#1079#1072#1076#1072#1095#1080
   end
   object Label2: TLabel
-    Left = 24
-    Top = 51
+    Left = 8
+    Top = 43
     Width = 42
     Height = 13
     Caption = #1041#1102#1076#1078#1077#1090
   end
   object Label4: TLabel
-    Left = 24
-    Top = 73
+    Left = 8
+    Top = 65
     Width = 113
     Height = 13
     Caption = #1058#1077#1082#1091#1097#1080#1081' '#1080#1089#1087#1086#1083#1085#1080#1090#1077#1083#1100
   end
   object Label5: TLabel
-    Left = 24
-    Top = 137
+    Left = 8
+    Top = 129
     Width = 61
     Height = 13
     Caption = #1055#1088#1080#1084#1077#1095#1072#1085#1080#1077
   end
   object DBText1: TDBText
-    Left = 152
-    Top = 73
+    Left = 136
+    Top = 65
     Width = 209
     Height = 17
     DataField = 'fio'
     DataSource = DataModuleMySQL.DataSourceTask
   end
   object Label6: TLabel
-    Left = 24
-    Top = 105
+    Left = 8
+    Top = 97
     Width = 36
     Height = 13
     Caption = #1057#1090#1072#1090#1091#1089
   end
   object LabelChange: TLabel
-    Left = 408
-    Top = 16
+    Left = 8
+    Top = 288
     Width = 105
     Height = 13
     Caption = #1053#1086#1074#1099#1081' '#1080#1089#1087#1086#1083#1085#1080#1090#1077#1083#1100':'
   end
   object Label3: TLabel
-    Left = 408
-    Top = 304
+    Left = 392
+    Top = 219
     Width = 41
     Height = 13
     Caption = 'Deadline'
   end
   object DBText2: TDBText
-    Left = 455
-    Top = 304
+    Left = 439
+    Top = 219
     Width = 85
     Height = 12
     DataField = 'deadline'
     DataSource = DataModuleMySQL.DataSourceTask
   end
   object DBMemo1: TDBMemo
-    Left = 24
-    Top = 156
+    Left = 8
+    Top = 148
     Width = 369
-    Height = 321
+    Height = 125
     DataField = 'note'
     DataSource = DataModuleMySQL.DataSourceTask
+    ScrollBars = ssVertical
     TabOrder = 0
   end
   object DBEdit2: TDBEdit
-    Left = 152
-    Top = 43
+    Left = 136
+    Top = 35
     Width = 121
     Height = 21
     DataField = 'budget'
@@ -102,8 +103,8 @@ object EditTaskForm: TEditTaskForm
     TabOrder = 1
   end
   object DBEdit3: TDBEdit
-    Left = 152
-    Top = 16
+    Left = 136
+    Top = 8
     Width = 121
     Height = 21
     DataField = 'caption'
@@ -111,8 +112,8 @@ object EditTaskForm: TEditTaskForm
     TabOrder = 2
   end
   object DBComboBox1: TDBComboBox
-    Left = 152
-    Top = 102
+    Left = 136
+    Top = 94
     Width = 121
     Height = 21
     DataField = 'status'
@@ -126,10 +127,10 @@ object EditTaskForm: TEditTaskForm
     TabOrder = 3
   end
   object DBGrid1: TDBGrid
-    Left = 408
-    Top = 64
-    Width = 321
-    Height = 185
+    Left = 8
+    Top = 307
+    Width = 369
+    Height = 150
     DataSource = DataModuleMySQL.DataSource2
     ReadOnly = True
     TabOrder = 4
@@ -148,7 +149,7 @@ object EditTaskForm: TEditTaskForm
         Expanded = False
         FieldName = 'fio'
         Title.Caption = #1060'.'#1048'.'#1054'.'
-        Width = 190
+        Width = 212
         Visible = True
       end
       item
@@ -195,13 +196,13 @@ object EditTaskForm: TEditTaskForm
         Expanded = False
         FieldName = 'spezialization'
         Title.Caption = #1057#1087#1077#1094#1080#1072#1083#1080#1079#1072#1094#1080#1103
-        Width = 91
+        Width = 119
         Visible = True
       end>
   end
   object BtnChangeFreelancer: TButton
-    Left = 408
-    Top = 264
+    Left = 302
+    Top = 279
     Width = 75
     Height = 25
     Caption = #1042#1099#1073#1088#1072#1090#1100
@@ -209,35 +210,35 @@ object EditTaskForm: TEditTaskForm
     OnClick = BtnChangeFreelancerClick
   end
   object BtnOk: TButton
-    Left = 24
-    Top = 496
-    Width = 75
+    Left = 392
+    Top = 401
+    Width = 139
     Height = 25
     Caption = 'OK'
     TabOrder = 6
     OnClick = BtnOkClick
   end
   object BtnCancel: TButton
-    Left = 318
-    Top = 496
-    Width = 75
+    Left = 392
+    Top = 432
+    Width = 139
     Height = 25
     Caption = #1054#1090#1084#1077#1085#1072
     TabOrder = 7
     OnClick = BtnCancelClick
   end
   object MonthCalendar1: TMonthCalendar
-    Left = 408
-    Top = 336
+    Left = 392
+    Top = 43
     Width = 191
     Height = 160
-    Date = 41668.345182245370000000
+    Date = 41668.484879259260000000
     TabOrder = 8
     OnClick = MonthCalendar1Click
   end
   object NullDeadlineBtn: TButton
-    Left = 546
-    Top = 299
+    Left = 392
+    Top = 238
     Width = 111
     Height = 25
     Caption = #1054#1073#1085#1091#1083#1080#1090#1100' deadline'

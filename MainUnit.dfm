@@ -20,14 +20,18 @@ object MainForm: TMainForm
   TextHeight = 13
   object PageControl1: TPageControl
     Left = 0
-    Top = 0
+    Top = 33
     Width = 1093
-    Height = 603
+    Height = 570
     ActivePage = ProjectTaskSheet
     Align = alClient
     TabOrder = 0
+    OnChange = PageControl1Change
+    ExplicitTop = 0
+    ExplicitHeight = 603
     object MindTapeSheet: TTabSheet
       Caption = #1051#1077#1085#1090#1072
+      ExplicitHeight = 575
       object Label7: TLabel
         Left = 3
         Top = 21
@@ -158,6 +162,7 @@ object MainForm: TMainForm
     object ProjectTaskSheet: TTabSheet
       Caption = #1055#1088#1086#1077#1082#1090#1099' '#1080' '#1079#1072#1076#1072#1095#1080
       ImageIndex = 1
+      ExplicitHeight = 575
       object Label1: TLabel
         Left = 8
         Top = 16
@@ -475,9 +480,52 @@ object MainForm: TMainForm
       end
     end
   end
+  object ControlBar1: TControlBar
+    Left = 0
+    Top = 0
+    Width = 1093
+    Height = 33
+    Align = alTop
+    TabOrder = 1
+    object ToolBar1: TToolBar
+      Left = 11
+      Top = 2
+      Width = 206
+      Height = 22
+      ButtonHeight = 21
+      ButtonWidth = 94
+      Caption = 'ToolBar1'
+      ShowCaptions = True
+      TabOrder = 0
+      object ChangeTask: TToolButton
+        Left = 0
+        Top = 0
+        Caption = #1048#1079#1084#1077#1085#1080#1090#1100' '#1079#1072#1076#1072#1095#1091
+        Enabled = False
+        ImageIndex = 0
+        OnClick = ChangeTaskClick
+      end
+      object ToolButton2: TToolButton
+        Left = 94
+        Top = 0
+        Width = 8
+        Caption = 'ToolButton2'
+        ImageIndex = 1
+        Style = tbsSeparator
+      end
+      object ChangeProject: TToolButton
+        Left = 102
+        Top = 0
+        Caption = #1048#1079#1084#1077#1085#1080#1090#1100' '#1087#1088#1086#1077#1082#1090
+        Enabled = False
+        ImageIndex = 1
+        OnClick = ChangeProjectClick
+      end
+    end
+  end
   object MainMenu1: TMainMenu
-    Left = 424
-    Top = 24
+    Left = 416
+    Top = 64
     object N1: TMenuItem
       Caption = #1060#1072#1081#1083
       object N2: TMenuItem
@@ -551,17 +599,6 @@ object MainForm: TMainForm
   object PopupMenuProject: TPopupMenu
     Left = 976
     Top = 56
-    object N18: TMenuItem
-      Caption = #1050#1086#1087#1080#1088#1086#1074#1072#1090#1100
-      OnClick = N18Click
-    end
-    object N42: TMenuItem
-      Caption = #1053#1086#1074#1072#1103' '#1079#1072#1076#1072#1095#1072
-      OnClick = N42Click
-    end
-    object N45: TMenuItem
-      Caption = '-'
-    end
     object N46: TMenuItem
       Caption = #1053#1086#1074#1099#1081' '#1087#1088#1086#1077#1082#1090
       OnClick = N46Click
@@ -570,27 +607,68 @@ object MainForm: TMainForm
       Caption = #1048#1079#1084#1077#1085#1080#1090#1100' '#1087#1088#1086#1077#1082#1090
       OnClick = N47Click
     end
+    object N49: TMenuItem
+      Caption = #1057#1090#1072#1090#1091#1089' '#1087#1088#1086#1077#1082#1090#1072
+      object N54: TMenuItem
+        Caption = #1042' '#1088#1072#1073#1086#1090#1077
+        OnClick = N54Click
+      end
+      object N53: TMenuItem
+        Caption = #1055#1088#1080#1086#1088#1080#1090#1077#1090
+        OnClick = N53Click
+      end
+      object N51: TMenuItem
+        Caption = #1047#1072#1082#1088#1099#1090
+        OnClick = N51Click
+      end
+      object N52: TMenuItem
+        Caption = #1047#1072#1084#1086#1088#1086#1078#1077#1085
+        OnClick = N52Click
+      end
+      object N50: TMenuItem
+        Caption = #1054#1090#1084#1077#1085#1077#1085
+        OnClick = N50Click
+      end
+    end
+    object N45: TMenuItem
+      Caption = '-'
+    end
+    object N42: TMenuItem
+      Caption = #1053#1086#1074#1072#1103' '#1079#1072#1076#1072#1095#1072
+      OnClick = N42Click
+    end
+    object N48: TMenuItem
+      Caption = '-'
+    end
+    object N18: TMenuItem
+      Caption = #1050#1086#1087#1080#1088#1086#1074#1072#1090#1100
+      OnClick = N18Click
+    end
   end
   object PopupMenuTape: TPopupMenu
     Left = 80
     Top = 200
     object N20: TMenuItem
       Caption = #1057#1084#1077#1085#1080#1090#1100' '#1089#1090#1072#1090#1091#1089' '#1087#1088#1086#1077#1082#1090#1072
-      Enabled = False
       object N22: TMenuItem
         Caption = #1042' '#1088#1072#1073#1086#1090#1077
+        OnClick = N54Click
       end
       object N23: TMenuItem
         Caption = #1055#1088#1080#1086#1088#1080#1090#1077#1090
+        OnClick = N53Click
       end
       object N26: TMenuItem
         Caption = #1047#1072#1082#1088#1099#1090
+        OnClick = N51Click
       end
       object N27: TMenuItem
         Caption = #1047#1072#1084#1086#1088#1086#1078#1077#1085
+        OnClick = N52Click
       end
       object N28: TMenuItem
         Caption = #1054#1090#1084#1077#1085#1077#1085
+        OnClick = N50Click
       end
     end
     object N21: TMenuItem

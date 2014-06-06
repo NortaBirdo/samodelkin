@@ -82,9 +82,8 @@ begin
     RefreshTask;
     ProjectModel.RefreshProject;
   end;
-EditTaskForm.Close;
 end;
-
+EditTaskForm.Close;
 end;
 
 procedure TEditTaskForm.FormClose(Sender: TObject; var Action: TCloseAction);
