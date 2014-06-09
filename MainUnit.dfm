@@ -27,11 +27,8 @@ object MainForm: TMainForm
     Align = alClient
     TabOrder = 0
     OnChange = PageControl1Change
-    ExplicitTop = 0
-    ExplicitHeight = 603
     object MindTapeSheet: TTabSheet
       Caption = #1051#1077#1085#1090#1072
-      ExplicitHeight = 575
       object Label7: TLabel
         Left = 3
         Top = 21
@@ -162,7 +159,6 @@ object MainForm: TMainForm
     object ProjectTaskSheet: TTabSheet
       Caption = #1055#1088#1086#1077#1082#1090#1099' '#1080' '#1079#1072#1076#1072#1095#1080
       ImageIndex = 1
-      ExplicitHeight = 575
       object Label1: TLabel
         Left = 8
         Top = 16

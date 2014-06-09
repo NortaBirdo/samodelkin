@@ -69,7 +69,7 @@ object ClientsForm: TClientsForm
     Top = 67
     Width = 729
     Height = 422
-    DataSource = DataModuleMySQL.DataSource1
+    DataSource = ClientModel.DataSourceClient
     TabOrder = 0
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
@@ -143,7 +143,7 @@ object ClientsForm: TClientsForm
     Width = 306
     Height = 189
     DataField = 'note'
-    DataSource = DataModuleMySQL.DataSource1
+    DataSource = ClientModel.DataSourceClient
     ScrollBars = ssVertical
     TabOrder = 1
   end
@@ -240,7 +240,7 @@ object ClientsForm: TClientsForm
     Top = 328
     Width = 306
     Height = 161
-    DataSource = DataModuleMySQL.DataSourceClientAccount
+    DataSource = ClientModel.DataSourceClientAccount
     TabOrder = 4
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText

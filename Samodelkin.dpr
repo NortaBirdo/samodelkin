@@ -13,7 +13,8 @@ uses
   OperationFormUnit in 'OperationFormUnit.pas' {OperationForm},
   TaskModelUnit in 'TaskModelUnit.pas',
   TrtansferTaskFormUnit in 'TrtansferTaskFormUnit.pas' {TransferTaskForm},
-  ProjectModelUnit in 'ProjectModelUnit.pas' {ProjectModel: TDataModule};
+  ProjectModelUnit in 'ProjectModelUnit.pas' {ProjectModel: TDataModule},
+  ClientModelUnit in 'ClientModelUnit.pas' {ClientModel: TDataModule};
 
 {$R *.res}
 
@@ -31,5 +32,6 @@ begin
   Application.CreateForm(TEditTaskForm, EditTaskForm);
   Application.CreateForm(TOperationForm, OperationForm);
   Application.CreateForm(TTransferTaskForm, TransferTaskForm);
+  Application.CreateForm(TClientModel, ClientModel);
   Application.Run;
 end.

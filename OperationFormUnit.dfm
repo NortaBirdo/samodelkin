@@ -65,7 +65,6 @@ object OperationForm: TOperationForm
     Width = 121
     Height = 21
     DataField = 'operation'
-    DataSource = DataModuleMySQL.DataSourceClientAccount
     TabOrder = 0
   end
   object DBMemoNOTE: TDBMemo
@@ -74,7 +73,6 @@ object OperationForm: TOperationForm
     Width = 289
     Height = 110
     DataField = 'note'
-    DataSource = DataModuleMySQL.DataSourceClientAccount
     ScrollBars = ssVertical
     TabOrder = 1
   end

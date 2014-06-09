@@ -159,7 +159,7 @@ implementation
 
 uses SettingFormUnit, ClientsFormUnit, FreelanceFormUnit, DataModuleMySQLUnit,
   EditProjectFormUnit, EditTaskFormUnit, OperationFormUnit, Clipbrd,
-  TaskModelUnit, TrtansferTaskFormUnit, ProjectModelUnit;
+  TaskModelUnit, TrtansferTaskFormUnit, ProjectModelUnit, ClientModelUnit;
 
 var
   MyTask: TTaskModel;
@@ -374,7 +374,7 @@ procedure TMainForm.N16Click(Sender: TObject);
 begin
   OperationForm.LabelType.caption := 'клиент';
   OperationForm.LabelName.Caption := ProjectModel.ADQueryProject.FieldByName('cl_fio').AsString;
-  OperationForm.SetDataSet(DataModuleMySQL.DataSourceClientAccount);
+  OperationForm.SetDataSet(ClientModel.DataSourceClientAccount);
   OperationForm.notes := 'Внос по проекту ' + ProjectModel.ADQueryProject.FieldByName('caption').AsString;
   OperationForm.ShowModal;
 end;
@@ -525,7 +525,7 @@ end;
 //таска - в работе
 procedure TMainForm.N31Click(Sender: TObject);
 begin
-  MyTask.SetStatusTask(work, DataModuleMySQL.ADQueryMindTape.FieldByName('id').AsInteger);
+  MyTask.SetStatusTask(TaskModelUnit.Work, DataModuleMySQL.ADQueryMindTape.FieldByName('id').AsInteger);
   DataModuleMySQL.RefreshTape;
   ProjectModel.RefreshProject;
   DataModuleMySQL.RefreshTask;
@@ -534,7 +534,7 @@ end;
 //таска -  приорите
 procedure TMainForm.N32Click(Sender: TObject);
 begin
-  MyTask.SetStatusTask(prior, DataModuleMySQL.ADQueryMindTape.FieldByName('id').AsInteger);
+  MyTask.SetStatusTask(TaskModelUnit.prior, DataModuleMySQL.ADQueryMindTape.FieldByName('id').AsInteger);
   DataModuleMySQL.RefreshTape;
   ProjectModel.RefreshProject;
   DataModuleMySQL.RefreshTask;
@@ -543,7 +543,7 @@ end;
 //таска - в ожидании заказчика
 procedure TMainForm.N33Click(Sender: TObject);
 begin
-  MyTask.SetStatusTask(wait, DataModuleMySQL.ADQueryMindTape.FieldByName('id').AsInteger);
+  MyTask.SetStatusTask(TaskModelUnit.wait, DataModuleMySQL.ADQueryMindTape.FieldByName('id').AsInteger);
   DataModuleMySQL.RefreshTape;
   ProjectModel.RefreshProject;
   DataModuleMySQL.RefreshTask;
@@ -552,7 +552,7 @@ end;
 //таска - отложена
 procedure TMainForm.N34Click(Sender: TObject);
 begin
-  MyTask.SetStatusTask(Delayed, DataModuleMySQL.ADQueryMindTape.FieldByName('id').AsInteger);
+  MyTask.SetStatusTask(TaskModelUnit.Delayed, DataModuleMySQL.ADQueryMindTape.FieldByName('id').AsInteger);
   DataModuleMySQL.RefreshTape;
   ProjectModel.RefreshProject;
   DataModuleMySQL.RefreshTask;
@@ -561,7 +561,7 @@ end;
 //таска - закрыта
 procedure TMainForm.N35Click(Sender: TObject);
 begin
-  MyTask.SetStatusTask(Closer, DataModuleMySQL.ADQueryMindTape.FieldByName('id').AsInteger);
+  MyTask.SetStatusTask(TaskModelUnit.Closer, DataModuleMySQL.ADQueryMindTape.FieldByName('id').AsInteger);
   DataModuleMySQL.RefreshTape;
   ProjectModel.RefreshProject;
   DataModuleMySQL.RefreshTask;
@@ -573,7 +573,7 @@ end;
 //в работе
 procedure TMainForm.N30Click(Sender: TObject);
 begin
-  MyTask.SetStatusTask(work, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
+  MyTask.SetStatusTask(TaskModelUnit.work, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
   ProjectModel.RefreshProject;
   DataModuleMySQL.RefreshTask;
   DataModuleMySQL.RefreshTape;
@@ -582,7 +582,7 @@ end;
 //приоритет
 procedure TMainForm.N36Click(Sender: TObject);
 begin
-  MyTask.SetStatusTask(prior, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
+  MyTask.SetStatusTask(TaskModelUnit.prior, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
   ProjectModel.RefreshProject;
   DataModuleMySQL.RefreshTask;
   DataModuleMySQL.RefreshTape;
@@ -591,7 +591,7 @@ end;
 //ожидаю заказчика
 procedure TMainForm.N40Click(Sender: TObject);
 begin
-  MyTask.SetStatusTask(wait, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
+  MyTask.SetStatusTask(TaskModelUnit.wait, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
   ProjectModel.RefreshProject;
   DataModuleMySQL.RefreshTask;
   DataModuleMySQL.RefreshTape;
@@ -600,7 +600,7 @@ end;
 //отложена
 procedure TMainForm.N38Click(Sender: TObject);
 begin
-  MyTask.SetStatusTask(Delayed, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
+  MyTask.SetStatusTask(TaskModelUnit.Delayed, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
   ProjectModel.RefreshProject;
   DataModuleMySQL.RefreshTask;
   DataModuleMySQL.RefreshTape;
@@ -609,7 +609,7 @@ end;
 //закрыта
 procedure TMainForm.N39Click(Sender: TObject);
 begin
-  MyTask.SetStatusTask(Closer, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
+  MyTask.SetStatusTask(TaskModelUnit.Closer, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
   ProjectModel.RefreshProject;
   DataModuleMySQL.RefreshTask;
   DataModuleMySQL.RefreshTape;

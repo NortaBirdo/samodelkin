@@ -42,31 +42,30 @@ implementation
 
 {$R *.dfm}
 
-uses DataModuleMySQLUnit, ProjectModelUnit;
+uses DataModuleMySQLUnit, ProjectModelUnit, ClientModelUnit;
 
 procedure TEditProjectForm.BtnCancelClick(Sender: TObject);
 begin
- //DataModuleMySQL.ADQueryProject.Cancel;
+
   ProjectModel.ADQueryProject.Cancel;
   EditProjectForm.Close;
 end;
 
 procedure TEditProjectForm.BtnChangeClientClick(Sender: TObject);
 begin
- // DataModuleMySQL.SetClient(DataModuleMySQL.GetClientID);
-  ProjectModel.SetClient(DataModuleMySQL.GetClientID);
-  Label3.Caption := 'Новый заказчик: ' + DataModuleMySQL.GetClientName;
+
+  ProjectModel.SetClient(ClientModel.GetClientID);
+  Label3.Caption := 'Новый заказчик: ' + ClientModel.GetClientName;
 end;
 
 procedure TEditProjectForm.BtnSaveClick(Sender: TObject);
 begin
- { if DataModuleMySQL.ADQueryProject.Modified then
-    DataModuleMySQL.ADQueryProject.Post;}
+
  if ProjectModel.ADQueryProject.Modified then
     ProjectModel.ADQueryProject.Post;
 
- DataModuleMySQL.RefreshClient;
-// DataModuleMySQL.RefreshProject;
+ ClientModel.RefreshClient;
+
  ProjectModel.RefreshProject;
  EditProjectForm.Close;
 end;

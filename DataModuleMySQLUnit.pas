@@ -13,47 +13,29 @@ type
   TDataModuleMySQL = class(TDataModule)
     ADConnection1: TADConnection;
     ADTransaction1: TADTransaction;
-    ADQueryClients: TADQuery;
     ADGUIxWaitCursor1: TADGUIxWaitCursor;
     ADPhysMySQLDriverLink1: TADPhysMySQLDriverLink;
-    DataSource1: TDataSource;
     ADQueryFreelancer: TADQuery;
     DataSource2: TDataSource;
-    ADQueryClientList: TADQuery;
-    DataSourceClientList: TDataSource;
     ADQueryTime: TADQuery;
     Timer1: TTimer;
     ADQueryTask: TADQuery;
     DataSourceTask: TDataSource;
     ADQuerySQL: TADQuery;
-    ADQueryClientAccount: TADQuery;
-    DataSourceClientAccount: TDataSource;
     ADQueryFreelancerAccount: TADQuery;
     DataSourceFreelancerAccount: TDataSource;
     ADQueryMindTape: TADQuery;
     DataSourceMindTape: TDataSource;
     procedure DataModuleCreate(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
-    procedure ADQueryClientsAfterScroll(DataSet: TDataSet);
     procedure ADQueryFreelancerAfterGetRecord(DataSet: TADDataSet);
     procedure ADQueryFreelancerAfterScroll(DataSet: TDataSet);
-    procedure ADQueryClientsAfterGetRecord(DataSet: TADDataSet);
+
   private
     ShowCloseTask: boolean;
 
   public
-  type
-    TStatusTask = (Closer, Work, Prior, Delayed, Wait);
 
-    //клиенты
-    procedure SetClientFlag(flag:integer);
-    function GetClientID: integer;
-    function GetClientName:string;
-    procedure ShowActiveClient;
-    procedure ShowArchiveClient;
-    procedure ShowBlackListClient;
-    procedure RefreshClient;
-    procedure RefreshClientList;
     //фрилансеры
     procedure SetFreelancerFlag(flag:integer);
     function GetNameFreelancer: string;
@@ -74,17 +56,13 @@ type
     procedure SetShowCloseTask(show: boolean);
 
     //деньги
-    procedure RegOperationClientBal(sum: string);
     procedure CalcTaskBalance;
     procedure CalcTaskSalary(sum: integer);
     procedure RefreshOperationFL;
-    procedure RefreshOperationClient;
     function GetBalance: integer;
-    function GetBalanceClient: integer;
 
-    //смена задачи
+    //лента
     procedure RefreshTape;
-
     //сортировка ленты
     procedure SortById;
     procedure SortByTask;
@@ -94,7 +72,6 @@ type
     procedure SortByPriorProject;
 
     var
-      BalanceClient: integer;
       FirstStart: boolean;
 
  end;
@@ -143,10 +120,7 @@ end;
 FirstStart := true;
 
 ADConnection1.Connected := true;
-ADQueryClients.Active := true;
-ADQueryClientList.Active := true;
 ADQueryFreelancer.Active := true;
-ADQueryClientAccount.Active := true;
 ADQueryFreelancerAccount.Active := true;
 ADQueryMindTape.Active := true;
 
@@ -158,69 +132,6 @@ procedure TDataModuleMySQL.Timer1Timer(Sender: TObject);
 begin
   ADQueryTime.Close;
   ADQueryTime.Open;
-end;
-
-//=========================================
-//работа с клиентами
-function TDataModuleMySQL.GetClientID: integer;
-begin
-  result := ADQueryClientList.FieldByName('id').AsInteger;
-end;
-
-function TDataModuleMySQL.GetClientName: string;
-begin
-  result := ADQueryClientList.FieldByName('fio').AsString;
-end;
-
-
-procedure TDataModuleMySQL.RefreshClient;
-begin
-  ADQueryClients.Refresh;
-end;
-
-procedure TDataModuleMySQL.RefreshClientList;
-begin
-  ADQueryClientList.Refresh;
-end;
-
-procedure TDataModuleMySQL.SetClientFlag(flag: integer);
-begin
-  ADQueryClients.Edit;
-  ADQueryClients.FieldByName('flag').Value := flag;
-end;
-
-
-procedure TDataModuleMySQL.ShowActiveClient;
-begin
-  with ADQueryClients do
-  begin
-    close;
-    sql.Clear;
-    sql.Add('SELECT * FROM CLIENT WHERE flag = 0');
-    open;
-  end;
-end;
-
-procedure TDataModuleMySQL.ShowArchiveClient;
-begin
-  with ADQueryClients do
-  begin
-    close;
-    sql.Clear;
-    sql.Add('SELECT * FROM CLIENT WHERE flag = 1');
-    open;
-  end;
-end;
-
-procedure TDataModuleMySQL.ShowBlackListClient;
-begin
-  with ADQueryClients do
-  begin
-    close;
-    sql.Clear;
-    sql.Add('SELECT * FROM CLIENT WHERE flag = 2');
-    open;
-  end;
 end;
 
 //=============================================
@@ -297,14 +208,9 @@ begin
     Sql.Clear;
 
     if ShowCloseTask then
-   { Sql.Add('Select TASK.*, FREELANCER.Id, FREELANCER.fio from TASK, FREELANCER ' +
-      'WHERE TASK.freelancer_link = FREELANCER.id AND TASK.project_link = ' + IntToStr(GetIDProject)) }
      Sql.Add('Select TASK.*, FREELANCER.Id, FREELANCER.fio from TASK, FREELANCER ' +
       'WHERE TASK.freelancer_link = FREELANCER.id AND TASK.project_link = ' + IntToStr(ProjectModel.GetIDProject))
     else
-   { Sql.Add('Select TASK.*, FREELANCER.Id, FREELANCER.fio from TASK, FREELANCER ' +
-      'WHERE TASK.freelancer_link = FREELANCER.id AND TASK.project_link = ' + IntToStr(GetIDProject) +
-      ' AND TASK.status <> ' + QuotedStr('закрыта'));   }
      Sql.Add('Select TASK.*, FREELANCER.Id, FREELANCER.fio from TASK, FREELANCER ' +
       'WHERE TASK.freelancer_link = FREELANCER.id AND TASK.project_link = ' + IntToStr(ProjectModel.GetIDProject) +
       ' AND TASK.status <> ' + QuotedStr('закрыта'));
@@ -354,12 +260,6 @@ end;
 //=================================
 //деньги
 
-procedure TDataModuleMySQL.RegOperationClientBal(sum: string);
-begin
- // ADQuery
-end;
-
-
 procedure TDataModuleMySQL.CalcTaskBalance;
 begin
 with ADQueryTask do
@@ -395,42 +295,6 @@ begin
   sql.Add(query);
   open;
 end;
-end;
-
-procedure TDataModuleMySQL.RefreshOperationClient;
-var
-query: string;
-begin
-with ADQueryClientAccount do
-begin
-  close;
-  sql.Clear;
-  query := 'SELECT * FROM PERSONAL_ACCOUNT ' +
-    'WHERE account_type = 0 AND link = ' + ADQueryClients.FieldByName('id').AsString +
-    ' ORDER BY date_operation DESC';
-  sql.Add(query);
-  open;
-end;
-end;
-
-//вывод операций баланса клиента
-procedure TDataModuleMySQL.ADQueryClientsAfterGetRecord(DataSet: TADDataSet);
-begin
-  RefreshOperationClient;
-  BalanceClient := GetBalanceClient;
-
-  if not FirstStart then ClientsForm.BalLabel.Caption := IntToStr(BalanceClient);
-
-end;
-
-procedure TDataModuleMySQL.ADQueryClientsAfterScroll(DataSet: TDataSet);
-begin
-  RefreshOperationClient;
-  BalanceClient := GetBalanceClient;
-
-  if not FirstStart then ClientsForm.BalLabel.Caption := IntToStr(BalanceClient);
-
-
 end;
 
 //вывод операций баланса фрилансеров
@@ -477,25 +341,6 @@ begin
 
   result := debet - kredit;
 end;
-end;
-
-//считаем баланс клиента
-function TDataModuleMySQL.GetBalanceClient: integer;
-var
-  sQuery: string;
-begin
-  with ADQuerySQL do
-  begin
-    close;
-    sql.Clear;
-    sQuery := 'SELECT SUM(operation) as bal FROM PERSONAL_ACCOUNT WHERE account_type = 0 AND link = '
-     + ADQueryClients.FieldByName('id').AsString;
-    sql.Add(sQuery);
-    open;
-    result := FieldByName('bal').AsInteger;
-
-  end;
-
 end;
 
 //========================================

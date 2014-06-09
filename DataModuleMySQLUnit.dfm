@@ -24,16 +24,6 @@ object DataModuleMySQL: TDataModuleMySQL
     Left = 152
     Top = 56
   end
-  object ADQueryClients: TADQuery
-    AfterScroll = ADQueryClientsAfterScroll
-    AfterGetRecord = ADQueryClientsAfterGetRecord
-    Connection = ADConnection1
-    SQL.Strings = (
-      'SELECT * FROM CLIENT'
-      'WHERE flag = 0')
-    Left = 256
-    Top = 56
-  end
   object ADGUIxWaitCursor1: TADGUIxWaitCursor
     Left = 168
     Top = 120
@@ -42,11 +32,6 @@ object DataModuleMySQL: TDataModuleMySQL
     VendorLib = 'C:\Users\Nikolay\Documents\GitHub\samodelkin\libmysql.dll'
     Left = 56
     Top = 120
-  end
-  object DataSource1: TDataSource
-    DataSet = ADQueryClients
-    Left = 360
-    Top = 56
   end
   object ADQueryFreelancer: TADQuery
     AfterScroll = ADQueryFreelancerAfterScroll
@@ -62,19 +47,6 @@ object DataModuleMySQL: TDataModuleMySQL
     DataSet = ADQueryFreelancer
     Left = 360
     Top = 120
-  end
-  object ADQueryClientList: TADQuery
-    Connection = ADConnection1
-    SQL.Strings = (
-      'SELECT * FROM CLIENT'
-      'WHERE flag = 0')
-    Left = 552
-    Top = 56
-  end
-  object DataSourceClientList: TDataSource
-    DataSet = ADQueryClientList
-    Left = 656
-    Top = 56
   end
   object ADQueryTime: TADQuery
     Connection = ADConnection1
@@ -111,23 +83,6 @@ object DataModuleMySQL: TDataModuleMySQL
     Left = 48
     Top = 264
   end
-  object ADQueryClientAccount: TADQuery
-    Connection = ADConnection1
-    SQL.Strings = (
-      'SELECT PERSONAL_ACCOUNT.*,'
-      'CLIENT.id'
-      'FROM PERSONAL_ACCOUNT, CLIENT'
-      'WHERE PERSONAL_ACCOUNT.link = CLIENT.id'
-      ' AND account_type = 0'
-      'ORDER BY date_operation DESC')
-    Left = 256
-    Top = 312
-  end
-  object DataSourceClientAccount: TDataSource
-    DataSet = ADQueryClientAccount
-    Left = 392
-    Top = 312
-  end
   object ADQueryFreelancerAccount: TADQuery
     Connection = ADConnection1
     SQL.Strings = (
@@ -137,12 +92,12 @@ object DataModuleMySQL: TDataModuleMySQL
       'WHERE PERSONAL_ACCOUNT.link = FREELANCER.id'
       ' AND account_type = 1')
     Left = 256
-    Top = 376
+    Top = 184
   end
   object DataSourceFreelancerAccount: TDataSource
     DataSet = ADQueryFreelancerAccount
     Left = 408
-    Top = 376
+    Top = 184
   end
   object ADQueryMindTape: TADQuery
     Connection = ADConnection1
@@ -152,12 +107,12 @@ object DataModuleMySQL: TDataModuleMySQL
       'AND T.project_link = P.id AND P.status <> '#39#1079#1072#1082#1088#1099#1090#39' '
       'AND P.status <> '#39#1086#1090#1084#1077#1085#1077#1085#39
       'ORDER BY T.deadline DESC')
-    Left = 552
-    Top = 120
+    Left = 256
+    Top = 328
   end
   object DataSourceMindTape: TDataSource
     DataSet = ADQueryMindTape
-    Left = 656
-    Top = 120
+    Left = 360
+    Top = 328
   end
 end

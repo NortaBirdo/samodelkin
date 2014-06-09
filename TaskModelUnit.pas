@@ -2,7 +2,7 @@ unit TaskModelUnit;
 
 interface
 
-uses uADCompClient, SysUtils;
+uses uADCompClient, SysUtils, ClientModelUnit;
 
 type
 

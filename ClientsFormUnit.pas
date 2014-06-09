@@ -49,14 +49,14 @@ implementation
 
 {$R *.dfm}
 
-uses DataModuleMySQLUnit, OperationFormUnit;
+uses DataModuleMySQLUnit, OperationFormUnit, ClientModelUnit;
 
 //зачислить на счет
 procedure TClientsForm.AddMoneyToolBtnClick(Sender: TObject);
 begin
   OperationForm.LabelType.caption := 'клиент';
-  OperationForm.LabelName.Caption := DataModuleMySQL.ADQueryClients.FieldByName('fio').AsString;
-  OperationForm.SetDataSet(DataModuleMySQL.DataSourceClientAccount);
+  OperationForm.LabelName.Caption := ClientModel.GetClientNameForPay;
+  OperationForm.SetDataSet(ClientModel.DataSourceClientAccount);
   OperationForm.notes := 'Зачисление аванса';
   OperationForm.ShowModal;
 end;
@@ -67,17 +67,17 @@ case ComboBox1.ItemIndex of
 0: begin
    ToolBtnArch.Caption := 'Архивировать';
    ToolBtnBlackList.Caption := 'В черный список';
-   DataModuleMySQL.ShowActiveClient;
+   ClientModel.ShowActiveClient;
    end;
 1: begin
    ToolBtnArch.Caption := 'Активировать';
    ToolBtnBlackList.Caption := 'В черный список';
-   DataModuleMySQL.ShowArchiveClient;
+   ClientModel.ShowArchiveClient;
    end;
 2: begin
    ToolBtnArch.Caption := 'Архивировать';
    ToolBtnBlackList.Caption := 'Удалить из черного списка';
-   DataModuleMySQL.ShowBlackListClient;
+   ClientModel.ShowBlackListClient;
    end;
 end;
 end;
@@ -86,52 +86,52 @@ end;
 procedure TClientsForm.ToolBtnArchClick(Sender: TObject);
 begin
 if ToolBtnArch.Caption = 'Архивировать' then
-  DataModuleMySQL.SetClientFlag(1)
+  ClientModel.SetClientFlag(1)
   else
-  DataModuleMySQL.SetClientFlag(0);
+  ClientModel.SetClientFlag(0);
 
-DataModuleMySQL.ADQueryClients.Post;
-DataModuleMySQL.RefreshClient;
+ClientModel.SaveClient;
+ClientModel.RefreshClient;
 end;
 
 //управление черным списком
 procedure TClientsForm.ToolBtnBlackListClick(Sender: TObject);
 begin
 if ToolBtnBlackList.Caption = 'В черный список' then
-  DataModuleMySQL.SetClientFlag(2)
+  ClientModel.SetClientFlag(2)
   else
-  DataModuleMySQL.SetClientFlag(0);
+  ClientModel.SetClientFlag(0);
 
-DataModuleMySQL.ADQueryClients.Post;
-DataModuleMySQL.RefreshClient;
+ClientModel.SaveClient;
+ClientModel.RefreshClient;
 end;
 
 //Обновление баланса
 procedure TClientsForm.DBGrid1CellClick(Column: TColumn);
 begin
   DataModuleMySQL.FirstStart := false;
-  ClientsForm.BalLabel.Caption := IntToStr(DataModuleMySQL.BalanceClient);
+  ClientsForm.BalLabel.Caption := IntToStr(ClientModel.BalanceClient);
 end;
 
 procedure TClientsForm.FormShow(Sender: TObject);
 begin
-  DataModuleMySQL.FirstStart := false;
-  ClientsForm.BalLabel.Caption := IntToStr(DataModuleMySQL.BalanceClient);
+  ClientModel.FirstStart := false;
+  ClientsForm.BalLabel.Caption := IntToStr(ClientModel.BalanceClient);
 end;
 
 //добавление нового клиента
 procedure TClientsForm.ToolBtnAddClick(Sender: TObject);
 begin
- DataModuleMySQL.ADQueryClients.Insert;
- DataModuleMySQL.SetClientFlag(0);
+ ClientModel.AddClient;
+ ClientModel.SetClientFlag(0);
 end;
 
 //сохранение клиента
 procedure TClientsForm.ToolBtnSaveClick(Sender: TObject);
 begin
-  if DataModuleMySQL.ADQueryClients.Modified then
-    DataModuleMySQL.ADQueryClients.Post;
-  DataModuleMySQL.RefreshClientList;
+  if ClientModel.IsModifiedClient then
+    ClientModel.SaveClient;
+  ClientModel.RefreshClientList;
 end;
 
 end.

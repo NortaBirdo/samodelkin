@@ -93,7 +93,7 @@ object EditProjectForm: TEditProjectForm
     Top = 80
     Width = 201
     Height = 222
-    DataSource = DataModuleMySQL.DataSourceClientList
+    DataSource = ClientModel.DataSourceClientList
     TabOrder = 2
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
