@@ -15,35 +15,20 @@ type
     ADTransaction1: TADTransaction;
     ADGUIxWaitCursor1: TADGUIxWaitCursor;
     ADPhysMySQLDriverLink1: TADPhysMySQLDriverLink;
-    ADQueryFreelancer: TADQuery;
-    DataSource2: TDataSource;
     ADQueryTime: TADQuery;
     Timer1: TTimer;
     ADQueryTask: TADQuery;
     DataSourceTask: TDataSource;
     ADQuerySQL: TADQuery;
-    ADQueryFreelancerAccount: TADQuery;
-    DataSourceFreelancerAccount: TDataSource;
     ADQueryMindTape: TADQuery;
     DataSourceMindTape: TDataSource;
     procedure DataModuleCreate(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
-    procedure ADQueryFreelancerAfterGetRecord(DataSet: TADDataSet);
-    procedure ADQueryFreelancerAfterScroll(DataSet: TDataSet);
 
   private
     ShowCloseTask: boolean;
 
   public
-
-    //фрилансеры
-    procedure SetFreelancerFlag(flag:integer);
-    function GetNameFreelancer: string;
-    function GetIdFreelancer: integer;
-    procedure ShowActiveFreelancer;
-    procedure ShowArchiveFreelancer;
-    procedure ShowBlackListFreelancer;
-    procedure RefreshFreelancer;
 
     //задачи
     procedure GetTasks;
@@ -58,8 +43,6 @@ type
     //деньги
     procedure CalcTaskBalance;
     procedure CalcTaskSalary(sum: integer);
-    procedure RefreshOperationFL;
-    function GetBalance: integer;
 
     //лента
     procedure RefreshTape;
@@ -120,8 +103,6 @@ end;
 FirstStart := true;
 
 ADConnection1.Connected := true;
-ADQueryFreelancer.Active := true;
-ADQueryFreelancerAccount.Active := true;
 ADQueryMindTape.Active := true;
 
 
@@ -134,62 +115,6 @@ begin
   ADQueryTime.Open;
 end;
 
-//=============================================
-//работа с фрилансерами
-
-procedure TDataModuleMySQL.RefreshFreelancer;
-begin
-   ADQueryFreelancer.Refresh;
-end;
-
-procedure TDataModuleMySQL.SetFreelancerFlag(flag: integer);
-begin
-  ADQueryFreelancer.Edit;
-  ADQueryFreelancer.FieldByName('flag').Value := flag;
-end;
-
-procedure TDataModuleMySQL.ShowActiveFreelancer;
-begin
-  with ADQueryFreelancer do
-  begin
-    close;
-    sql.Clear;
-    sql.Add('SELECT * FROM FREELANCER WHERE flag = 0');
-    open;
-  end;
-end;
-
-procedure TDataModuleMySQL.ShowBlackListFreelancer;
-begin
-  with ADQueryFreelancer do
-  begin
-    close;
-    sql.Clear;
-    sql.Add('SELECT * FROM FREELANCER WHERE flag = 2');
-    open;
-  end;
-end;
-
-procedure TDataModuleMySQL.ShowArchiveFreelancer;
-begin
-  with ADQueryFreelancer do
-  begin
-    close;
-    sql.Clear;
-    sql.Add('SELECT * FROM FREELANCER WHERE flag = 1');
-    open;
-  end;
-end;
-
-function TDataModuleMySQL.GetIdFreelancer: integer;
-begin
-result := ADQueryFreelancer.FieldByName('id').AsInteger;
-end;
-
-function TDataModuleMySQL.GetNameFreelancer: string;
-begin
-result := ADQueryFreelancer.FieldByName('fio').AsString;
-end;
 
 //======================================
 //работа с тасками
@@ -280,67 +205,6 @@ with ADQueryTask do
   post;
   end;
 
-end;
-
-procedure TDataModuleMySQL.RefreshOperationFL;
-var
-query: string;
-begin
-with ADQueryFreelancerAccount do
-begin
-  close;
-  sql.Clear;
-  query := 'SELECT * FROM PERSONAL_ACCOUNT ' +
-    'WHERE account_type = 1 AND link = ' + ADQueryFreelancer.FieldByName('id').AsString;
-  sql.Add(query);
-  open;
-end;
-end;
-
-//вывод операций баланса фрилансеров
-procedure TDataModuleMySQL.ADQueryFreelancerAfterGetRecord(DataSet: TADDataSet);
-begin
-  if not FirstStart then FreelanceForm.BalanceLabel.Caption := IntToStr(GetBalance);
-
-  RefreshOperationFL;
-end;
-
-
-procedure TDataModuleMySQL.ADQueryFreelancerAfterScroll(DataSet: TDataSet);
-begin
-  if not FirstStart then FreelanceForm.BalanceLabel.Caption := IntToStr(GetBalance);
-
-  RefreshOperationFL;
-end;
-
-//расчет баланса фрилансеров
-function TDataModuleMySQL.GetBalance: integer;
-var
-debet, kredit: integer;
-sQuery: string;
-begin
-with ADQuerySQL do
-begin
-  close;
-  sql.Clear;
-  sQuery := 'SELECT SUM(operation) as kredit FROM PERSONAL_ACCOUNT WHERE account_type = 1 AND link = '
-   + ADQueryFreelancer.FieldByName('id').AsString;
-
-  sql.Add(sQuery);
-  open;
-  kredit := FieldByName('kredit').AsInteger;
-
-  close;
-  sql.Clear;
-
-  sQuery := 'SELECT SUM(budget) as debet FROM TASK WHERE freelancer_link = '
-   + ADQueryFreelancer.FieldByName('id').AsString;
-  sql.Add(sQuery);
-  open;
-  debet := FieldByName('debet').AsInteger;
-
-  result := debet - kredit;
-end;
 end;
 
 //========================================

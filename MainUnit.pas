@@ -159,7 +159,8 @@ implementation
 
 uses SettingFormUnit, ClientsFormUnit, FreelanceFormUnit, DataModuleMySQLUnit,
   EditProjectFormUnit, EditTaskFormUnit, OperationFormUnit, Clipbrd,
-  TaskModelUnit, TrtansferTaskFormUnit, ProjectModelUnit, ClientModelUnit;
+  TaskModelUnit, TrtansferTaskFormUnit, ProjectModelUnit, ClientModelUnit,
+  FreelancerModelUnit;
 
 var
   MyTask: TTaskModel;
@@ -223,7 +224,7 @@ end;
 
 procedure TMainForm.N4Click(Sender: TObject);
 begin
-  ShowMessage('Разработик: Соколовский Николай (sokolovskynik@gmail.com), январь 2014. Версия 1.10');
+  ShowMessage('Разработик: Соколовский Николай (sokolovskynik@gmail.com), январь 2014. Версия 1.12');
 end;
 
 //Смена статуса проекта
@@ -384,7 +385,7 @@ procedure TMainForm.N17Click(Sender: TObject);
 begin
   OperationForm.LabelType.caption := 'фрилансер';
   OperationForm.LabelName.Caption := DataModuleMySQL.ADQueryTask.FieldByName('fio').AsString;
-  OperationForm.SetDataSet(DataModuleMySQL.DataSourceFreelancerAccount);
+  OperationForm.SetDataSet(FreelancerModel.DataSourceFreelancerAccount);
   OperationForm.id_client := ProjectModel.ADQueryProject.FieldByName('client_link').AsInteger;
   OperationForm.notes := 'Выплата по проекту: ' + ProjectModel.ADQueryProject.FieldByName('caption').AsString +
     ', задаче: ' + DataModuleMySQL.ADQueryTask.FieldByName('caption').AsString;
@@ -396,7 +397,7 @@ end;
 //копирование в буфер
 procedure TMainForm.N18Click(Sender: TObject);
 begin
-   Clipboard.SetTextBuf(PChar(ProjectGrid.DataSource.DataSet.FieldByName(ProjectGrid.SelectedField.FieldName).AsString));
+  Clipboard.SetTextBuf(PChar(ProjectGrid.DataSource.DataSet.FieldByName(ProjectGrid.SelectedField.FieldName).AsString));
 end;
 
 //закраска обласетй на ленте задач

@@ -48,18 +48,18 @@ implementation
 
 {$R *.dfm}
 
-uses DataModuleMySQLUnit, TaskModelUnit, ProjectModelUnit;
+uses DataModuleMySQLUnit, TaskModelUnit, ProjectModelUnit, FreelancerModelUnit;
 
 procedure TEditTaskForm.BtnCancelClick(Sender: TObject);
 begin
- DataModuleMySQL.ADQueryTask.Cancel;
- EditTaskForm.Close;
+  DataModuleMySQL.ADQueryTask.Cancel;
+  EditTaskForm.Close;
 end;
 
 procedure TEditTaskForm.BtnChangeFreelancerClick(Sender: TObject);
 begin
-LabelChange.Caption := 'Новый исполнитель: ' + DataModuleMySQL.GetNameFreelancer;
-DataModuleMySQL.SetFreelancerLink(DataModuleMySQL.GetIdFreelancer);
+  LabelChange.Caption := 'Новый исполнитель: ' + FreelancerModel.GetNameFreelancer;
+  DataModuleMySQL.SetFreelancerLink(FreelancerModel.GetIdFreelancer);
 end;
 
 procedure TEditTaskForm.BtnOkClick(Sender: TObject);

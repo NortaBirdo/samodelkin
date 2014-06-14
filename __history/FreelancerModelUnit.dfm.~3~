@@ -1,0 +1,32 @@
+object FreelancerModel: TFreelancerModel
+  OldCreateOrder = False
+  Height = 427
+  Width = 616
+  object ADQueryFreelancer: TADQuery
+    SQL.Strings = (
+      'SELECT * FROM FREELANCER'
+      'WHERE flag = 0')
+    Left = 72
+    Top = 48
+  end
+  object DataSourceFreelancer: TDataSource
+    DataSet = ADQueryFreelancer
+    Left = 224
+    Top = 56
+  end
+  object ADQueryFreelancerAccount: TADQuery
+    SQL.Strings = (
+      'SELECT PERSONAL_ACCOUNT.*,'
+      'FREELANCER.id'
+      'FROM PERSONAL_ACCOUNT, FREELANCER'
+      'WHERE PERSONAL_ACCOUNT.link = FREELANCER.id'
+      ' AND account_type = 1')
+    Left = 72
+    Top = 112
+  end
+  object DataSourceFreelancerAccount: TDataSource
+    DataSet = ADQueryFreelancerAccount
+    Left = 224
+    Top = 112
+  end
+end
