@@ -63,7 +63,6 @@ object SQLiteDataModule: TSQLiteDataModule
     Top = 56
   end
   object ADPhysSQLiteDriverLink1: TADPhysSQLiteDriverLink
-    VendorLib = 'C:\Users\Nikolay\Documents\GitHub\samodelkin\sqlite3.dll'
     Left = 192
     Top = 136
   end

@@ -104,6 +104,7 @@ FirstStart := true;
 
 ADConnection1.Connected := true;
 ADQueryMindTape.Active := true;
+//ADQueryTask.Active := true;
 
 
 end;

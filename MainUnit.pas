@@ -93,6 +93,10 @@ type
     ChangeTask: TToolButton;
     ToolButton2: TToolButton;
     ChangeProject: TToolButton;
+    N55: TMenuItem;
+    N56: TMenuItem;
+    N57: TMenuItem;
+    N58: TMenuItem;
     procedure N5Click(Sender: TObject);
     procedure N7Click(Sender: TObject);
     procedure N8Click(Sender: TObject);
@@ -141,6 +145,9 @@ type
     procedure ChangeTaskClick(Sender: TObject);
     procedure ChangeProjectClick(Sender: TObject);
     procedure PageControl1Change(Sender: TObject);
+    procedure N55Click(Sender: TObject);
+    procedure N56Click(Sender: TObject);
+    procedure N57Click(Sender: TObject);
 
   private
 
@@ -240,6 +247,8 @@ begin
   DataModuleMySQL.RefreshTape;
 end;
 
+
+
 //смена статуса проекта  - приоритет
 procedure TMainForm.N53Click(Sender: TObject);
 begin
@@ -271,6 +280,15 @@ end;
 procedure TMainForm.N50Click(Sender: TObject);
 begin
   ProjectModel.SetStatusCancel;
+
+  ProjectModel.RefreshProject;
+  DataModuleMySQL.RefreshTape;
+end;
+
+//ожидает оплаты проект
+procedure TMainForm.N55Click(Sender: TObject);
+begin
+  ProjectModel.SetStatusWaitPay;
 
   ProjectModel.RefreshProject;
   DataModuleMySQL.RefreshTape;
@@ -366,6 +384,7 @@ case ComboBox1.ItemIndex of
 3: ProjectModel.ShowPriorProject;
 4: ProjectModel.ShowCloseProject;
 5: ProjectModel.ShowCancelProject;
+6: ProjectModel.ShowWaitPayProject;
 end;
 
 end;
@@ -487,6 +506,12 @@ if ProjectGrid.DataSource.DataSet.FieldByName('status').AsString = 'заморожен' t
   ProjectGrid.Canvas.Font.Color := clWhite;
   end;
 
+if ProjectGrid.DataSource.DataSet.FieldByName('status').AsString = 'ожидаю оплаты' then
+  begin
+  ProjectGrid.Canvas.Brush.Color := clGray;
+  ProjectGrid.Canvas.Font.Color := clWhite;
+  end;
+
 ProjectGrid.DefaultDrawColumnCell(Rect,DataCol,Column,State);
 end;
 
@@ -568,6 +593,15 @@ begin
   DataModuleMySQL.RefreshTask;
 end;
 
+//ожидает оплаты задача
+procedure TMainForm.N56Click(Sender: TObject);
+begin
+  MyTask.SetStatusTask(TaskModelUnit.WaitPay, DataModuleMySQL.ADQueryMindTape.FieldByName('id').AsInteger);
+  DataModuleMySQL.RefreshTape;
+  ProjectModel.RefreshProject;
+  DataModuleMySQL.RefreshTask;
+end;
+
 //===========================================
 //тоже, но из меню тасков
 
@@ -615,6 +649,17 @@ begin
   DataModuleMySQL.RefreshTask;
   DataModuleMySQL.RefreshTape;
 end;
+
+//ожидает оплаты задача
+procedure TMainForm.N57Click(Sender: TObject);
+begin
+  MyTask.SetStatusTask(TaskModelUnit.WaitPay, DataModuleMySQL.ADQueryMindTape.FieldByName('id').AsInteger);
+  DataModuleMySQL.RefreshTape;
+  ProjectModel.RefreshProject;
+  DataModuleMySQL.RefreshTask;
+end;
+
+
 
 //===========================
 //перенос задачи между проектами

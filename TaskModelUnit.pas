@@ -6,7 +6,7 @@ uses uADCompClient, SysUtils, ClientModelUnit;
 
 type
 
-TStatusTask = (Closer, Work, Prior, Delayed, Wait);
+TStatusTask = (Closer, Work, Prior, Delayed, Wait, WaitPay);
 
 TTaskModel = class
   private
@@ -73,6 +73,7 @@ begin
   Prior: sQuery := 'приоритет';
   Delayed: sQuery := 'отложена';
   Wait: sQuery := 'ожидаю заказчика';
+  WaitPay: sQuery := 'ожидаю оплаты';
   end;
 
   with SQLExe do

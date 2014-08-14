@@ -27,6 +27,7 @@ type
     procedure SetStatusPrior;
     procedure SetStatusClose;
     procedure SetStatusCancel;
+    procedure SetStatusWaitPay;
 
     procedure SetClient(id: integer);
     procedure RefreshProject;
@@ -36,6 +37,7 @@ type
     procedure ShowPriorProject;
     procedure ShowCloseProject;
     procedure ShowCancelProject;
+    procedure ShowWaitPayProject;
     function GetIDProject: integer;
 
     procedure CalcProjectBalance(id: integer);
@@ -85,6 +87,13 @@ procedure TProjectModel.SetStatusPrior;
 begin
   ADQueryProject.Edit;
   ADQueryProject.FieldByName('status').Value := 'приоритет';
+  ADQueryProject.Post;
+end;
+
+procedure TProjectModel.SetStatusWaitPay;
+begin
+  ADQueryProject.Edit;
+  ADQueryProject.FieldByName('status').Value := 'ожидаю оплаты';
   ADQueryProject.Post;
 end;
 
@@ -164,6 +173,18 @@ begin
     sql.Clear;
     sql.Add('SELECT P.*, CLIENT.fio as cl_fio, CLIENT.id FROM PROJECT P, CLIENT WHERE '+
       'P.status = ' + QuotedStr('приоритет') + ' AND CLIENT.id = P.client_link');
+    open;
+  end;
+end;
+
+procedure TProjectModel.ShowWaitPayProject;
+begin
+  with ADQueryProject do
+  begin
+    close;
+    sql.Clear;
+    sql.Add('SELECT P.*, CLIENT.fio as cl_fio, CLIENT.id FROM PROJECT P, CLIENT WHERE '+
+      'P.status = ' + QuotedStr('ќжидаю оплаты') + ' AND CLIENT.id = P.client_link');
     open;
   end;
 end;
@@ -254,7 +275,7 @@ end;
 
 procedure TProjectModel.DataModuleCreate(Sender: TObject);
 begin
-  ADQueryProject.Active;
+  ShowAllActiveProject;
   ADQueryProjectList.Active := true;
 end;
 

@@ -4,7 +4,7 @@ object MainForm: TMainForm
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = #1057#1072#1084#1086#1076#1077#1083#1082#1080#1085
-  ClientHeight = 603
+  ClientHeight = 640
   ClientWidth = 1093
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -22,13 +22,15 @@ object MainForm: TMainForm
     Left = 0
     Top = 33
     Width = 1093
-    Height = 570
+    Height = 607
     ActivePage = ProjectTaskSheet
     Align = alClient
     TabOrder = 0
     OnChange = PageControl1Change
+    ExplicitHeight = 570
     object MindTapeSheet: TTabSheet
       Caption = #1051#1077#1085#1090#1072
+      ExplicitHeight = 571
       object Label7: TLabel
         Left = 3
         Top = 21
@@ -59,7 +61,7 @@ object MainForm: TMainForm
         Left = 3
         Top = 43
         Width = 830
-        Height = 481
+        Height = 533
         DataSource = DataModuleMySQL.DataSourceMindTape
         PopupMenu = PopupMenuTape
         ReadOnly = True
@@ -148,7 +150,7 @@ object MainForm: TMainForm
         Left = 839
         Top = 40
         Width = 243
-        Height = 484
+        Height = 536
         DataField = 'note'
         DataSource = DataModuleMySQL.DataSourceMindTape
         ReadOnly = True
@@ -159,6 +161,7 @@ object MainForm: TMainForm
     object ProjectTaskSheet: TTabSheet
       Caption = #1055#1088#1086#1077#1082#1090#1099' '#1080' '#1079#1072#1076#1072#1095#1080
       ImageIndex = 1
+      ExplicitHeight = 542
       object Label1: TLabel
         Left = 8
         Top = 16
@@ -441,7 +444,8 @@ object MainForm: TMainForm
           #1079#1072#1084#1086#1088#1086#1078#1077#1085
           #1087#1088#1080#1086#1088#1080#1090#1077#1090
           #1079#1072#1082#1088#1099#1090
-          #1086#1090#1084#1077#1085#1077#1085)
+          #1086#1090#1084#1077#1085#1077#1085
+          #1086#1078#1080#1076#1072#1102' '#1086#1087#1083#1072#1090#1099)
       end
       object DBMemo1: TDBMemo
         Left = 823
@@ -458,7 +462,7 @@ object MainForm: TMainForm
         Left = 823
         Top = 349
         Width = 250
-        Height = 223
+        Height = 220
         DataField = 'note'
         DataSource = DataModuleMySQL.DataSourceTask
         ReadOnly = True
@@ -625,6 +629,10 @@ object MainForm: TMainForm
         Caption = #1054#1090#1084#1077#1085#1077#1085
         OnClick = N50Click
       end
+      object N58: TMenuItem
+        Caption = #1054#1078#1080#1076#1072#1102' '#1086#1087#1083#1072#1090#1099
+        OnClick = N55Click
+      end
     end
     object N45: TMenuItem
       Caption = '-'
@@ -666,6 +674,10 @@ object MainForm: TMainForm
         Caption = #1054#1090#1084#1077#1085#1077#1085
         OnClick = N50Click
       end
+      object N55: TMenuItem
+        Caption = #1054#1078#1080#1076#1072#1077#1090' '#1086#1087#1083#1072#1090#1099
+        OnClick = N55Click
+      end
     end
     object N21: TMenuItem
       Caption = '-'
@@ -691,6 +703,10 @@ object MainForm: TMainForm
       object N35: TMenuItem
         Caption = #1047#1072#1082#1088#1099#1090#1072
         OnClick = N35Click
+      end
+      object N56: TMenuItem
+        Caption = #1054#1078#1080#1076#1072#1077#1090' '#1086#1087#1083#1072#1090#1099
+        OnClick = N56Click
       end
     end
   end
@@ -718,6 +734,10 @@ object MainForm: TMainForm
       object N39: TMenuItem
         Caption = #1047#1072#1082#1088#1099#1090#1072
         OnClick = N39Click
+      end
+      object N57: TMenuItem
+        Caption = #1054#1078#1080#1076#1072#1102' '#1086#1087#1083#1072#1090#1099
+        OnClick = N57Click
       end
     end
     object N37: TMenuItem

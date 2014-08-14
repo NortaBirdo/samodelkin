@@ -1,0 +1,60 @@
+object ProjectModel: TProjectModel
+  OldCreateOrder = False
+  OnCreate = DataModuleCreate
+  Height = 511
+  Width = 630
+  object ADQueryProject: TADQuery
+    Active = True
+    AfterScroll = ADQueryProjectAfterScroll
+    AfterRefresh = ADQueryProjectAfterRefresh
+    AfterGetRecord = ADQueryProjectAfterGetRecord
+    Connection = DataModuleMySQL.ADConnection1
+    Transaction = DataModuleMySQL.ADTransaction1
+    SQL.Strings = (
+      'SELECT P.*, '
+      'CLIENT.fio as cl_fio, '
+      'CLIENT.id'
+      'FROM PROJECT P, CLIENT'
+      'WHERE P.status <> '#39#1086#1090#1084#1077#1085#1077#1085#39' AND P.status <> '#39#1079#1072#1082#1088#1099#1090#39
+      'AND CLIENT.id = P.client_link')
+    Left = 72
+    Top = 64
+  end
+  object DataSourceProject: TDataSource
+    DataSet = ADQueryProject
+    Left = 176
+    Top = 64
+  end
+  object ADQueryProjectSuch: TADQuery
+    SQL.Strings = (
+      'SELECT P.*, '
+      'CLIENT.fio as cl_fio, '
+      'CLIENT.id'
+      'FROM PROJECT P, CLIENT'
+      'WHERE P.status <> '#39#1086#1090#1084#1077#1085#1077#1085#39' AND P.status <> '#39#1079#1072#1082#1088#1099#1090#39
+      'AND CLIENT.id = P.client_link')
+    Left = 344
+    Top = 64
+  end
+  object ADQuerySQL: TADQuery
+    Connection = DataModuleMySQL.ADConnection1
+    Transaction = DataModuleMySQL.ADTransaction1
+    Left = 296
+    Top = 240
+  end
+  object ADQueryProjectList: TADQuery
+    Connection = DataModuleMySQL.ADConnection1
+    Transaction = DataModuleMySQL.ADTransaction1
+    SQL.Strings = (
+      'SELECT * FROM PROJECT'
+      'where status <> '#39#1086#1090#1084#1077#1085#1077#1085#39' AND status <> '#39#1079#1072#1082#1088#1099#1090#39
+      'order by caption')
+    Left = 56
+    Top = 160
+  end
+  object DataSourceProjectList: TDataSource
+    DataSet = ADQueryProjectList
+    Left = 184
+    Top = 160
+  end
+end
