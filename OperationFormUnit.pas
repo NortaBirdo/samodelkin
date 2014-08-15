@@ -38,7 +38,7 @@ implementation
 
 {$R *.dfm}
 
-uses DataModuleMySQLUnit, ProjectModelUnit;
+uses DataModuleMySQLUnit, ProjectModelUnit, TaskModel;
 
 { TOperationForm }
 
@@ -59,13 +59,13 @@ if LabelType.Caption = 'клиент' then
   else
   begin
     FieldByName('account_type').Value := 1;
-    FieldByName('link').Value := DataModuleMySQL.ADQueryTask.FieldByName('Id_1').AsInteger;
+    FieldByName('link').Value := TaskDataModule.ADQueryTask.FieldByName('Id_1').AsInteger;
     sum := StrToInt(DBEditSUM.Text);
     post;
 
     //перерасчет выплат по задаче и проекту
-    DataModuleMySQL.CalcTaskSalary(StrToInt(DBEditSUM.Text));
-    DataModuleMySQL.CalcTaskBalance;
+    TaskDataModule.CalcTaskSalary(StrToInt(DBEditSUM.Text));
+    TaskDataModule.CalcTaskBalance;
     ProjectModel.CalcProjectSalary;
     ProjectModel.CalcProjectBudget(ProjectModel.GetIDProject);
     ProjectModel.CalcProjectBalance(ProjectModel.GetIDProject);

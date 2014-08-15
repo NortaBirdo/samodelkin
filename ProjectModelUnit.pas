@@ -54,7 +54,7 @@ implementation
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
-uses DataModuleMySQLUnit;
+uses DataModuleMySQLUnit, TaskModel, TaskModelUnit;
 
 {$R *.dfm}
 
@@ -218,17 +218,17 @@ end;
 
 procedure TProjectModel.ADQueryProjectAfterGetRecord(DataSet: TADDataSet);
 begin
-  DataModuleMySQL.GetTasks;
+  TaskDataModule.GetTasks;
 end;
 
 procedure TProjectModel.ADQueryProjectAfterRefresh(DataSet: TDataSet);
 begin
-  DataModuleMySQL.GetTasks;
+  TaskDataModule.GetTasks;
 end;
 
 procedure TProjectModel.ADQueryProjectAfterScroll(DataSet: TDataSet);
 begin
-  DataModuleMySQL.GetTasks;
+  TaskDataModule.GetTasks;
 end;
 
 procedure TProjectModel.CalcProjectBalance(id: integer);

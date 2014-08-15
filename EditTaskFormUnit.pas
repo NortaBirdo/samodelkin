@@ -48,28 +48,29 @@ implementation
 
 {$R *.dfm}
 
-uses DataModuleMySQLUnit, TaskModelUnit, ProjectModelUnit, FreelancerModelUnit;
+uses DataModuleMySQLUnit, TaskModelUnit, ProjectModelUnit, FreelancerModelUnit,
+  TaskModel, TapeModelUnit;
 
 procedure TEditTaskForm.BtnCancelClick(Sender: TObject);
 begin
-  DataModuleMySQL.ADQueryTask.Cancel;
+  TaskDataModule.Cancel;
   EditTaskForm.Close;
 end;
 
 procedure TEditTaskForm.BtnChangeFreelancerClick(Sender: TObject);
 begin
   LabelChange.Caption := 'Новый исполнитель: ' + FreelancerModel.GetNameFreelancer;
-  DataModuleMySQL.SetFreelancerLink(FreelancerModel.GetIdFreelancer);
+  TaskDataModule.SetFreelancerLink(FreelancerModel.GetIdFreelancer);
 end;
 
 procedure TEditTaskForm.BtnOkClick(Sender: TObject);
 begin
-if DataModuleMySQL.ADQueryTask.Modified then
+if TaskDataModule.IsModified then
 begin
   with DataModuleMySQL do
   begin
     try
-      ADQueryTask.Post;
+      TaskDataModule.Post;
     except
       ShowMessage('Не заполнено одно из обязательных полей (название, статус или исполнитель). Заполните и повторите попытку.');
       exit;
@@ -78,8 +79,9 @@ begin
     //калькуляция бюджета проекта
     ProjectModel.CalcProjectBudget(ProjectModel.GetIDProject);
     ProjectModel.CalcProjectBalance(ProjectModel.GetIDProject);
-    CalcTaskBalance;
-    RefreshTask;
+    TaskDataModule.CalcTaskBalance;
+    TaskDataModule.RefreshTask;
+
     ProjectModel.RefreshProject;
   end;
 end;
@@ -99,7 +101,7 @@ end;
 
 procedure TEditTaskForm.MonthCalendar1Click(Sender: TObject);
 begin
-  DataModuleMySQL.SetDeadline(MonthCalendar1.Date);
+  TaskDataModule.SetDeadline(MonthCalendar1.Date);
 end;
 
 //Обнулить deadline
@@ -108,10 +110,11 @@ var
   MyTask: TTaskModel;
 begin
   MyTask := TTaskModel.Create(DataModuleMySQL.ADConnection1);
-  MyTask.SetDeadlineNull(DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
+  MyTask.SetDeadlineNull(TaskDataModule.GetIdTask);
   MyTask.Free;
 
-  DataModuleMySQL.RefreshTask;
+  TaskDataModule.RefreshTask;
+  TapeModel.RefreshTape;
 end;
 
 end.

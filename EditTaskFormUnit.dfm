@@ -52,7 +52,7 @@ object EditTaskForm: TEditTaskForm
     Width = 209
     Height = 17
     DataField = 'fio'
-    DataSource = DataModuleMySQL.DataSourceTask
+    DataSource = TaskDataModule.DataSourceTask
   end
   object Label6: TLabel
     Left = 8
@@ -81,7 +81,7 @@ object EditTaskForm: TEditTaskForm
     Width = 85
     Height = 12
     DataField = 'deadline'
-    DataSource = DataModuleMySQL.DataSourceTask
+    DataSource = TaskDataModule.DataSourceTask
   end
   object DBMemo1: TDBMemo
     Left = 8
@@ -89,7 +89,7 @@ object EditTaskForm: TEditTaskForm
     Width = 369
     Height = 125
     DataField = 'note'
-    DataSource = DataModuleMySQL.DataSourceTask
+    DataSource = TaskDataModule.DataSourceTask
     ScrollBars = ssVertical
     TabOrder = 0
   end
@@ -99,7 +99,7 @@ object EditTaskForm: TEditTaskForm
     Width = 121
     Height = 21
     DataField = 'budget'
-    DataSource = DataModuleMySQL.DataSourceTask
+    DataSource = TaskDataModule.DataSourceTask
     TabOrder = 1
   end
   object DBEdit3: TDBEdit
@@ -108,7 +108,7 @@ object EditTaskForm: TEditTaskForm
     Width = 121
     Height = 21
     DataField = 'caption'
-    DataSource = DataModuleMySQL.DataSourceTask
+    DataSource = TaskDataModule.DataSourceTask
     TabOrder = 2
   end
   object DBComboBox1: TDBComboBox
@@ -117,7 +117,7 @@ object EditTaskForm: TEditTaskForm
     Width = 121
     Height = 21
     DataField = 'status'
-    DataSource = DataModuleMySQL.DataSourceTask
+    DataSource = TaskDataModule.DataSourceTask
     Items.Strings = (
       #1074' '#1088#1072#1073#1086#1090#1077
       #1087#1088#1080#1086#1088#1080#1090#1077#1090
@@ -233,7 +233,7 @@ object EditTaskForm: TEditTaskForm
     Top = 43
     Width = 191
     Height = 160
-    Date = 41668.778981759260000000
+    Date = 41668.486931469910000000
     TabOrder = 8
     OnClick = MonthCalendar1Click
   end

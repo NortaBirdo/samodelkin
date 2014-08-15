@@ -167,7 +167,7 @@ implementation
 uses SettingFormUnit, ClientsFormUnit, FreelanceFormUnit, DataModuleMySQLUnit,
   EditProjectFormUnit, EditTaskFormUnit, OperationFormUnit, Clipbrd,
   TaskModelUnit, TrtansferTaskFormUnit, ProjectModelUnit, ClientModelUnit,
-  FreelancerModelUnit;
+  FreelancerModelUnit, TaskModel, TapeModelUnit;
 
 var
   MyTask: TTaskModel;
@@ -179,10 +179,10 @@ begin
   begin
 
     MyTask.QueryConnect := DataModuleMySQL.ADQuerySQL;
-    MyTask.DeleteTask(DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
+    MyTask.DeleteTask(TaskDataModule.GetIdTask);
     MyTask.Free;
 
-    DataModuleMySQL.RefreshTask;
+    TaskDataModule.RefreshTask;
 
 
     ProjectModel.CalcProjectBudget(ProjectModel.ADQueryProject.FieldByName('id').AsInteger);
@@ -244,7 +244,7 @@ begin
   ProjectModel.SetStatusWork;
 
   ProjectModel.RefreshProject;
-  DataModuleMySQL.RefreshTape;
+  TapeModel.RefreshTape;
 end;
 
 
@@ -255,7 +255,7 @@ begin
   ProjectModel.SetStatusPrior;
 
   ProjectModel.RefreshProject;
-  DataModuleMySQL.RefreshTape;
+  TapeModel.RefreshTape;
 end;
 
 //смена статуса проекта  - закрыт
@@ -264,7 +264,7 @@ begin
   ProjectModel.SetStatusClose;
 
   ProjectModel.RefreshProject;
-  DataModuleMySQL.RefreshTape;
+  TapeModel.RefreshTape;
 end;
 
 //смена статуса проекта  - заморожен
@@ -273,7 +273,7 @@ begin
   ProjectModel.SetStatusFreeze;
 
   ProjectModel.RefreshProject;
-  DataModuleMySQL.RefreshTape;
+  TapeModel.RefreshTape;
 end;
 
 //смена статуса проекта  - отмена
@@ -282,7 +282,7 @@ begin
   ProjectModel.SetStatusCancel;
 
   ProjectModel.RefreshProject;
-  DataModuleMySQL.RefreshTape;
+  TapeModel.RefreshTape;
 end;
 
 //ожидает оплаты проект
@@ -291,7 +291,7 @@ begin
   ProjectModel.SetStatusWaitPay;
 
   ProjectModel.RefreshProject;
-  DataModuleMySQL.RefreshTape;
+  TapeModel.RefreshTape;
 end;
 
 
@@ -304,7 +304,7 @@ begin
   EditProjectForm.ShowModal;
 
   ProjectModel.RefreshProject;
-  DataModuleMySQL.RefreshTape;
+  TapeModel.RefreshTape;
 end;
 
 procedure TMainForm.N46Click(Sender: TObject);
@@ -314,11 +314,11 @@ end;
 
 procedure TMainForm.N11Click(Sender: TObject);
 begin
-  DataModuleMySQL.ADQueryTask.Insert;
-  DataModuleMySQL.SetProjectLink(ProjectModel.GetIDProject);
+  TaskDataModule.Insert;
+  TaskDataModule.SetProjectLink(ProjectModel.GetIDProject);
   EditTaskForm.ShowModal;
-  DataModuleMySQL.RefreshTask;
-  DataModuleMySQL.RefreshTape;
+  TaskDataModule.RefreshTask;
+  TapeModel.RefreshTape;
 end;
 
 
@@ -333,7 +333,7 @@ procedure TMainForm.N12Click(Sender: TObject);
 begin
   EditProjectForm.ShowModal;
   ProjectModel.RefreshProject;
-  DataModuleMySQL.RefreshTape;
+  TapeModel.RefreshTape;
 end;
 
 //изменить проект из панели управлени€
@@ -345,8 +345,8 @@ end;
 procedure TMainForm.N14Click(Sender: TObject);
 begin
   EditTaskForm.ShowModal;
-  DataModuleMySQL.RefreshTask;
-  DataModuleMySQL.RefreshTape;
+  TaskDataModule.RefreshTask;
+  TapeModel.RefreshTape;
 end;
 
 //нова€ задача из подменю тасков
@@ -403,14 +403,14 @@ end;
 procedure TMainForm.N17Click(Sender: TObject);
 begin
   OperationForm.LabelType.caption := 'фрилансер';
-  OperationForm.LabelName.Caption := DataModuleMySQL.ADQueryTask.FieldByName('fio').AsString;
+  OperationForm.LabelName.Caption := TaskDataModule.GetFio;
   OperationForm.SetDataSet(FreelancerModel.DataSourceFreelancerAccount);
   OperationForm.id_client := ProjectModel.ADQueryProject.FieldByName('client_link').AsInteger;
   OperationForm.notes := '¬ыплата по проекту: ' + ProjectModel.ADQueryProject.FieldByName('caption').AsString +
-    ', задаче: ' + DataModuleMySQL.ADQueryTask.FieldByName('caption').AsString;
+    ', задаче: ' + TaskDataModule.GetCaption;
 
   OperationForm.ShowModal;
-  DataModuleMySQL.ADQueryTask.Refresh;
+  TaskDataModule.RefreshTask;
 end;
 
 //копирование в буфер
@@ -446,32 +446,32 @@ procedure TMainForm.TaskTapeTitleClick(Column: TColumn);
 begin
   if Column.Title.Caption = '#' then
   begin
-    DataModuleMySQL.SortById;
+    TapeModel.SortById;
   end;
 
   if Column.Title.Caption = '«адача' then
   begin
-    DataModuleMySQL.SortByTask;
+    TapeModel.SortByTask;
   end;
 
   if Column.Title.Caption = '—татус задачи' then
   begin
-    DataModuleMySQL.SortByPriorTask;
+    TapeModel.SortByPriorTask;
   end;
 
   if Column.Title.Caption = 'Deadline' then
   begin
-    DataModuleMySQL.SortByDeadline;
+    TapeModel.SortByDeadline;
   end;
 
   if Column.Title.Caption = 'ѕроект' then
   begin
-    DataModuleMySQL.SortByProject;
+    TapeModel.SortByProject;
   end;
 
   if Column.Title.Caption = '—татус проекта' then
   begin
-    DataModuleMySQL.SortByPriorProject;
+    TapeModel.SortByPriorProject;
   end;
 end;
 
@@ -544,62 +544,68 @@ end;
 //скрыть/показать закрытые таски
 procedure TMainForm.ShowTaskCheckBoxClick(Sender: TObject);
 begin
-DataModuleMySQL.SetShowCloseTask(ShowTaskCheckBox.Checked);
-DataModuleMySQL.GetTasks;
+TaskDataModule.SetShowCloseTask(ShowTaskCheckBox.Checked);
+TaskDataModule.GetTasks;
 end;
 
 //таска - в работе
 procedure TMainForm.N31Click(Sender: TObject);
 begin
-  MyTask.SetStatusTask(TaskModelUnit.Work, DataModuleMySQL.ADQueryMindTape.FieldByName('id').AsInteger);
-  DataModuleMySQL.RefreshTape;
+  MyTask.SetStatusTask(TaskModelUnit.Work, TapeModel.GetId);
+  TapeModel.RefreshTape;
   ProjectModel.RefreshProject;
-  DataModuleMySQL.RefreshTask;
+  TaskDataModule.RefreshTask;
+  TapeModel.RefreshTape;
 end;
 
 //таска -  приорите
 procedure TMainForm.N32Click(Sender: TObject);
 begin
-  MyTask.SetStatusTask(TaskModelUnit.prior, DataModuleMySQL.ADQueryMindTape.FieldByName('id').AsInteger);
-  DataModuleMySQL.RefreshTape;
+  MyTask.SetStatusTask(TaskModelUnit.prior, TapeModel.GetId);
+  TapeModel.RefreshTape;
   ProjectModel.RefreshProject;
-  DataModuleMySQL.RefreshTask;
+  TaskDataModule.RefreshTask;
+  TapeModel.RefreshTape;
 end;
 
 //таска - в ожидании заказчика
 procedure TMainForm.N33Click(Sender: TObject);
 begin
-  MyTask.SetStatusTask(TaskModelUnit.wait, DataModuleMySQL.ADQueryMindTape.FieldByName('id').AsInteger);
-  DataModuleMySQL.RefreshTape;
+  MyTask.SetStatusTask(TaskModelUnit.wait, TapeModel.GetId);
+  TapeModel.RefreshTape;
   ProjectModel.RefreshProject;
-  DataModuleMySQL.RefreshTask;
+  TaskDataModule.RefreshTask;
+  TapeModel.RefreshTape;
 end;
 
 //таска - отложена
 procedure TMainForm.N34Click(Sender: TObject);
 begin
-  MyTask.SetStatusTask(TaskModelUnit.Delayed, DataModuleMySQL.ADQueryMindTape.FieldByName('id').AsInteger);
-  DataModuleMySQL.RefreshTape;
+  MyTask.SetStatusTask(TaskModelUnit.Delayed, TapeModel.GetId);
+  TapeModel.RefreshTape;
   ProjectModel.RefreshProject;
-  DataModuleMySQL.RefreshTask;
+  TaskDataModule.RefreshTask;
+  TapeModel.RefreshTape;
 end;
 
 //таска - закрыта
 procedure TMainForm.N35Click(Sender: TObject);
 begin
-  MyTask.SetStatusTask(TaskModelUnit.Closer, DataModuleMySQL.ADQueryMindTape.FieldByName('id').AsInteger);
-  DataModuleMySQL.RefreshTape;
+  MyTask.SetStatusTask(TaskModelUnit.Closer, TapeModel.GetId);
+  TapeModel.RefreshTape;
   ProjectModel.RefreshProject;
-  DataModuleMySQL.RefreshTask;
+  TaskDataModule.RefreshTask;
+  TapeModel.RefreshTape;
 end;
 
 //ожидает оплаты задача
 procedure TMainForm.N56Click(Sender: TObject);
 begin
-  MyTask.SetStatusTask(TaskModelUnit.WaitPay, DataModuleMySQL.ADQueryMindTape.FieldByName('id').AsInteger);
-  DataModuleMySQL.RefreshTape;
+  MyTask.SetStatusTask(TaskModelUnit.WaitPay, TapeModel.GetId);
+  TapeModel.RefreshTape;
   ProjectModel.RefreshProject;
-  DataModuleMySQL.RefreshTask;
+  TaskDataModule.RefreshTask;
+  TapeModel.RefreshTape;
 end;
 
 //===========================================
@@ -608,55 +614,56 @@ end;
 //в работе
 procedure TMainForm.N30Click(Sender: TObject);
 begin
-  MyTask.SetStatusTask(TaskModelUnit.work, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
+  MyTask.SetStatusTask(TaskModelUnit.work, TaskDataModule.GetIdTask);
   ProjectModel.RefreshProject;
-  DataModuleMySQL.RefreshTask;
-  DataModuleMySQL.RefreshTape;
+  TaskDataModule.RefreshTask;
+  TapeModel.RefreshTape;
 end;
 
 //приоритет
 procedure TMainForm.N36Click(Sender: TObject);
 begin
-  MyTask.SetStatusTask(TaskModelUnit.prior, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
+  MyTask.SetStatusTask(TaskModelUnit.prior, TaskDataModule.GetIdTask);
   ProjectModel.RefreshProject;
-  DataModuleMySQL.RefreshTask;
-  DataModuleMySQL.RefreshTape;
+  TaskDataModule.RefreshTask;
+  TapeModel.RefreshTape;
 end;
 
 //ожидаю заказчика
 procedure TMainForm.N40Click(Sender: TObject);
 begin
-  MyTask.SetStatusTask(TaskModelUnit.wait, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
+  MyTask.SetStatusTask(TaskModelUnit.wait, TaskDataModule.GetIdTask);
   ProjectModel.RefreshProject;
-  DataModuleMySQL.RefreshTask;
-  DataModuleMySQL.RefreshTape;
+  TaskDataModule.RefreshTask;
+  TapeModel.RefreshTape;
 end;
 
 //отложена
 procedure TMainForm.N38Click(Sender: TObject);
 begin
-  MyTask.SetStatusTask(TaskModelUnit.Delayed, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
+  MyTask.SetStatusTask(TaskModelUnit.Delayed, TaskDataModule.GetIdTask);
   ProjectModel.RefreshProject;
-  DataModuleMySQL.RefreshTask;
-  DataModuleMySQL.RefreshTape;
+  TaskDataModule.RefreshTask;
+  TapeModel.RefreshTape;
 end;
 
 //закрыта
 procedure TMainForm.N39Click(Sender: TObject);
 begin
-  MyTask.SetStatusTask(TaskModelUnit.Closer, DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger);
+  MyTask.SetStatusTask(TaskModelUnit.Closer, TaskDataModule.GetIdTask);
   ProjectModel.RefreshProject;
-  DataModuleMySQL.RefreshTask;
-  DataModuleMySQL.RefreshTape;
+  TaskDataModule.RefreshTask;
+  TapeModel.RefreshTape;
 end;
 
 //ожидает оплаты задача
 procedure TMainForm.N57Click(Sender: TObject);
 begin
-  MyTask.SetStatusTask(TaskModelUnit.WaitPay, DataModuleMySQL.ADQueryMindTape.FieldByName('id').AsInteger);
-  DataModuleMySQL.RefreshTape;
+  MyTask.SetStatusTask(TaskModelUnit.WaitPay, TaskDataModule.GetIdTask);
+  TapeModel.RefreshTape;
   ProjectModel.RefreshProject;
-  DataModuleMySQL.RefreshTask;
+  TaskDataModule.RefreshTask;
+  TapeModel.RefreshTape;
 end;
 
 
@@ -670,8 +677,8 @@ begin
   TransferTaskForm.ShowModal;
 
   ProjectModel.RefreshProject;
-  DataModuleMySQL.RefreshTask;
-  DataModuleMySQL.RefreshTape;
+  TaskDataModule.RefreshTask;
+  TapeModel.RefreshTape;
 end;
 
 end.

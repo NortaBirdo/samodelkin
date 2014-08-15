@@ -15,7 +15,9 @@ uses
   TrtansferTaskFormUnit in 'TrtansferTaskFormUnit.pas' {TransferTaskForm},
   ProjectModelUnit in 'ProjectModelUnit.pas' {ProjectModel: TDataModule},
   ClientModelUnit in 'ClientModelUnit.pas' {ClientModel: TDataModule},
-  FreelancerModelUnit in 'FreelancerModelUnit.pas' {FreelancerModel: TDataModule};
+  FreelancerModelUnit in 'FreelancerModelUnit.pas' {FreelancerModel: TDataModule},
+  TaskModel in 'TaskModel.pas' {TaskDataModule: TDataModule},
+  TapeModelUnit in 'TapeModelUnit.pas' {TapeModel: TDataModule};
 
 {$R *.res}
 
@@ -24,6 +26,8 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TSQLiteDataModule, SQLiteDataModule);
   Application.CreateForm(TDataModuleMySQL, DataModuleMySQL);
+  Application.CreateForm(TTaskDataModule, TaskDataModule);
+  Application.CreateForm(TTapeModel, TapeModel);
   Application.CreateForm(TProjectModel, ProjectModel);
   Application.CreateForm(TFreelancerModel, FreelancerModel);
   Application.CreateForm(TMainForm, MainForm);

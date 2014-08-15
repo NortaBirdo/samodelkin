@@ -17,42 +17,13 @@ type
     ADPhysMySQLDriverLink1: TADPhysMySQLDriverLink;
     ADQueryTime: TADQuery;
     Timer1: TTimer;
-    ADQueryTask: TADQuery;
-    DataSourceTask: TDataSource;
     ADQuerySQL: TADQuery;
-    ADQueryMindTape: TADQuery;
-    DataSourceMindTape: TDataSource;
     procedure DataModuleCreate(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
 
   private
-    ShowCloseTask: boolean;
 
   public
-
-    //задачи
-    procedure GetTasks;
-    function GetIdTask:integer;
-    function GetSalaryTask:integer;
-    procedure SetProjectLink(id:integer);
-    procedure SetFreelancerLink(id: integer);
-    procedure SetDeadline(Dt: TDate);
-    procedure RefreshTask;
-    procedure SetShowCloseTask(show: boolean);
-
-    //деньги
-    procedure CalcTaskBalance;
-    procedure CalcTaskSalary(sum: integer);
-
-    //лента
-    procedure RefreshTape;
-    //сортировка ленты
-    procedure SortById;
-    procedure SortByTask;
-    procedure SortByPriorTask;
-    procedure SortByDeadline;
-    procedure SortByProject;
-    procedure SortByPriorProject;
 
     var
       FirstStart: boolean;
@@ -100,12 +71,9 @@ begin
   Add('DriverID=MySQL');
 end;
 
-FirstStart := true;
+  FirstStart := true;
 
-ADConnection1.Connected := true;
-ADQueryMindTape.Active := true;
-//ADQueryTask.Active := true;
-
+  ADConnection1.Connected := true;
 
 end;
 
@@ -114,219 +82,6 @@ procedure TDataModuleMySQL.Timer1Timer(Sender: TObject);
 begin
   ADQueryTime.Close;
   ADQueryTime.Open;
-end;
-
-
-//======================================
-//работа с тасками
-
-//показать/скрыть закрытые таски
-procedure TDataModuleMySQL.SetShowCloseTask(show: boolean);
-begin
-ShowCloseTask := show;
-end;
-
-procedure TDataModuleMySQL.GetTasks;
-begin
-  with ADQueryTask do
-  begin
-    close;
-    Sql.Clear;
-
-    if ShowCloseTask then
-     Sql.Add('Select TASK.*, FREELANCER.Id, FREELANCER.fio from TASK, FREELANCER ' +
-      'WHERE TASK.freelancer_link = FREELANCER.id AND TASK.project_link = ' + IntToStr(ProjectModel.GetIDProject))
-    else
-     Sql.Add('Select TASK.*, FREELANCER.Id, FREELANCER.fio from TASK, FREELANCER ' +
-      'WHERE TASK.freelancer_link = FREELANCER.id AND TASK.project_link = ' + IntToStr(ProjectModel.GetIDProject) +
-      ' AND TASK.status <> ' + QuotedStr('закрыта'));
-    open;
-  end;
-end;
-
-function TDataModuleMySQL.GetIdTask: integer;
-begin
- result := DataModuleMySQL.ADQueryTask.FieldByName('id').AsInteger
-end;
-
-function TDataModuleMySQL.GetSalaryTask: integer;
-begin
-  result := DataModuleMySQL.ADQueryTask.FieldByName('salary').AsInteger
-end;
-
-procedure TDataModuleMySQL.SetProjectLink(id: integer);
-begin
-  ADQueryTask.Edit;
-  ADQueryTask.FieldByName('project_link').Value := id;
-end;
-
-procedure TDataModuleMySQL.SetFreelancerLink(id: integer);
-begin
-  ADQueryTask.Edit;
-  ADQueryTask.FieldByName('freelancer_link').Value := id;
-end;
-
-procedure TDataModuleMySQL.SetDeadline(Dt: TDate);
-begin
-  ADQueryTask.Edit;
-  ADQueryTask.FieldByName('deadline').Value := Dt;
-end;
-
-procedure TDataModuleMySQL.RefreshTape;
-begin
-  ADQueryMindTape.Refresh;
-end;
-
-procedure TDataModuleMySQL.RefreshTask;
-begin
-  ADQueryTask.Refresh;
-  ADQueryMindTape.Refresh;
-end;
-
-//=================================
-//деньги
-
-procedure TDataModuleMySQL.CalcTaskBalance;
-begin
-with ADQueryTask do
-  begin
-  edit;
-  FieldByName('balance').Value := FieldByName('salary').AsInteger - FieldByName('budget').AsInteger;
-  post;
-  end;
-end;
-
-procedure TDataModuleMySQL.CalcTaskSalary(sum: integer);
-begin
-
-with ADQueryTask do
-  begin
-  edit;
-  FieldByName('salary').Value := FieldByName('salary').AsInteger + sum;
-  post;
-  end;
-
-end;
-
-//========================================
-//сортировка в ленте
-
-procedure TDataModuleMySQL.SortByDeadline;
-var
-  sQuery: string;
-begin
-
-  with ADQueryMindTape do
-  begin
-    Close;
-    SQl.Clear;
-
-    sQuery := 'SELECT T.*, P.* FROM TASK T, PROJECT P WHERE T.status <> ' + QuotedStr('закрыта') +
-      ' AND T.status <> ' + QuotedStr('отложена')+
-      ' AND T.project_link = P.id AND P.status <> ' + QuotedStr('закрыт') + ' AND P.status <> ' +
-      QuotedStr('отменен') + ' ORDER BY T.deadline DESC';
-    SQL.Add(sQuery);
-    Open;
-  end;
-end;
-
-procedure TDataModuleMySQL.SortById;
-var
-  sQuery: string;
-begin
-
-  with ADQueryMindTape do
-  begin
-    Close;
-    SQl.Clear;
-
-    sQuery := 'SELECT T.*, P.* FROM TASK T, PROJECT P WHERE T.status <> ' + QuotedStr('закрыта') +
-      ' AND T.status <> ' + QuotedStr('отложена')+
-      ' AND T.project_link = P.id AND P.status <> ' + QuotedStr('закрыт') + ' AND P.status <> ' +
-      QuotedStr('отменен') + ' ORDER BY T.ID ASC';
-    SQL.Add(sQuery);
-    Open;
-  end;
-end;
-
-procedure TDataModuleMySQL.SortByPriorProject;
-var
-  sQuery: string;
-begin
-
-  with ADQueryMindTape do
-  begin
-    Close;
-    SQl.Clear;
-
-    sQuery := 'SELECT T.*, P.* FROM TASK T, PROJECT P WHERE T.status <> ' + QuotedStr('закрыта') +
-      ' AND T.status <> ' + QuotedStr('отложена')+
-      ' AND T.project_link = P.id AND P.status <> ' + QuotedStr('закрыт') + ' AND P.status <> ' +
-      QuotedStr('отменен') + ' ORDER BY P.status ASC';
-    SQL.Add(sQuery);
-    Open;
-  end;
-
-end;
-
-procedure TDataModuleMySQL.SortByPriorTask;
-var
-  sQuery: string;
-begin
-
-  with ADQueryMindTape do
-  begin
-    Close;
-    SQl.Clear;
-
-    sQuery := 'SELECT T.*, P.* FROM TASK T, PROJECT P WHERE T.status <> ' + QuotedStr('закрыта') +
-      ' AND T.status <> ' + QuotedStr('отложена')+
-      ' AND T.project_link = P.id AND P.status <> ' + QuotedStr('закрыт') + ' AND P.status <> ' +
-      QuotedStr('отменен') + ' ORDER BY T.status ASC';
-    SQL.Add(sQuery);
-    Open;
-  end;
-
-end;
-
-procedure TDataModuleMySQL.SortByProject;
-var
-  sQuery: string;
-begin
-
-  with ADQueryMindTape do
-  begin
-    Close;
-    SQl.Clear;
-
-    sQuery := 'SELECT T.*, P.* FROM TASK T, PROJECT P WHERE T.status <> ' + QuotedStr('закрыта') +
-      ' AND T.status <> ' + QuotedStr('отложена')+
-      ' AND T.project_link = P.id AND P.status <> ' + QuotedStr('закрыт') + ' AND P.status <> ' +
-      QuotedStr('отменен') + ' ORDER BY P.caption ASC';
-    SQL.Add(sQuery);
-    Open;
-  end;
-
-end;
-
-procedure TDataModuleMySQL.SortByTask;
-var
-  sQuery: string;
-begin
-
-  with ADQueryMindTape do
-  begin
-    Close;
-    SQl.Clear;
-
-    sQuery := 'SELECT T.*, P.* FROM TASK T, PROJECT P WHERE T.status <> ' + QuotedStr('закрыта') +
-      ' AND T.status <> ' + QuotedStr('отложена')+
-      ' AND T.project_link = P.id AND P.status <> ' + QuotedStr('закрыт') + ' AND P.status <> ' +
-      QuotedStr('отменен') + ' ORDER BY T.caption ASC';
-    SQL.Add(sQuery);
-    Open;
-  end;
-
 end;
 
 end.

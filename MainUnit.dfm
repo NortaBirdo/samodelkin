@@ -23,14 +23,12 @@ object MainForm: TMainForm
     Top = 33
     Width = 1093
     Height = 607
-    ActivePage = ProjectTaskSheet
+    ActivePage = MindTapeSheet
     Align = alClient
     TabOrder = 0
     OnChange = PageControl1Change
-    ExplicitHeight = 570
     object MindTapeSheet: TTabSheet
       Caption = #1051#1077#1085#1090#1072
-      ExplicitHeight = 571
       object Label7: TLabel
         Left = 3
         Top = 21
@@ -62,7 +60,7 @@ object MainForm: TMainForm
         Top = 43
         Width = 830
         Height = 533
-        DataSource = DataModuleMySQL.DataSourceMindTape
+        DataSource = TapeModel.DataSourceMindTape
         PopupMenu = PopupMenuTape
         ReadOnly = True
         TabOrder = 0
@@ -152,7 +150,6 @@ object MainForm: TMainForm
         Width = 243
         Height = 536
         DataField = 'note'
-        DataSource = DataModuleMySQL.DataSourceMindTape
         ReadOnly = True
         ScrollBars = ssVertical
         TabOrder = 1
@@ -161,7 +158,6 @@ object MainForm: TMainForm
     object ProjectTaskSheet: TTabSheet
       Caption = #1055#1088#1086#1077#1082#1090#1099' '#1080' '#1079#1072#1076#1072#1095#1080
       ImageIndex = 1
-      ExplicitHeight = 542
       object Label1: TLabel
         Left = 8
         Top = 16
@@ -334,7 +330,7 @@ object MainForm: TMainForm
         Top = 351
         Width = 801
         Height = 217
-        DataSource = DataModuleMySQL.DataSourceTask
+        DataSource = TaskDataModule.DataSourceTask
         PopupMenu = PopupMenuTask
         ReadOnly = True
         TabOrder = 1
@@ -464,7 +460,6 @@ object MainForm: TMainForm
         Width = 250
         Height = 220
         DataField = 'note'
-        DataSource = DataModuleMySQL.DataSourceTask
         ReadOnly = True
         ScrollBars = ssVertical
         TabOrder = 4

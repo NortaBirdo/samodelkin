@@ -1,0 +1,25 @@
+unit TaskModel;
+
+interface
+
+uses
+  System.SysUtils, System.Classes;
+
+type
+  TTaskDataModule = class(TDataModule)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  TaskDataModule: TTaskDataModule;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+end.
