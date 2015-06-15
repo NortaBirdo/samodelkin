@@ -1,5 +1,0 @@
-object FreelancerModel: TFreelancerModel
-  OldCreateOrder = False
-  Height = 427
-  Width = 616
-end

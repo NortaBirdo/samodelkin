@@ -1,0 +1,5 @@
+object TaskDataModule: TTaskDataModule
+  OldCreateOrder = False
+  Height = 401
+  Width = 515
+end

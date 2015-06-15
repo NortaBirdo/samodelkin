@@ -1,0 +1,106 @@
+unit FreelancerModelUnit;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, uADStanIntf, uADStanOption, uADStanParam,
+  uADStanError, uADDatSManager, uADPhysIntf, uADDAptIntf, uADStanAsync,
+  uADDAptManager, Data.DB, uADCompDataSet, uADCompClient;
+
+type
+  TFreelancerModel = class(TDataModule)
+    ADQueryFreelancer: TADQuery;
+    DataSourceFreelancer: TDataSource;
+    ADQueryFreelancerAccount: TADQuery;
+    DataSourceFreelancerAccount: TDataSource;
+    procedure DataModuleCreate(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    procedure SetFreelancerFlag(flag:integer);
+    function GetNameFreelancer: string;
+    function GetIdFreelancer: integer;
+    procedure ShowActiveFreelancer;
+    procedure ShowArchiveFreelancer;
+    procedure ShowBlackListFreelancer;
+    procedure RefreshFreelancer;
+    procedure AddFreelancer;
+  end;
+
+var
+  FreelancerModel: TFreelancerModel;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+procedure TFreelancerModel.AddFreelancer;
+begin
+  ADQueryFreelancer.Insert;
+  SetFreelancerFlag(0);
+end;
+
+procedure TFreelancerModel.DataModuleCreate(Sender: TObject);
+begin
+  ADQueryFreelancer.Active := true;
+  ADQueryFreelancerAccount.Active := true;
+end;
+
+function TFreelancerModel.GetIdFreelancer: integer;
+begin
+  result := ADQueryFreelancer.FieldByName('id').AsInteger;
+end;
+
+function TFreelancerModel.GetNameFreelancer: string;
+begin
+  result := ADQueryFreelancer.FieldByName('fio').AsString;
+end;
+
+procedure TFreelancerModel.RefreshFreelancer;
+begin
+   ADQueryFreelancer.Refresh;
+end;
+
+procedure TFreelancerModel.SetFreelancerFlag(flag: integer);
+begin
+  ADQueryFreelancer.Edit;
+  ADQueryFreelancer.FieldByName('flag').Value := flag;
+end;
+
+procedure TFreelancerModel.ShowActiveFreelancer;
+begin
+  with ADQueryFreelancer do
+  begin
+    close;
+    sql.Clear;
+    sql.Add('SELECT * FROM FREELANCER WHERE flag = 0');
+    open;
+  end;
+end;
+
+procedure TFreelancerModel.ShowArchiveFreelancer;
+begin
+  with ADQueryFreelancer do
+  begin
+    close;
+    sql.Clear;
+    sql.Add('SELECT * FROM FREELANCER WHERE flag = 1');
+    open;
+  end;
+end;
+
+procedure TFreelancerModel.ShowBlackListFreelancer;
+begin
+  with ADQueryFreelancer do
+  begin
+    close;
+    sql.Clear;
+    sql.Add('SELECT * FROM FREELANCER WHERE flag = 2');
+    open;
+  end;
+end;
+
+end.

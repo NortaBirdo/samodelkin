@@ -1,0 +1,62 @@
+unit ClientModelUnit;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, uADStanIntf, uADStanOption, uADStanParam,
+  uADStanError, uADDatSManager, uADPhysIntf, uADDAptIntf, uADStanAsync,
+  uADDAptManager, Data.DB, uADCompDataSet, uADCompClient;
+
+type
+  TClientModel = class(TDataModule)
+    ADQueryClients: TADQuery;
+    DataSourceClient: TDataSource;
+    ADQueryClientList: TADQuery;
+    DataSourceClientList: TDataSource;
+    ADQueryClientAccount: TADQuery;
+    DataSourceClientAccount: TDataSource;
+    procedure ADQueryClientsAfterGetRecord(DataSet: TADDataSet);
+  private
+    FirstStart: boolean;
+  public
+    BalanceClient: integer;
+
+    procedure RefreshOperationClient;
+  end;
+
+var
+  ClientModel: TClientModel;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+uses ClientsFormUnit;
+
+{$R *.dfm}
+
+procedure TClientModel.ADQueryClientsAfterGetRecord(DataSet: TADDataSet);
+begin
+  RefreshOperationClient;
+  BalanceClient := GetBalanceClient;
+
+  if not FirstStart then ClientsForm.BalLabel.Caption := IntToStr(BalanceClient);
+
+end;
+
+procedure TClientModel.RefreshOperationClient;
+var
+query: string;
+begin
+with ADQueryClientAccount do
+begin
+  close;
+  sql.Clear;
+  query := 'SELECT * FROM PERSONAL_ACCOUNT ' +
+    'WHERE account_type = 0 AND link = ' + ADQueryClients.FieldByName('id').AsString +
+    ' ORDER BY date_operation DESC';
+  sql.Add(query);
+  open;
+end;
+
+end.

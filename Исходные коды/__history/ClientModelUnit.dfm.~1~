@@ -1,0 +1,5 @@
+object ClientModel: TClientModel
+  OldCreateOrder = False
+  Height = 276
+  Width = 503
+end
